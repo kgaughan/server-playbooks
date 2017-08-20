@@ -1,0 +1,14 @@
+---
+- name: install dma
+  pkgng:
+    name: dma
+
+- name: configure mailwrapper to use dma
+  copy:
+    src: mailer.conf
+    dest: /etc/mail/mailer.conf
+
+- name: periodically flush dma's queue
+  lineinfile:
+    dest: /etc/crontab
+    line: "*/15 * * * * root /usr/local/libexec/dma -q"

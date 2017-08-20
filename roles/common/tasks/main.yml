@@ -1,2 +1,5 @@
 ---
 - include: ntimed.yml
+- include: sendmail.yml
+- include: dma.yml
+  when: "'mailserver' not in group_names"
