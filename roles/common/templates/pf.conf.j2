@@ -1,0 +1,72 @@
+ext_if="{{ iface }}"
+
+# Services to allow through
+http = "{ http https 8080 }"
+mail = "{ smtp imap submission imaps sieve }"
+xmpp = "{ 5222 5269 8010 }"
+other_services = "{ ssh rsync }"
+
+# Ignore the loopback interface completely.
+set skip on lo0
+
+# Be polite with blocked packets.
+set block-policy return
+
+# Perform packet normalisation.
+scrub in all
+
+#
+# Filtering
+#
+
+# Block everything incoming by default
+block in all
+
+# Block (IPv4) martians. Must get a list of IPv6 martians. Take a read over
+# this some time: http://en.wikipedia.org/wiki/Martian_packet
+table <martians> const { \
+  0.0.0.0/8 \
+  10.0.0.0/8 \
+  127.0.0.0/8 \
+  169.254.0.0/16 \
+  172.16.0.0/12 \
+  192.0.2.0/24 \
+  192.168.0.0/16 \
+  240.0.0.0/4 \
+}
+
+block drop in quick on $ext_if from <martians> to any
+block drop out quick on $ext_if from any to <martians>
+
+# Allow all outgoing traffic.
+pass out all
+
+# Allow traceroutes and pings
+pass quick proto icmp all
+pass quick proto icmp6 all
+
+# I want to be able to admin this machine!
+pass in proto tcp to port ssh
+
+# Services to allow
+pass in on $ext_if proto tcp to port $http
+pass in on $ext_if proto tcp to port $mail
+pass in on $ext_if proto tcp to port $other_services
+#pass in on $ext_if proto tcp to port $xmpp
+pass in on $ext_if proto { udp, tcp } to port domain
+pass in on $ext_if proto { udp, tcp } to port 54
+# Mosh
+pass in on $ext_if proto udp to port 60000:61000
+
+# IPs that should never be blocked.
+table <goodguys> persist file "{{ ssh_whitelist }}"
+pass in quick on $ext_if proto tcp from <goodguys> to port ssh
+
+# Kill SSH fast brute forces attacks early.
+table <bruteforce> persist
+block drop in quick from <bruteforce>
+pass in on $ext_if proto tcp from any to $ext_if:network port ssh flags S/SA keep state (max-src-conn 5, max-src-conn-rate 5/30, overload <bruteforce> flush global)
+
+# sshguard
+table <sshguard> persist
+block in quick on $ext_if proto tcp from <sshguard> to any port ssh label "ssh bruteforce"

@@ -6,3 +6,13 @@
   service:
     name: sshd
     state: reloaded
+
+- name: reload syslog
+  service:
+    name: syslogd
+    state: reloaded
+
+- name: reload pf
+  service:
+    name: pf
+    state: reloaded

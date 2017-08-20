@@ -15,6 +15,7 @@
   notify:
     - mount all
 
+- include: pf.yml
 - include: fbsd-update.yml
 - include: ssh.yml
 - include: ntimed.yml

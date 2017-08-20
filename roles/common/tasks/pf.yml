@@ -1,0 +1,52 @@
+---
+- name: install sshguard
+  pkgng:
+    name: sshguard-pf
+
+- name: ensure ssh whitelist is present
+  file:
+    path: '{{ ssh_whitelist }}'
+    state: touch
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: deploy pf config
+  template:
+    src: pf.conf.j2
+    dest: /etc/pf.conf
+
+- name: start pf
+  service:
+    name: pf
+    enabled: yes
+    state: started
+
+- name: start pflog
+  service:
+    name: pflog
+    enabled: yes
+    state: started
+
+- name: have sshguard listen to syslog
+  lineinfile:
+    dest: /etc/syslog.conf
+    regexp: sshguard
+    line: 'auth.info;authpriv.info |exec /usr/local/sbin/sshguard -w {{ ssh_whitelist }}'
+  notify:
+    - reload syslog
+
+- name: whitelist key addresses
+  lineinfile:
+    dest: '{{ ssh_whitelist }}'
+    line: '{{ item }}'
+  with_items:
+    # cian
+    - 45.55.149.240
+    - 2604:a880:800:10::716:6001
+    # manann
+    - 5.9.82.71
+    - 2a01:4f8:162:4e::1:1
+  notify:
+    - reload pf
+    - reload syslog
