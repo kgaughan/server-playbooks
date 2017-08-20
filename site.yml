@@ -8,11 +8,13 @@
 #- hosts: dbservers
 #  roles:
 #    - dbservers
-#
-#- hosts: mailservers
-#  roles:
-#    - mailservers
-#
+
+- hosts: mailservers
+  remote_user: keith
+  become: true
+  roles:
+    - mailserver
+
 #- hosts: nameservers
 #  roles:
 #    - nameservers

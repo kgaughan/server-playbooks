@@ -1,0 +1,4 @@
+---
+- include: dovecot.yml
+- include: rspamd.yml
+- include: opensmtpd.yml

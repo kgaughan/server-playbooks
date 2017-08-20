@@ -1,0 +1,7 @@
+---
+- name: install dovecot
+  pkgng:
+    name: '{{ item }}'
+  with_items:
+    - dovecot2
+    - dovecot-pigeonhole
