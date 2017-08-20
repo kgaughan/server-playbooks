@@ -4,7 +4,7 @@
     name: ntimed
 
 - name: configure ntimed
-  command: sysrc ntimed_flags="0.europe.pool.ntp.org 1.europe.pool.ntp.org 2.europe.pool.ntp.org 3.europe.pool.ntp.org"
+  command: "sysrc ntimed_flags=\"{{ ntp_servers | join(' ') }}\""
 
 - name: start ntimed
   service:
