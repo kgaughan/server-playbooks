@@ -1,0 +1,7 @@
+manann.talideon.com ansible_host=5.9.82.71
+
+[freebsd]
+manann.talideon.com
+
+[freebsd:vars]
+ansible_python_interpreter=/usr/local/bin/python

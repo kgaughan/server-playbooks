@@ -1,0 +1,34 @@
+---
+- name: bootstrap FreeBSD hosts
+  hosts: freebsd
+  remote_user: root
+  gather_facts: false
+
+  tasks:
+    - name: install python
+      raw: sh -c "ASSUME_ALWAYS_YES=yes pkg install python"
+
+    - name: install sudo
+      pkgng:
+        name: sudo
+
+    - name: give sudo to wheel group
+      lineinfile:
+        path: /usr/local/etc/sudoers
+        line: "%wheel ALL=(ALL) NOPASSWD: ALL"
+        validate: 'visudo -cf %s'
+
+    - name: remove the ability to ssh in as root
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^PermitRootLogin\\s"
+        line: 'PermitRootLogin no'
+        validate: '/usr/sbin/sshd -T -f %s'
+      notify:
+        - reload sshd config
+
+  handlers:
+    - name: reload sshd config
+      service:
+        name: sshd
+        state: reloaded
