@@ -1,0 +1,22 @@
+---
+- hosts: all
+  remote_user: keith
+  become: true
+  roles:
+    - common
+
+#- hosts: dbservers
+#  roles:
+#    - dbservers
+#
+#- hosts: mailservers
+#  roles:
+#    - mailservers
+#
+#- hosts: nameservers
+#  roles:
+#    - nameservers
+#
+#- hosts: webservers
+#  roles:
+#    - webservers
