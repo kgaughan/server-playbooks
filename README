@@ -1,0 +1,36 @@
+===================
+My Server Playbooks
+===================
+
+These are the Ansible playbooks I use for setting up my servers. I use FreeBSD
+on them exclusively, so they may be of limited utility to people using other
+OSs.
+
+Use
+===
+
+Initial setup of a fresh machine can be done with `bootstrap.yml`. This
+ensures that Python and sudo are installed on the target machine and ensures
+that users in the `wheel` group don't need to provide a password when using
+sudo. Run this with::
+
+    make bootstrap
+
+Once all hosts have been bootstrapped, you can run the rest of the main
+playbooks with::
+
+    make
+
+This runs all the playbooks listed in `site.yml`.
+
+Not currently covered
+=====================
+
+Some small amount of additional setup is required when you initially configure
+SSH keys. This is mainly because I set up my keys before I wrote the bootstrap
+playbook. This wouldn't be difficult to fix: the authorized_key_ module
+exists for just this.
+
+.. _authorized_key: http://docs.ansible.com/ansible/latest/authorized_key_module.html
+
+.. vim:set ft=rst:
