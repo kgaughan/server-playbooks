@@ -1,0 +1,18 @@
+---
+- name: remove the ability to ssh in as root
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin\\s"
+    line: 'PermitRootLogin no'
+    validate: '/usr/sbin/sshd -T -f %s'
+  notify:
+    - reload sshd config
+
+- name: disable ssh password login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^ChallengeResponseAuthentication\\s"
+    line: 'ChallengeResponseAuthentication no'
+    validate: '/usr/sbin/sshd -T -f %s'
+  notify:
+    - reload sshd config

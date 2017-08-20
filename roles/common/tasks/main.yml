@@ -20,6 +20,7 @@
   notify:
     - mount all
 
+- include: ssh.yml
 - include: ntimed.yml
 - include: sendmail.yml
 - include: dma.yml
