@@ -1,4 +1,25 @@
 ---
+- name: install essential packages
+  pkgng:
+    name: "{{ item }}"
+  with_items:
+    - rsync
+    - tmux
+    - zoneinfo
+
+- name: pull down updates daily
+  lineinfile:
+    dest: /etc/crontab
+    line: "@daily root freebsd-update cron"
+
+- name: include fdesc in fstab
+  lineinfile:
+    dest: /etc/fstab
+    regexp: '^fdesc'
+    line: 'fdesc /dev/fd fdescfs rw 0 0'
+  notify:
+    - mount all
+
 - include: ntimed.yml
 - include: sendmail.yml
 - include: dma.yml
