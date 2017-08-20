@@ -7,11 +7,6 @@
     - tmux
     - zoneinfo
 
-- name: pull down updates daily
-  lineinfile:
-    dest: /etc/crontab
-    line: "@daily root freebsd-update cron"
-
 - name: include fdesc in fstab
   lineinfile:
     dest: /etc/fstab
@@ -20,6 +15,7 @@
   notify:
     - mount all
 
+- include: fbsd-update.yml
 - include: ssh.yml
 - include: ntimed.yml
 - include: sendmail.yml

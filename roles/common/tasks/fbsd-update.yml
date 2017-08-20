@@ -1,0 +1,11 @@
+---
+- name: only update world and kernel
+  lineinfile:
+    dest: /etc/freebsd-update.conf
+    regexp: "^Components "
+    line: "Components world kernel"
+
+- name: pull down updates daily
+  lineinfile:
+    dest: /etc/crontab
+    line: "@daily root freebsd-update cron"
