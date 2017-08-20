@@ -6,6 +6,7 @@
     line: "Components world kernel"
 
 - name: pull down updates daily
-  lineinfile:
-    dest: /etc/crontab
-    line: "@daily root freebsd-update cron"
+  cron:
+    name: schedule freebsd-update
+    special_time: daily
+    job: freebsd-update cron

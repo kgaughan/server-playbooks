@@ -9,6 +9,7 @@
     dest: /etc/mail/mailer.conf
 
 - name: periodically flush dma's queue
-  lineinfile:
-    dest: /etc/crontab
-    line: "*/15 * * * * root /usr/local/libexec/dma -q"
+  cron:
+    name: flush queue
+    minute: '*/15'
+    job: /usr/local/libexec/dma -q
