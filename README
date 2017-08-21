@@ -33,4 +33,11 @@ exists for just this.
 
 .. _authorized_key: http://docs.ansible.com/ansible/latest/authorized_key_module.html
 
+Nameserver role
+===============
+
+This role just does basic setup needed for both primary and secondary
+nameservers. The actual heavy lifting is in a seperate repo which contains the
+zonefiles.
+
 .. vim:set ft=rst:

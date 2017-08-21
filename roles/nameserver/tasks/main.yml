@@ -1,0 +1,46 @@
+---
+- name: install nsd
+  pkgng:
+    name: nsd
+
+- name: ensure zones directory exists
+  file:
+    path: "{{ nsd_dir }}/zones"
+    state: directory
+    owner: nsd
+    group: nsd
+    mode: 0755
+
+- name: ensure zone list exists
+  file:
+    path: "{{ nsd_dir }}/zones.conf"
+    state: touch
+    owner: nsd
+    group: nsd
+    mode: 0644
+
+- name: ensure key list exists
+  file:
+    path: "{{ nsd_dir }}/keys.conf"
+    state: touch
+    owner: nsd
+    group: nsd
+    mode: 0600
+
+- name: configure nsd
+  template:
+    src: nsd.conf.j2
+    dest: "{{ nsd_dir }}/nsd.conf"
+  notify:
+    - reload nsd
+
+- name: configure nsd-control
+  command: nsd-control-setup
+  args:
+    creates: "{{ nsd_dir}}/nsd_control.key"
+
+- name: start nsd
+  service:
+    name: nsd
+    enabled: yes
+    state: started

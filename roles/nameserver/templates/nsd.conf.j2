@@ -1,0 +1,11 @@
+server:
+	do-ip4: yes
+	do-ip6: yes
+	zonesdir: {{ nsd_dir }}/zones
+	hide-version: yes
+
+remote-control:
+	control-enable: yes
+
+include: "{{ nsd_dir }}/keys.conf"
+include: "{{ nsd_dir }}/zones.conf"

@@ -14,5 +14,8 @@ site:
 mailservers:
 	ansible-playbook -i $(HOSTS) mailservers.yml
 
+nameservers:
+	ansible-playbook -i $(HOSTS) nameservers.yml
+
 .PHONY: bootstrap clean default site
-.PHONY: mailservers
+.PHONY: mailservers nameservers
