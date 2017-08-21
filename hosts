@@ -8,3 +8,12 @@ ansible_python_interpreter=/usr/local/bin/python
 
 [mailservers]
 manann.talideon.com
+
+[webservers]
+manann.talideon.com
+
+[dbservers]
+manann.talideon.com
+
+[nameservers]
+manann.talideon.com

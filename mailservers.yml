@@ -1,0 +1,8 @@
+---
+- hosts: mailservers
+  remote_user: keith
+  become: true
+  roles:
+    - common
+    - mailserver
+

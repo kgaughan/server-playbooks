@@ -9,16 +9,8 @@
 #  roles:
 #    - dbservers
 
-- hosts: mailservers
-  remote_user: keith
-  become: true
-  roles:
-    - mailserver
+- include: mailservers.yml
 
-#- hosts: nameservers
-#  roles:
-#    - nameservers
-#
 #- hosts: webservers
 #  roles:
 #    - webservers
