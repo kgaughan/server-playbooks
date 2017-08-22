@@ -1,7 +1,10 @@
 ---
-- name: install sshguard
+- name: install packages
   pkgng:
-    name: sshguard-pf
+    name: '{{ item }}'
+  with_items:
+    - pftop
+    - sshguard-pf
 
 - name: ensure ssh whitelist is present
   file:
