@@ -1,8 +1,0 @@
----
-- name: install opensmtpd
-  pkgng:
-    name: '{{ item }}'
-  with_items:
-    - opensmtpd
-    - opensmtpd-extras-filter-dkim
-    - opensmtpd-extras-filter-dnsbl

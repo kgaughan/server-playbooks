@@ -1,0 +1,7 @@
+---
+- name: install packages
+  pkgng:
+    name: '{{ item }}'
+  with_items:
+    - postfix
+    - postfix-policyd-spf-perl
