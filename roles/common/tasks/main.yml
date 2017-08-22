@@ -3,6 +3,10 @@
   pkgng:
     name: "{{ item }}"
   with_items:
+    - duff
+    - lsof
+    - pkg-rmleaf
+    - pwgen
     - rsync
     - tmux
     - zoneinfo
