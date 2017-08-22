@@ -5,16 +5,12 @@
   roles:
     - common
 
+- include: mailservers.yml
+- include: nameservers.yml
+
 #- hosts: dbservers
 #  roles:
 #    - dbservers
-
-# Unfortunately, these will run the 'common' role more times than
-# are necessary. You would think that given the role isn't being
-# parameterised, Ansible would run the role only once, that that's
-# unfortunately not the case.
-- include: mailservers.yml
-- include: nameservers.yml
 
 #- hosts: webservers
 #  roles:
