@@ -77,9 +77,9 @@ def _merge_dicts(d1, d2):
                 isinstance(d1[key], dict) and \
                 isinstance(d2[key], dict):
             changed = _merge_dicts(d1[key], d2[key])
-        else:
-            changed = key not in d1 or d1[key] != d2[key]
+        elif key not in d1 or d1[key] != d2[key]:
             d1[key] = d2[key]
+            changed = True
     return changed
 
 
