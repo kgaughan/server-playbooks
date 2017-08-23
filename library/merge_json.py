@@ -30,6 +30,10 @@ options:
       - Create the file if it doesn't already exist
     type: bool
     default: false
+  indent:
+    description:
+      - Amount to indent by.
+    default: 2
 '''
 
 RETURN = ''
@@ -89,6 +93,7 @@ def main():
             'path': {'type': 'path', 'required': True},
             'data': {'type': 'dict', 'required': True},
             'create': {'type': 'bool', 'default': False},
+            'indent': {'type': 'int', 'default': 2},
         },
         supports_check_mode=True,
     )
@@ -96,6 +101,7 @@ def main():
     path = module.params['path']
     data = module.params['data']
     create = module.params['create']
+    indent = module.params['indent']
 
     exists = False
     if os.path.isfile(path):
@@ -119,7 +125,7 @@ def main():
     if merged and not module.check_mode:
         with open(path, 'w') as fp:
             json.dump(contents, fp,
-                      indent=2,
+                      indent=indent,
                       separators=(',', ': '),
                       sort_keys=True)
     module.exit_json(changed=merged)
