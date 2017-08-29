@@ -65,7 +65,7 @@ pass in quick on $ext_if proto tcp from <goodguys> to port ssh
 # Kill SSH fast brute forces attacks early.
 table <bruteforce> persist
 block drop in quick from <bruteforce>
-pass in on $ext_if proto tcp from any to $ext_if:network port ssh flags S/SA keep state (max-src-conn 5, max-src-conn-rate 5/30, overload <bruteforce> flush global)
+pass in on $ext_if proto tcp from any to $ext_if:network port ssh flags S/SA keep state (max-src-conn 5, max-src-conn-rate 10/30, overload <bruteforce> flush global)
 
 # sshguard
 table <sshguard> persist

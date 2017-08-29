@@ -31,6 +31,9 @@
     enabled: yes
     state: started
 
+- name: expire bruteforce blocklist entries after 2 hours of inactivity
+  command: pfctl -t bruteforce -T expire 7200
+
 - name: have sshguard listen to syslog
   lineinfile:
     dest: /etc/syslog.conf
