@@ -13,3 +13,7 @@ ssh_whitelist_ips:
   # manann
   - 5.9.82.71
   - 2a01:4f8:162:4e::1:1
+  # Work (37.0.7.2 might be enough)
+  - 37.0.0.0/21
+  # Home (Digiweb)
+  - 84.203.0.0/16
