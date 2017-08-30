@@ -1,0 +1,32 @@
+#
+# Whitelist
+#
+
+talideon.com OK
+stereochro.me OK
+
+blacknight.com OK
+blacknight.ie OK
+canonical.org OK
+dlitz.net OK
+email.bandcamp.com OK
+gog.com OK
+google.com OK
+iad.github.net OK
+kickstarter.com OK
+kracken.services.brown.edu OK
+linkedin.com OK
+moybella.net OK
+smtp-out.amazonses.com OK
+twitter.com OK
+
+# Yahoo! Groups.
+bullet.mail.bf1.yahoo.com OK
+bullet.mail.gq1.yahoo.com OK
+bullet.mail.ne1.yahoo.com OK
+
+# Spammers
+boxmarketing.cl REJECT
+promonews.cl REJECT
+rdlusa.com REJECT
+mail.radar-group.com REJECT

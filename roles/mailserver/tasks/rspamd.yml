@@ -5,5 +5,27 @@
     cached: yes
   with_items:
     - rspamd
-    - rmilter
     - redis
+
+- name: start redis
+  service:
+    name: redis
+    enabled: yes
+    state: started
+
+- name: create config directories
+  file:
+    dest: "{{ rspamd_root }}/{{ item }}"
+    state: directory
+  with_items:
+    - local.d
+    - override.d
+
+- name: copy up rspamd config
+  copy:
+    src: "{{ item }}"
+    dest: "{{ rspamd_root }}/local.d/{{ item | basename }}"
+  with_fileglob:
+    - "rspamd.local/*"
+  notify:
+    - restart rspamd

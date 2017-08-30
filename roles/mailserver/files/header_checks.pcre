@@ -1,0 +1,4 @@
+/^X-No-Relay: *not in my network$/ REJECT
+/^X-No-Auth: *unauthenticated sender$/ REJECT
+/^To: *$/ REJECT
+/^X-Mailer: Microsoft Outlook Express 6\.00/ REJECT

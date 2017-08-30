@@ -6,3 +6,17 @@
   with_items:
     - dovecot2
     - dovecot-pigeonhole
+
+- name: deploy dovecot.conf
+  template:
+    src: dovecot.conf.j2
+    dest: "{{ dovecot_root }}/dovecot.conf"
+    mode: 0644
+  notify:
+    - restart dovecot
+
+- name: start dovecot
+  service:
+    name: dovecot
+    enabled: yes
+    state: started

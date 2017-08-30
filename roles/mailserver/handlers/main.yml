@@ -1,1 +1,16 @@
 ---
+- name: restart postfix
+  service:
+    name: postfix
+    state: reloaded
+
+- name: restart dovecot
+  service:
+    name: dovecot
+    state: reloaded
+
+- name: restart rspamd
+  service:
+    name: rspamd
+    enabled: true
+    state: reloaded
