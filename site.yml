@@ -5,13 +5,10 @@
   roles:
     - common
 
+  include: dbservers.yml
 - include: mailservers.yml
 - include: nameservers.yml
 - include: buildservers.yml
-
-#- hosts: dbservers
-#  roles:
-#    - dbservers
 
 #- hosts: webservers
 #  roles:

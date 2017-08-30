@@ -1,0 +1,19 @@
+---
+- name: install firebird
+  pkgng:
+    name: '{{ item }}'
+  with_items:
+    - firebird25-server
+    - firebird25-client
+
+- name: configure firebird
+  command: "sysrc firebird_mode=\"superserver\""
+
+- name: start firebird
+  service:
+    name: firebird
+    enabled: yes
+    state: started
+
+# Set a password with this:
+# gsec -user SYSDBA -pass masterkey

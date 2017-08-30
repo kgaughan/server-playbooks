@@ -11,6 +11,9 @@ bootstrap:
 site:
 	ansible-playbook -i $(HOSTS) site.yml
 
+dbservers:
+	ansible-playbook -i $(HOSTS) dbservers.yml
+
 mailservers:
 	ansible-playbook -i $(HOSTS) mailservers.yml
 
