@@ -7,18 +7,6 @@ recipient_delimiter = +
 mailbox_transport = lmtp:unix:private/dovecot-lmtp
 virtual_transport = ${mailbox_transport}
 
-# The header_checks parameter specifies an optional table with patterns
-# that each logical message header is matched against, including
-# headers that span multiple physical lines.
-#
-# By default, these patterns also apply to MIME headers and to the
-# headers of attached messages. With older Postfix versions, MIME and
-# attached message headers were treated as body text.
-#
-# For details, see "man header_checks".
-#
-header_checks = pcre:${config_directory}/header_checks.pcre
-
 virtual_alias_domains = ${config_directory}/virtual_domains
 virtual_alias_maps = hash:${config_directory}/virtual
 
@@ -27,8 +15,6 @@ message_size_limit = 0
 mailbox_size_limit = 0
 
 smtpd_discard_ehlo_keywords = silent-discard, dsn
-
-#strict_rfc821_envelopes = yes
 
 # Basic spam blocking.
 smtpd_helo_required = yes
@@ -46,16 +32,6 @@ smtpd_recipient_restrictions =
   reject_non_fqdn_recipient
   reject_unauth_destination
   reject_unknown_recipient_domain
-# check_policy_service unix:private/spf-policy
-# check_client_access hash:${config_directory}/rbl_overrides
-# permit_dnswl_client swl.spamhaus.org=127.0.2.[2;3;102;103]
-# permit_dnswl_client hostkarma.junkemailfilter.com=127.0.0.1
-# reject_rbl_client zen.spamhaus.org
-# reject_rhsbl_helo dbl.spamhaus.org
-# reject_rhsbl_sender dbl.spamhaus.org
-# reject_rbl_client hostkarma.junkemailfilter.com=127.0.0.2
-# reject_rbl_client bl.mailspike.net=127.0.0.[2;10..12]
-# reject_rbl_client dnsbl.sorbs.net
   permit
 # Block clients that speak too early.
 smtpd_data_restrictions =
@@ -101,8 +77,10 @@ smtpd_tls_auth_only = yes
 
 # )))
 
+# rspamd (((
 smtpd_milters = inet:localhost:11332
 milter_protocol = 6
 non_smtpd_milters = $smtpd_milters
 milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
 milter_default_action = accept
+# )))

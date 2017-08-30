@@ -5,7 +5,6 @@
     cached: yes
   with_items:
     - postfix
-#   - postfix-policyd-spf-perl
 
 - name: ensure the postfix configuration root exists
   file:
