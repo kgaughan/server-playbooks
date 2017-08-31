@@ -7,8 +7,13 @@ recipient_delimiter = +
 mailbox_transport = lmtp:unix:private/dovecot-lmtp
 virtual_transport = ${mailbox_transport}
 
-virtual_alias_domains = ${config_directory}/virtual_domains
-virtual_alias_maps = hash:${config_directory}/virtual
+virtual_mailbox_domains =
+  sqlite:{{ postfix_root }}/virtual-mailbox-domains.cf
+virtual_mailbox_maps =
+  sqlite:{{ postfix_root }}/virtual-mailbox-users.cf
+virtual_alias_maps =
+  sqlite:{{ postfix_root }}/virtual-mailbox-aliases.cf
+  sqlite:{{ postfix_root }}/virtual-mailbox-users.cf
 
 # Prevent future explosions.
 message_size_limit = 0

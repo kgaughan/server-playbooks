@@ -5,6 +5,7 @@
     cached: yes
   with_items:
     - postfix
+    - sqlite3
 
 - name: ensure the postfix configuration root exists
   file:
@@ -26,6 +27,24 @@
     mode: 0644
   notify:
     - restart postfix
+
+- tempfile:
+    state: file
+    suffix: .sql
+  register: dbschema
+
+- copy:
+    src: virtual.sql
+    dest: "{{ dbschema.path }}"
+
+- name: initialise virtual mailbox database
+  command: sqlite3 -init {{ dbschema.path }} {{ vbox_db_path }} creates={{ vbox_db_path }}
+
+- name: copy up mapping config
+  template:
+    src: "{{ item }}"
+    dest: "{{ postfix_root }}/{{ item | basename | splitext | first }}"
+  with_fileglob: "templates/virtual-mailbox-*.cf.j2"
 
 - name: start postfix
   service:

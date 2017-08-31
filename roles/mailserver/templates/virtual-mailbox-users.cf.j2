@@ -1,0 +1,6 @@
+dbpath = {{ vbox_db_path }}
+query =
+  SELECT  local || '@' || domain AS destination
+  FROM    users
+  JOIN    domains USING (domain_id)
+  WHERE   local = '%u' AND domain = '%d'
