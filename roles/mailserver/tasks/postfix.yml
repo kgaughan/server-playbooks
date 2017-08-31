@@ -28,14 +28,11 @@
   notify:
     - restart postfix
 
-- tempfile:
-    state: file
-    suffix: .sql
-  register: dbschema
-
-- copy:
+- name: copy database schema up using temporary jankballs method
+  copy:
     src: virtual.sql
-    dest: "{{ dbschema.path }}"
+    dest: "/tmp/"
+  register: dbschema
 
 - name: initialise virtual mailbox database
   command: sqlite3 -init {{ dbschema.path }} {{ vbox_db_path }} creates={{ vbox_db_path }}
