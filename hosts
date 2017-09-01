@@ -21,3 +21,6 @@ manann.talideon.com
 
 [nameservers]
 manann.talideon.com
+
+[buildservers]
+lir.talideon.com

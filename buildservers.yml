@@ -1,0 +1,6 @@
+---
+- hosts: buildservers
+  remote_user: keith
+  become: true
+  roles:
+    - buildserver
