@@ -43,6 +43,11 @@
     dest: "{{ postfix_root }}/{{ item | basename | splitext | first }}"
   with_fileglob: "templates/virtual-mailbox-*.cf.j2"
 
+- name: configure mailwrapper to use postfix
+  copy:
+    src: mailer.conf
+    dest: /etc/mail/mailer.conf
+
 - name: start postfix
   service:
     name: postfix
