@@ -1,4 +1,8 @@
 ---
+- name: ensure timestamp is UTC
+  timezone:
+    name: UTC
+
 - name: install essential packages
   pkgng:
     name: "{{ item }}"
