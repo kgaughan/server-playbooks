@@ -6,7 +6,7 @@ clean:
 	find . -name \*.retry -type f -delete
 
 bootstrap:
-	ansible-playbook -i $(HOSTS) bootstrap.yml
+	ansible-playbook -i $(HOSTS) bootstrap.yml --ask-pass
 
 site:
 	ansible-playbook -i $(HOSTS) site.yml

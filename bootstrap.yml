@@ -1,6 +1,6 @@
 ---
 - name: bootstrap FreeBSD hosts
-  hosts: freebsd
+  hosts: bootstrap
   remote_user: root
   gather_facts: false
 
@@ -8,9 +8,30 @@
     - name: install python
       raw: sh -c "ASSUME_ALWAYS_YES=yes pkg install python"
 
-    - name: install sudo
+    - name: install essential packages
       pkgng:
-        name: sudo
+        name: "{{ item }}"
+      with_items:
+        - ca_root_nss
+        - sudo
+
+    - name: create a user
+      user:
+        name: keith
+        comment: Keith Gaughan
+        groups: wheel
+        state: present
+        generate_ssh_key: yes
+        ssh_key_type: ed25519
+
+    - name: populate authorized_keys
+      authorized_key:
+        user: "{{ item }}"
+        key: https://github.com/kgaughan.keys
+        state: present
+      with_items:
+        - root
+        - keith
 
     - name: give sudo to wheel group
       lineinfile:
