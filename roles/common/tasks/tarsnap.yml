@@ -1,0 +1,7 @@
+---
+- name: install tarsnap
+  pkgng:
+    name: "{{ item }}"
+  with_items:
+    - tarsnap
+    - tarsnap-periodic
