@@ -53,3 +53,8 @@
     name: postfix
     enabled: yes
     state: started
+
+- name: ensure dma isn't installed
+  pkgng:
+    name: dma
+    state: absent
