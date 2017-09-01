@@ -20,6 +20,7 @@
         name: keith
         comment: Keith Gaughan
         groups: wheel
+        shell: /bin/tcsh
         state: present
         generate_ssh_key: yes
         ssh_key_type: ed25519
