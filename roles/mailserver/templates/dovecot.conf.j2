@@ -1,0 +1,65 @@
+auth_mechanisms = plain login
+auth_username_format = %Ln
+auth_verbose = yes
+disable_plaintext_auth = yes
+dotlock_use_excl = yes
+first_valid_gid = 1000
+first_valid_uid = 1000
+mail_privileged_group = mail
+mail_plugins = $mail_plugins zlib
+plugin {
+  sieve_dir = ~/.config/sieve
+  sieve = ~/.dovecot.sieve
+}
+
+protocols = imap sieve lmtp
+
+ssl = required
+#ssl_cert = <{{ mail_tls_cert_file }}
+#ssl_key = <{{mail_tls_key_file }}
+ssl_cipher_list = ECDH+AES128:ECDH+AES256:DH+AES128:DH+AES256:AES128:AES256:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!RC4:!DSS:!PSK
+ssl_protocols = !SSLv2 !SSLv3 !TLSv1 !TLSv1.1
+
+mail_location = maildir:~/Mail
+
+passdb {
+  driver = pam
+  args = session=yes imap
+}
+
+userdb {
+  driver = passwd
+  args = blocking=yes
+}
+
+protocol lmtp {
+  postmaster_address = postmaster@{{ ansible_domain }}
+  mail_plugins = $mail_plugins sieve
+  ssl = no
+}
+
+service auth {
+  unix_listener auth-client {
+    group = mail
+    mode = 0660
+  }
+  unix_listener auth-master {
+    mode = 0600
+  }
+  user = root
+}
+service imap-login {
+  inet_listener imap {
+    address = *, [::]
+    port = 143
+  }
+}
+service lmtp {
+  unix_listener /var/spool/postfix/private/dovecot-lmtp {
+    user = postfix
+    group = postfix
+    mode = 0600
+  }
+}
+
+verbose_proctitle = yes

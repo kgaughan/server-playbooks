@@ -13,4 +13,4 @@
   cron:
     name: flush queue
     minute: '*/15'
-    job: /usr/local/libexec/dma -q
+    job: 'test -x /usr/local/libexec/dma && /usr/local/libexec/dma -q'

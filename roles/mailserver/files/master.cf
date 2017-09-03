@@ -1,0 +1,84 @@
+#
+# Postfix master process configuration file.  For details on the format
+# of the file, see the master(5) manual page (command: "man 5 master" or
+# on-line: http://www.postfix.org/master.5.html).
+#
+# Do not forget to execute "postfix reload" after editing this file.
+#
+# ==========================================================================
+# service type  private unpriv  chroot  wakeup  maxproc command + args
+#               (yes)   (yes)   (no)    (never) (100)
+# ==========================================================================
+#
+# Grouping taken from: https://serverfault.com/a/688457/15985
+
+### INPUT SERVICE
+
+smtp      inet  n       -       n       -       -       smtpd
+submission inet n       -       n       -       -       smtpd
+  -o syslog_name=postfix/submission
+  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+  -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
+pickup    unix  n       -       n       60      1       pickup
+
+### PROCESSING SERVICE
+
+cleanup   unix  n       -       n       -       0       cleanup
+qmgr      unix  n       -       n       300     1       qmgr
+rewrite   unix  -       -       n       -       -       trivial-rewrite
+
+### OUTPUT SERVICE
+
+error     unix  -       -       n       -       -       error
+retry     unix  -       -       n       -       -       error
+discard   unix  -       -       n       -       -       discard
+local     unix  -       n       n       -       -       local
+virtual   unix  -       n       n       -       -       virtual
+lmtp      unix  -       -       n       -       -       lmtp
+smtp      unix  -       -       n       -       -       smtp
+# When relaying mail as backup MX, disable fallback_relay to avoid MX loops
+relay     unix  -       -       n       -       -       smtp
+  -o smtp_fallback_relay=
+
+### HELPER
+
+# Generate bounce
+bounce    unix  -       -       n       -       0       bounce
+defer     unix  -       -       n       -       0       bounce
+trace     unix  -       -       n       -       0       bounce
+
+# For postfix recipient/sender verification See www.postfix.org/ADDRESS_VERIFICATION_README.html
+verify    unix  -       -       n       -       1       verify
+
+# Outgoing Connection manager
+scache    unix  -       -       n       -       1       scache
+
+# TLS Cache Manager
+tlsmgr    unix  -       -       n       1000?   1       tlsmgr
+
+# Maintains statistics about client connection counts or client request rates
+anvil     unix  -       -       n       -       1       anvil
+
+# Needed by mailq command
+showq     unix  n       -       n       -       -       showq
+
+# Needed by postqueue -f
+flush     unix  n       -       n       1000?   0       flush
+
+# Proxymap
+proxymap  unix  -       -       n       -       -       proxymap
+proxywrite unix -       -       n       -       1       proxymap
+
+# ====================================================================
+# Interfaces to non-Postfix software. Be sure to examine the manual
+# pages of the non-Postfix software to find out what options it wants.
+#
+# Many of the following services use the Postfix pipe(8) delivery
+# agent.  See the pipe(8) man page for information about ${recipient}
+# and other message envelope options.
+# ====================================================================
+
+sockmap   unix  -      n       n       -       1       spawn
+  user=nobody argv=/usr/local/libexec/socketmap-sqlite

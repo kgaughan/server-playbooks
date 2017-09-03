@@ -5,4 +5,64 @@
     cached: yes
   with_items:
     - postfix
-    - postfix-policyd-spf-perl
+    - sqlite3
+    - py27-sqlite3
+
+- name: ensure the postfix configuration root exists
+  file:
+    dest: "{{ postfix_root }}"
+    state: directory
+
+- name: deploy socketmap
+  copy:
+    src: socketmap-sqlite
+    dest: /usr/local/libexec
+    mode: 0755
+
+- name: deploy socketmap config
+  template:
+    src: socketmap-sqlite.ini.j2
+    dest: /usr/local/etc/socketmap-sqlite.ini
+  notify:
+    - restart postfix
+
+- name: deploy master.cf
+  copy:
+    src: master.cf
+    dest: "{{ postfix_root }}"
+    mode: 0644
+  notify:
+    - restart postfix
+
+- name: deploy main.cf
+  template:
+    src: main.cf.j2
+    dest: "{{ postfix_root }}/main.cf"
+    mode: 0644
+  notify:
+    - restart postfix
+
+- name: copy database schema up using temporary jankballs method
+  copy:
+    src: virtual.sql
+    dest: "/tmp/"
+  register: dbschema
+
+- name: initialise virtual mailbox database
+  command: sqlite3 -init {{ dbschema.path }} {{ vbox_db_path }} creates={{ vbox_db_path }}
+
+- name: configure mailwrapper to use postfix
+  copy:
+    src: mailer.conf
+    dest: /etc/mail/mailer.conf
+
+- name: start postfix
+  service:
+    name: postfix
+    enabled: yes
+    state: started
+
+- name: ensure dma isn't installed
+  pkgng:
+    name: dma
+    state: absent
