@@ -1,0 +1,18 @@
+[database]
+path = {{ vbox_db_path }}
+
+[table:domains]
+query = SELECT 1 FROM domains WHERE domain = ?
+
+[table:aliases]
+query = SELECT  local
+        FROM    aliases
+        JOIN    users ON dest_user_id = user_id
+        JOIN    domains AS sd ON src_domain_id = sd.domain_id
+        WHERE   src_local || '@' || sd.domain = ?
+
+[table:users]
+query = SELECT  local
+        FROM    users
+        JOIN    domains USING (domain_id)
+        WHERE   local || '@' || domain = ?

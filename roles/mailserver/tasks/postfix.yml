@@ -6,11 +6,25 @@
   with_items:
     - postfix
     - sqlite3
+    - py27-sqlite3
 
 - name: ensure the postfix configuration root exists
   file:
     dest: "{{ postfix_root }}"
     state: directory
+
+- name: deploy socketmap
+  copy:
+    src: socketmap-sqlite
+    dest: /usr/local/libexec
+    mode: 0755
+
+- name: deploy socketmap config
+  template:
+    src: socketmap-sqlite.ini.j2
+    dest: /usr/local/etc/socketmap-sqlite.ini
+  notify:
+    - restart postfix
 
 - name: deploy master.cf
   copy:
@@ -36,12 +50,6 @@
 
 - name: initialise virtual mailbox database
   command: sqlite3 -init {{ dbschema.path }} {{ vbox_db_path }} creates={{ vbox_db_path }}
-
-- name: copy up mapping config
-  template:
-    src: "{{ item }}"
-    dest: "{{ postfix_root }}/{{ item | basename | splitext | first }}"
-  with_fileglob: "templates/virtual-mailbox-*.cf.j2"
 
 - name: configure mailwrapper to use postfix
   copy:

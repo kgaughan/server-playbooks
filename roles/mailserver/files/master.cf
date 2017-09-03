@@ -79,3 +79,6 @@ proxywrite unix -       -       n       -       1       proxymap
 # agent.  See the pipe(8) man page for information about ${recipient}
 # and other message envelope options.
 # ====================================================================
+
+sockmap   unix  -      n       n       -       1       spawn
+  user=nobody argv=/usr/local/libexec/socketmap-sqlite

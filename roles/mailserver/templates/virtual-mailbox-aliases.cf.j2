@@ -1,8 +1,0 @@
-dbpath = {{ vbox_db_path }}
-query =
-  SELECT  local || '@' || dd.domain AS destination
-  FROM    aliases
-  JOIN    users ON dest_user_id = user_id
-  JOIN    domains AS sd ON src_domain_id = sd.domain_id
-  JOIN    domains AS dd ON users.domain_id = dd.domain_id
-  WHERE   src_local = '%u' AND sd.domain = '%d'
