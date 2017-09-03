@@ -2,6 +2,7 @@
 - name: install nsd
   pkgng:
     name: nsd
+    cached: yes
 
 - name: ensure zones directory exists
   file:

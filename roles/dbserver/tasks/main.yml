@@ -2,6 +2,7 @@
 - name: install firebird
   pkgng:
     name: '{{ item }}'
+    cached: yes
   with_items:
     - firebird25-server
     - firebird25-client

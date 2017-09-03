@@ -2,6 +2,7 @@
 - name: install tarsnap
   pkgng:
     name: "{{ item }}"
+    cached: yes
   with_items:
     - tarsnap
     - tarsnap-periodic

@@ -2,3 +2,4 @@
 - name: install synth
   pkgng:
     name: synth
+    cached: yes

@@ -2,6 +2,7 @@
 - name: install packages
   pkgng:
     name: '{{ item }}'
+    cached: yes
   with_items:
     - pftop
     - sshguard-pf

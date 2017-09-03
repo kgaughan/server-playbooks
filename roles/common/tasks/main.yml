@@ -6,6 +6,7 @@
 - name: install essential packages
   pkgng:
     name: "{{ item }}"
+    cached: yes
   with_items:
     - duff
     - lsof
