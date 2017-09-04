@@ -1,7 +1,8 @@
 Configure:
 
- * knot primary
- * knot secondary
- * nginx
- * virtual email hosting
- * backups
+ * DNS secondary
+ * Nginx
+ * Secondary MX
+ * Backups (Tarsnap)
+ * Integration with Let's Encrypt, and replication across servers.
+ * OAuth server.

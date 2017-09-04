@@ -20,3 +20,5 @@ ssh_whitelist_ips:
   - 37.0.0.0/21
   # Home (Digiweb)
   - 84.203.0.0/16
+
+# vim:set ft=yaml:
