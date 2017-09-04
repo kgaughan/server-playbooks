@@ -16,6 +16,13 @@
     dest: "{{ acme_client_root }}/acme-client.sh"
     mode: 0555
 
+# This thing is a gross hack.
+- name: generate the deploy script
+  template:
+    src: deploy.sh.j2
+    dest: "{{ acme_client_root }}/deploy.sh"
+    mode: 0555
+
 - name: populate domains.txt
   lineinfile:
     path: "{{ acme_client_root }}/domains.txt"

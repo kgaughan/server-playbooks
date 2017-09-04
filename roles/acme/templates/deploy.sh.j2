@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Restart local daemons.
+pkg info -e dovecot2 && service dovecot reload
+pkg info -e nginx && service nginx reload
+pkg info -e postfix && service postfix reload
+
+tmp_file=$(mktemp -t acme-deploy)
+trap EXIT rm -f "$tmp_file"
+
+tls_root={{ tls_root | quote }}
+
+cat >> "$tmp_file" <<END
+sudo mkdir -pm775 "$tls_root"
+END
+
+for file in "$tls_root/*/*.pem"; do
+	cat >> "$tmp_file" <<-END
+	sudo mkdir -p "$(dirname "$file")"
+	sudo tee "$file" > /dev/null <<-ENDCERT
+	$(cat "$file")
+	ENDCERT
+	END
+done
+
+cat >> "$tmp_file" <<END
+sudo chmod 400 "$tls_root/priv/*.pem"
+sudo chmod 700 "$tls_root/priv"
+
+# Restart remote daemons.
+pkg info -e dovecot2 && sudo service dovecot reload
+pkg info -e nginx && sudo service nginx reload
+pkg info -e postfix && sudo service postfix reload
+END
+
+for host in lir.talideon.com manann.talideon.com; do
+	ssh $host < "$tmp_file"
+done
