@@ -1,0 +1,4 @@
+---
+acme_challenge_dir: /var/lib/acme
+acme_client_root: /usr/local/etc/acme
+tls_root: /usr/local/etc/ssl/acme
