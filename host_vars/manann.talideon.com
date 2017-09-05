@@ -12,5 +12,6 @@ acme_domains:
     - www
   stereochro.me:
     - www
+  mail.talideon.com: []
 
 # vim:set ft=yaml:

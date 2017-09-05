@@ -16,11 +16,10 @@
     dest: "{{ acme_client_root }}/acme-client.sh"
     mode: 0555
 
-# This thing is a gross hack.
 - name: generate the deploy script
-  template:
-    src: deploy.sh.j2
-    dest: "{{ acme_client_root }}/deploy.sh"
+  copy:
+    src: deploy.sh
+    dest: "{{ acme_client_root }}/"
     mode: 0555
 
 - name: populate domains.txt

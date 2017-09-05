@@ -12,7 +12,7 @@ ansible_python_interpreter=/usr/local/bin/python
 [bootstrap]
 
 [acme]
-cian.talideon.com
+manann.talideon.com
 
 [mailservers]
 manann.talideon.com
