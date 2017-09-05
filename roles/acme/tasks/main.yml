@@ -10,6 +10,17 @@
     state: directory
     mode: 0750
 
+- name: ensure nginx directory exists
+  file:
+    name: "/usr/local/etc/nginx"
+    state: directory
+    mode: 0755
+
+- name: generate the nginx fragment
+  template:
+    src: letsencrypt_params.j2
+    dest: "/usr/local/etc/nginx/letsencrypt_params"
+
 - name: generate the renewal script
   template:
     src: acme-client.sh.j2

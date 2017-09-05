@@ -2,6 +2,6 @@
 dovecot_root: /usr/local/etc/dovecot
 postfix_root: /usr/local/etc/postfix
 rspamd_root: /usr/local/etc/rspamd
-mail_tls_cert_file: /usr/local/etc/letsencrypt/live/{{ ansible_domain }}/fullchain.pem
-mail_tls_key_file: /usr/local/etc/letsencrypt/live/{{ ansible_domain }}/privkey.pem
+mail_tls_cert_file: /usr/local/etc/ssl/acme/mail.talideon.com/fullchain.pem
+mail_tls_key_file: /usr/local/etc/ssl/acme/private/mail.talideon.com.pem
 vbox_db_path: /var/db/postfix.vbox.db
