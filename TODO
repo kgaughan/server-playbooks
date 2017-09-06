@@ -4,5 +4,9 @@ Configure:
  * Nginx
  * Secondary MX
  * Backups (Tarsnap)
- * Integration with Let's Encrypt, and replication across servers.
  * OAuth server.
+
+Notes:
+
+ * Activate 'weekly_acme_client_enable' in roles/acme/tasks/main.yml once the
+   webserver is set up.
