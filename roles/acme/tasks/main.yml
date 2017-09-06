@@ -12,14 +12,14 @@
 
 - name: ensure nginx directory exists
   file:
-    name: "/usr/local/etc/nginx"
+    name: "{{ webserver_config }}"
     state: directory
     mode: 0755
 
 - name: generate the nginx fragment
   template:
     src: letsencrypt_params.j2
-    dest: "/usr/local/etc/nginx/letsencrypt_params"
+    dest: "{{ webserver_config }}/letsencrypt_params"
 
 - name: generate the renewal script
   template:
@@ -35,7 +35,7 @@
 
 - name: populate domains.txt
   lineinfile:
-    path: "{{ acme_client_root }}/domains.txt"
+    dest: "{{ acme_client_root }}/domains.txt"
     create: yes
     regexp: "^{{ item }} "
     line: "{{ item }} {{ item | subdomains(acme_domains[item]) | join(' ') }}"
@@ -43,7 +43,7 @@
 
 - name: populate periodic.conf
   lineinfile:
-    path: /etc/periodic.conf
+    dest: /etc/periodic.conf
     regexp: "^{{ item.split('=', 1) | first }}="
     line: "{{ item }}"
   with_items:

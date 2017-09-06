@@ -4,6 +4,7 @@ default: site
 
 clean:
 	find . -name \*.retry -type f -delete
+	find . -name \*.orig -type f -delete
 
 bootstrap:
 	ansible-playbook -i $(HOSTS) bootstrap.yml --ask-pass

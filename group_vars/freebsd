@@ -20,5 +20,7 @@ ssh_whitelist_ips:
   - 37.0.0.0/21
   # Home (Digiweb)
   - 84.203.0.0/16
+tls_root: /usr/local/etc/ssl/acme
+webserver_config: /usr/local/etc/nginx
 
 # vim:set ft=yaml:

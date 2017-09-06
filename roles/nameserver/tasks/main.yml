@@ -38,7 +38,7 @@
 - name: configure nsd-control
   command: nsd-control-setup
   args:
-    creates: "{{ nsd_dir}}/nsd_control.key"
+    creates: "{{ nsd_dir }}/nsd_control.key"
 
 - name: start nsd
   service:
