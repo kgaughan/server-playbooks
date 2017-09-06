@@ -27,5 +27,8 @@ manann.talideon.com
 manann.talideon.com
 lir.talideon.com
 
+[webservers]
+manann.talideon.com
+
 [buildservers]
 lir.talideon.com

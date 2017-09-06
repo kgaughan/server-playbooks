@@ -1,6 +1,5 @@
 Configure:
 
- * Nginx
  * Secondary MX
  * Backups (Tarsnap)
  * OAuth server.

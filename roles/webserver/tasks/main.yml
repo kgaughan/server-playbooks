@@ -1,0 +1,36 @@
+---
+- name: install packages
+  pkgng:
+    name: "{{ item }}"
+    cached: yes
+  with_items:
+    - nginx
+
+- name: ensure nginx configuration directories exist
+  file:
+    name: "{{ webserver_config }}/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - extra
+    - vhosts
+
+- name: copy up config fragments
+  copy:
+    src: "{{ item }}"
+    dest: "{{ webserver_config }}/"
+  with_items:
+    - nginx.conf
+    - common_params
+    - ssl_params
+    # This is for completeness only. I might deploy something behind php-fpm
+    # at some point in the future.
+    - php_params
+  notify:
+    - reload nginx
+
+- name: start nginx
+  service:
+    name: nginx
+    enabled: yes
+    state: started
