@@ -1,6 +1,5 @@
 Configure:
 
- * DNS secondary
  * Nginx
  * Secondary MX
  * Backups (Tarsnap)
