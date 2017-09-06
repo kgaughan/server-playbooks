@@ -1,0 +1,24 @@
+#!/bin/sh -e
+
+base_dir="{{ acme_client_root }}"
+tls_dir="{{ tls_root }}"
+domains_file="$base_dir/domains.txt"
+challenge_dir="{{ acme_challenge_dir }}"
+
+mkdir -pm700 "$tls_dir/private"
+
+if test -e "$domains_file"; then
+    while read domain line; do
+       certs_dir="$tls_dir/$domain"
+       mkdir -pm755 "$certs_dir"
+
+       set +e # RC=2 when time to expire > 30 days
+       acme-client -N -n -b -C "$challenge_dir" \
+                   -k "$tls_dir/private/$domain.pem" \
+                   -c "$certs_dir" \
+                   $domain $line
+       RC=$?
+       set -e
+       test $RC -ne 0 -a $RC -ne 2 && exit $RC
+    done < "$domains_file"
+fi

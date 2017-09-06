@@ -11,6 +11,9 @@ bootstrap:
 site:
 	ansible-playbook -i $(HOSTS) site.yml
 
+acme:
+	ansible-playbook -i $(HOSTS) acme.yml
+
 dbservers:
 	ansible-playbook -i $(HOSTS) dbservers.yml
 
@@ -24,4 +27,4 @@ buildservers:
 	ansible-playbook -i $(HOSTS) buildservers.yml
 
 .PHONY: bootstrap clean default site
-.PHONY: mailservers nameservers buildservers dbservers
+.PHONY: mailservers nameservers buildservers dbservers acme

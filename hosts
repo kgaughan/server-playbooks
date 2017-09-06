@@ -4,11 +4,15 @@ manann.talideon.com
 [freebsd]
 lir.talideon.com
 manann.talideon.com
+cian.talideon.com
 
 [freebsd:vars]
 ansible_python_interpreter=/usr/local/bin/python
 
 [bootstrap]
+
+[acme]
+manann.talideon.com
 
 [mailservers]
 manann.talideon.com

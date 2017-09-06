@@ -5,6 +5,7 @@
   roles:
     - common
 
+- include: acme.yml
 - include: dbservers.yml
 - include: mailservers.yml
 - include: nameservers.yml

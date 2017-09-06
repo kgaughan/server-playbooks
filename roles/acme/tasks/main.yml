@@ -1,0 +1,52 @@
+---
+- name: install acme-client
+  pkgng:
+    name: acme-client
+    cached: yes
+
+- name: create the challenge directory
+  file:
+    name: "{{ acme_challenge_dir }}"
+    state: directory
+    mode: 0750
+
+- name: ensure nginx directory exists
+  file:
+    name: "/usr/local/etc/nginx"
+    state: directory
+    mode: 0755
+
+- name: generate the nginx fragment
+  template:
+    src: letsencrypt_params.j2
+    dest: "/usr/local/etc/nginx/letsencrypt_params"
+
+- name: generate the renewal script
+  template:
+    src: acme-client.sh.j2
+    dest: "{{ acme_client_root }}/acme-client.sh"
+    mode: 0555
+
+- name: generate the deploy script
+  copy:
+    src: deploy.sh
+    dest: "{{ acme_client_root }}/"
+    mode: 0555
+
+- name: populate domains.txt
+  lineinfile:
+    path: "{{ acme_client_root }}/domains.txt"
+    create: yes
+    regexp: "^{{ item }} "
+    line: "{{ item }} {{ item | subdomains(acme_domains[item]) | join(' ') }}"
+  with_items: '{{ acme_domains.keys() }}'
+
+- name: populate periodic.conf
+  lineinfile:
+    path: /etc/periodic.conf
+    regexp: "^{{ item.split('=', 1) | first }}="
+    line: "{{ item }}"
+  with_items:
+    - weekly_acme_client_enable="NO"
+    - weekly_acme_client_renewscript="{{ acme_client_root }}/acme-client.sh"
+    - weekly_acme_client_deployscript="{{ acme_client_root }}/deploy.sh"
