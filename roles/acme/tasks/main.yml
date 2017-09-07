@@ -44,7 +44,7 @@
 - name: populate periodic.conf
   lineinfile:
     dest: /etc/periodic.conf
-    regexp: "^{{ item.split('=', 1) | first }}="
+    regexp: "^#?{{ item.split('=', 1) | first }}="
     line: "{{ item }}"
   with_items:
     - weekly_acme_client_enable="NO"
