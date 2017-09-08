@@ -8,9 +8,7 @@
 - include: acme.yml
 - include: dbservers.yml
 - include: mailservers.yml
+- include: webservers.yml
 - include: nameservers.yml
 - include: buildservers.yml
-
-#- hosts: webservers
-#  roles:
-#    - webservers
+- include: xmpp.yml

@@ -1,8 +1,10 @@
 Configure:
 
- * Secondary MX
- * Backups (Tarsnap)
  * OAuth server.
+
+Nice to have:
+
+ * Secondary MX
 
 Notes:
 
