@@ -23,16 +23,6 @@ playbooks with::
 
 This runs all the playbooks listed in `site.yml`.
 
-Not currently covered
-=====================
-
-Some small amount of additional setup is required when you initially configure
-SSH keys. This is mainly because I set up my keys before I wrote the bootstrap
-playbook. This wouldn't be difficult to fix: the authorized_key_ module
-exists for just this.
-
-.. _authorized_key: http://docs.ansible.com/ansible/latest/authorized_key_module.html
-
 Nameserver role
 ===============
 
