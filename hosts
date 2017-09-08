@@ -30,5 +30,8 @@ lir.talideon.com
 [webservers]
 manann.talideon.com
 
+[xmpp]
+manann.talideon.com
+
 [buildservers]
 lir.talideon.com

@@ -1,0 +1,20 @@
+---
+- name: install prosody
+  pkgng:
+    name: "{{ item }}"
+    cached: yes
+  with_items:
+    - prosody
+
+- name:
+  template:
+    src: prosody.cfg.lua.j2
+    dest: /usr/local/etc/prosody/prosody.cfg.lua
+  notify:
+    - reload prosody
+
+- name: ensure prosody is started
+  service:
+    name: prosody
+    enabled: yes
+    state: started
