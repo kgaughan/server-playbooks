@@ -30,4 +30,15 @@ This role just does basic setup needed for both primary and secondary
 nameservers. The actual heavy lifting is in a seperate repo which contains the
 zonefiles.
 
+Buildserver role
+================
+
+To build a port (here 'mail/dovecot' in the '10amd64' jail), run::
+
+    sudo poudriere bulk -j 10amd64 mail/dovecot
+
+To update the ports tree::
+
+    sudo poudriere ports -u
+
 .. vim:set ft=rst:
