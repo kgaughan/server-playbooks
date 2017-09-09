@@ -10,5 +10,4 @@
 - include: mailservers.yml
 - include: webservers.yml
 - include: nameservers.yml
-- include: buildservers.yml
 - include: xmpp.yml
