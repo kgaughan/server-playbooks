@@ -1,5 +1,35 @@
 ---
-- name: install synth
+- name: install poudriere
   pkgng:
-    name: synth
+    name: "{{ item }}"
     cached: yes
+  with_items:
+    - poudriere
+    - dialog4ports
+
+- name: copy up config
+  template:
+    src: poudriere.conf.j2
+    dest: /usr/local/etc/poudriere.conf
+    mode: 0444
+
+- name: copy up poudriere make.conf
+  copy:
+    src: make.conf
+    dest: /usr/local/etc/poudriere.d/
+
+- name: make distfile cache
+  file:
+    dest: "{{ distfiles_cache }}"
+    state: directory
+
+- name: create ports tree
+  command: poudriere ports -c
+  args:
+    creates: "{{ poudriere_basefs }}/ports/default"
+
+- name: create build jails
+  command: poudriere jail -c -j {{ item.name | quote }} -v {{ item.version | quote }}
+  args:
+    creates: "{{ poudriere_basefs }}/jails/{{ item.name }}"
+  with_items: "{{ build_jails }}"
