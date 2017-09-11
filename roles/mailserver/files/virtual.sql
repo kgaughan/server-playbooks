@@ -15,12 +15,11 @@ CREATE TABLE users (
 );
 
 CREATE TABLE aliases (
-    alias_id      INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
     src_domain_id INTEGER     NOT NULL,
     src_local     VARCHAR(64) NOT NULL,
     dest_user_id  INTEGER     NOT NULL,
 
-    CONSTRAINT unique_alias UNIQUE (src_domain_id, src_local),
+    PRIMARY KEY (src_domain_id, src_local),
     FOREIGN KEY (src_domain_id) REFERENCES domains(domain_id) ON DELETE CASCADE,
     FOREIGN KEY (dest_user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
