@@ -10,6 +10,21 @@
 - name: configure firebird
   command: "sysrc firebird_mode=\"superserver\""
 
+- name: create a directory for databases
+  file:
+    dest: '{{ fb_db_root }}'
+    state: directory
+    user: firebird
+    group: firebird
+
+- name: restrict user database locations
+  lineinfile:
+    dest: '{{ fb_db_root }}/firebird.conf'
+    regexp: '^#?DatabaseAccess'
+    line: 'DatabaseAccess = Restrict {{ fb_db_roots | join(";") }}'
+  notify:
+    - reload firebird
+
 - name: start firebird
   service:
     name: firebird
