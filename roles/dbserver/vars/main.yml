@@ -1,4 +1,0 @@
----
-fb_conf_root: /usr/local/etc/firebird
-fb_db_roots:
-  - /usr/local/var/db/firebird

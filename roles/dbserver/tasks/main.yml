@@ -1,35 +1,20 @@
 ---
-- name: install firebird
+- name: install postgresql
   pkgng:
     name: '{{ item }}'
     cached: yes
   with_items:
-    - firebird25-server
-    - firebird25-client
+    - postgresql95-client
+    - postgresql95-server
+    - py27-psycopg2
 
-- name: configure firebird
-  command: "sysrc firebird_mode=\"superserver\""
+- name: initialise database
+  command: /usr/local/etc/rc.d/postgresql initdb
+  args:
+    creates: /usr/local/pgsql/data
 
-- name: create a directory for databases
-  file:
-    dest: '{{ fb_db_root }}'
-    state: directory
-    user: firebird
-    group: firebird
-
-- name: restrict user database locations
-  lineinfile:
-    dest: '{{ fb_db_root }}/firebird.conf'
-    regexp: '^#?DatabaseAccess'
-    line: 'DatabaseAccess = Restrict {{ fb_db_roots | join(";") }}'
-  notify:
-    - reload firebird
-
-- name: start firebird
+- name: start postgresql
   service:
-    name: firebird
+    name: postgresql
     enabled: yes
     state: started
-
-# Set a password with this:
-# gsec -user SYSDBA -pass masterkey
