@@ -153,25 +153,25 @@ def main():
 
     with contextlib.closing(sqlite3.connect(cfg['db_path'])) as conn:
         try:
-            for request in netstring_reader(sys.stdin):
-                table_name, arg = request.split(' ', 1)
+            request = next(netstring_reader(sys.stdin))
+            table_name, arg = request.split(' ', 1)
 
-                table = cfg['tables'].get(table_name)
-                if table is None:
-                    write_netstring('PERM no such table: ' + table_name)
-                    continue
+            table = cfg['tables'].get(table_name)
+            if table is None:
+                write_netstring('PERM no such table: ' + table_name)
+                return 0
 
-                cur = conn.cursor()
-                try:
-                    cur.execute(table['query'], [table['transform'](arg)])
-                    result = cur.fetchone()
-                finally:
-                    cur.close()
+            cur = conn.cursor()
+            try:
+                cur.execute(table['query'], [table['transform'](arg)])
+                result = cur.fetchone()
+            finally:
+                cur.close()
 
-                if result is None:
-                    write_netstring('NOTFOUND ')
-                else:
-                    write_netstring('OK ' + str(result[0]))
+            if result is None:
+                write_netstring('NOTFOUND ')
+            else:
+                write_netstring('OK ' + str(result[0]))
         except MalformedNetstringError:
             write_netstring('PERM malformed netstring')
         except Exception as exc:
