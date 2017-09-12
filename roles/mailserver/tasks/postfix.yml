@@ -49,7 +49,9 @@
   register: dbschema
 
 - name: initialise virtual mailbox database
-  command: sqlite3 -init {{ dbschema.path }} {{ vbox_db_path }} creates={{ vbox_db_path }}
+  command: sqlite3 -init {{ dbschema.dest }} {{ vbox_db_path }}
+  args:
+    creates: "{{ vbox_db_path }}"
 
 - name: configure mailwrapper to use postfix
   copy:
