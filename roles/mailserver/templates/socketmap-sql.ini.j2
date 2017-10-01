@@ -1,18 +1,21 @@
 [database]
-path = {{ vbox_db_path }}
+driver = sqlite3
+database = {{ vbox_db_path }}
 
 [table:domains]
 query = SELECT 1 FROM domains WHERE domain = ?
 
 [table:aliases]
+transform = split
 query = SELECT  local
         FROM    aliases
         JOIN    users ON dest_user_id = user_id
         JOIN    domains AS sd ON src_domain_id = sd.domain_id
-        WHERE   src_local || '@' || sd.domain = ?
+        WHERE   src_local = ? AND sd.domain = ?
 
 [table:users]
+transform = split
 query = SELECT  local
         FROM    users
         JOIN    domains USING (domain_id)
-        WHERE   local || '@' || domain = ?
+        WHERE   local = ? AND domain = ?

@@ -81,4 +81,4 @@ proxywrite unix -       -       n       -       1       proxymap
 # ====================================================================
 
 sockmap   unix  -      n       n       -       1       spawn
-  user=nobody argv=/usr/local/libexec/socketmap-sqlite
+  user=nobody argv=/usr/local/libexec/socketmap-sql

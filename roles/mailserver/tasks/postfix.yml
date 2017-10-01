@@ -15,14 +15,14 @@
 
 - name: deploy socketmap
   copy:
-    src: socketmap-sqlite
+    src: socketmap-sql
     dest: /usr/local/libexec
     mode: 0755
 
 - name: deploy socketmap config
   template:
-    src: socketmap-sqlite.ini.j2
-    dest: /usr/local/etc/socketmap-sqlite.ini
+    src: socketmap-sql.ini.j2
+    dest: /usr/local/etc/socketmap-sql.ini
   notify:
     - restart postfix
 

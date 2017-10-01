@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 #
-# socketmap-sqlite
+# socketmap-sql
 # by Keith Gaughan (https://github.com/kgaughan/)
 #
-# This implements the sendmail socketmap protocol to allow an SQLite database
-# to be queried out of process.
+# This implements the sendmail socketmap protocol to allow an SQL database to
+# be queried out of process.
 #
 # Copyright (c) Keith Gaughan, 2017. See 'LICENSE' for license details.
 #
@@ -17,11 +17,11 @@ try:
     import configparser
 except ImportError:
     import ConfigParser as configparser
-import os
+import importlib
 import os.path
 import re
 import select
-import sqlite3
+import subprocess
 import sys
 
 
@@ -49,11 +49,7 @@ def resolve(module_name, obj_name):
     """
     Resolve a named object in a module.
     """
-    segments = obj_name.split('.')
-    obj = __import__(module_name, fromlist=segments[:1])
-    for segment in segments:
-        obj = getattr(obj, segment)
-    return obj
+    return getattr(importlib.import_module(module_name), obj_name)
 
 
 class MalformedNetstringError(Exception):
@@ -98,19 +94,22 @@ def write_netstring(fp, response):
 
 def parse_config(fp):
     def passthrough(arg):
-        return arg
+        return [arg]
 
     def local_part(arg):
-        return arg.split('@', 1)[0]
+        return [arg.split('@', 1)[0]]
 
     def domain_part(arg):
-        return arg.split('@', 1)[1]
+        return [arg.split('@', 1)[1]]
+
+    def split(arg):
+        return arg.split('@', 1)
 
     cp = configparser.RawConfigParser()
     cp.readfp(fp)
 
     result = {
-        'db_path': cp.get('database', 'path'),
+        'db': dict(cp.items('database')),
         'tables': {},
     }
 
@@ -130,6 +129,8 @@ def parse_config(fp):
                 transform = local_part
             elif transform_name == 'domain':
                 transform = domain_part
+            elif transform_name == 'split':
+                transform = split
             else:
                 transform = resolve(*match(transform_name))
 
@@ -141,59 +142,85 @@ def parse_config(fp):
     return result
 
 
+def serve_client(fh_in, fh_out, conn, timeout, tables):
+    try:
+        while True:
+            # Wait a short period before exiting.
+            iready, _, _ = select.select([fh_in], (), (), timeout)
+            if len(iready) == 0:
+                break
+
+            request = read_netstring(fh_in)
+
+            table_name, arg = request.split(' ', 1)
+
+            table = tables.get(table_name)
+            if table is None:
+                write_netstring(fh_out,
+                                'PERM no such table: ' + table_name)
+                continue
+
+            cur = conn.cursor()
+            try:
+                cur.execute(table['query'], table['transform'](arg))
+                result = cur.fetchone()
+            finally:
+                cur.close()
+
+            if result is None:
+                write_netstring(fh_out, 'NOTFOUND ')
+            else:
+                write_netstring(fh_out, 'OK ' + str(result[0]))
+    except MalformedNetstringError:
+        write_netstring(fh_out, 'PERM malformed netstring')
+    except Exception as exc:
+        write_netstring(fh_out, 'PERM ' + str(exc))
+
+
+def connect(settings):
+    """
+    Connect to a database.
+    """
+    driver = importlib.import_module(settings.pop('driver', 'sqlite3'))
+    return driver.connect(**settings)
+
+
 def main():
-    parser = argparse.ArgumentParser(description='SQLite socketmap daemon.')
+    parser = argparse.ArgumentParser(description='Database socketmap daemon.')
     parser.add_argument('--config',
                         help='Path to config file',
                         type=argparse.FileType(),
-                        default='/usr/local/etc/socketmap-sqlite.ini')
+                        default='/usr/local/etc/socketmap-sql.ini')
     parser.add_argument('--timeout',
                         help='Number of seconds to wait before exiting',
                         type=int,
                         default=2)
+    parser.add_argument('--client', action='store_true',
+                        help='Start with a debug client')
     args = parser.parse_args()
 
     with contextlib.closing(args.config):
         cfg = parse_config(args.config)
 
-    if not os.path.exists(cfg['db_path']):
-        print("error: cannot find {}".format(cfg['db_path']), file=sys.stderr)
-        return 2
-
-    with contextlib.closing(sqlite3.connect(cfg['db_path'])) as conn:
-        try:
-            while True:
-                # Wait a short period before exiting.
-                iready, _, _ = select.select([sys.stdin], (), (),
-                                             args.timeout)
-                if len(iready) == 0:
-                    break
-
-                request = read_netstring(sys.stdin)
-
-                table_name, arg = request.split(' ', 1)
-
-                table = cfg['tables'].get(table_name)
-                if table is None:
-                    write_netstring(sys.stdout,
-                                    'PERM no such table: ' + table_name)
-                    continue
-
-                cur = conn.cursor()
-                try:
-                    cur.execute(table['query'], [table['transform'](arg)])
-                    result = cur.fetchone()
-                finally:
-                    cur.close()
-
-                if result is None:
-                    write_netstring(sys.stdout, 'NOTFOUND ')
-                else:
-                    write_netstring(sys.stdout, 'OK ' + str(result[0]))
-        except MalformedNetstringError:
-            write_netstring(sys.stdout, 'PERM malformed netstring')
-        except Exception as exc:
-            write_netstring(sys.stdout, 'PERM ' + str(exc))
+    if args.client:
+        svr_args = [arg for arg in sys.argv if arg != '--client']
+        svr_args[0] = os.path.abspath(svr_args[0])
+        proc = subprocess.Popen(svr_args,
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE,
+                                encoding='utf-8')
+        print("Type '.exit' to exit.")
+        while proc.poll() is None:
+            req = raw_input('socketmap> ')
+            if req == '.exit':
+                proc.terminate()
+                break
+            write_netstring(proc.stdin, req)
+            print(read_netstring(proc.stdout))
+    else:
+        with contextlib.closing(connect(cfg['db'])) as conn:
+            serve_client(sys.stdin, sys.stdout,
+                         conn, args.timeout, cfg['tables'])
 
     return 0
 
