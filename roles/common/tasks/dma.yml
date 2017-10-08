@@ -9,6 +9,11 @@
     src: mailer.conf
     dest: /etc/mail/mailer.conf
 
+- name: configure dma
+  template:
+    src: dma.conf.j2
+    dest: /usr/local/etc/dma/dma.conf
+
 - name: periodically flush dma's queue
   cron:
     name: flush queue
