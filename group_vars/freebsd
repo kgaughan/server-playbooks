@@ -23,8 +23,6 @@ ssh_whitelist_ips:
 tls_root: /usr/local/etc/ssl/acme
 webserver_config: /usr/local/etc/nginx
 backup_locations:
-  - /usr/local/etc
-  - /etc
   - /home/keith
 
 # vim:set ft=yaml:

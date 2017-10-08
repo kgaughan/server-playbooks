@@ -1,4 +1,7 @@
 ---
+# Test with:
+# /usr/local/bin/tarsnap -c -f testing --dry-run -v
+
 - name: install tarsnap
   pkgng:
     name: "{{ item }}"
