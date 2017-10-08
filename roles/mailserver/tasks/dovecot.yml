@@ -4,7 +4,7 @@
     name: '{{ item }}'
     cached: yes
   with_items:
-    - dovecot2
+    - dovecot
     - dovecot-pigeonhole
 
 - name: deploy dovecot.conf
