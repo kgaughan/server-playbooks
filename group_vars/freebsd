@@ -24,5 +24,6 @@ tls_root: /usr/local/etc/ssl/acme
 webserver_config: /usr/local/etc/nginx
 backup_locations:
   - /home/keith
+backup_enabled: true
 
 # vim:set ft=yaml:
