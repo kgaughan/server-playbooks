@@ -1,9 +1,9 @@
 lir.talideon.com
-manann.talideon.com
+;manann.talideon.com
 
 [freebsd]
 lir.talideon.com
-manann.talideon.com
+;manann.talideon.com
 ;cian.talideon.com
 
 [freebsd:vars]
@@ -12,26 +12,25 @@ ansible_python_interpreter=/usr/local/bin/python
 [bootstrap]
 
 [acme]
-manann.talideon.com
+lir.talideon.com
 
 [mailservers]
-manann.talideon.com
-
-[webservers]
-manann.talideon.com
-
-[dbservers]
-manann.talideon.com
-
-[nameservers]
-manann.talideon.com
 lir.talideon.com
 
 [webservers]
-manann.talideon.com
+lir.talideon.com
+
+[dbservers]
+lir.talideon.com
+
+[nameservers]
+lir.talideon.com
+
+[webservers]
+lir.talideon.com
 
 [xmpp]
-manann.talideon.com
+lir.talideon.com
 
 [buildservers]
 lir.talideon.com

@@ -1,5 +1,5 @@
 ---
 - include: misc.yml
-- include: dovecot.yml
 - include: rspamd.yml
 - include: postfix.yml
+- include: dovecot.yml
