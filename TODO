@@ -10,6 +10,4 @@ Notes:
 
  * Activate 'weekly_acme_client_enable' in roles/acme/tasks/main.yml once the
    webserver is set up.
- * Activate daily_tarsnap_backup_enable, weekly_tarsnap_backup_enable, and
-   monthly_tarsnap_backup_enable to enable backups.
  * Generate and back up a key on each server.
