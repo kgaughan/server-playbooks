@@ -1,4 +1,17 @@
 ---
+- name: ensure the en_IE locale is present
+  locale_gen:
+    name: en_IE.UTF-8
+    state: present
+
+- name: install .login_conf
+  copy:
+    src: login.conf
+    dest: /home/keith/.login_conf
+    owner: keith
+    group: wheel
+    mode: 0644
+
 - name: ensure timestamp is UTC
   timezone:
     name: UTC
