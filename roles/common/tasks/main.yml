@@ -9,6 +9,7 @@
     name: "{{ item }}"
     cached: yes
   with_items:
+    - ca_root_nss
     - duff
     - lsof
     - mutt-lite

@@ -8,12 +8,9 @@
     - name: install python
       raw: sh -c "ASSUME_ALWAYS_YES=yes pkg install python"
 
-    - name: install essential packages
+    - name: install sudo
       pkgng:
-        name: "{{ item }}"
-      with_items:
-        - ca_root_nss
-        - sudo
+        name: sudo
 
     - name: create a user
       user:
