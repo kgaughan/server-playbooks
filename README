@@ -41,4 +41,23 @@ To update the ports tree::
 
     sudo poudriere ports -u
 
+Hetzner
+=======
+
+manann used to become uncommunicative when Hetzner would do network
+maintenance. I found https://forums.freebsd.org/threads/60675/#post-350427,
+which states:
+
+    IIRC these problems are due to buggy/crappy offloading in some (all?)
+    Realtek NICs. Try disabling LRO and TSO on them. I don't think Realtek
+    NICs do checksum-offloading, but you could also try to disable tx/rcsum
+    (it returns an error if the driver/card doesn't support it).
+
+To do this::
+
+    ifconfig re0 -tso -lro
+
+I haven't had issues since, and should probably make that a task, but haven't
+thought of a nice way to do it.
+
 .. vim:set ft=rst:
