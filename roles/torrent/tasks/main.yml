@@ -1,0 +1,25 @@
+---
+- name: install transmission
+  pkgng:
+    name: '{{ item }}'
+  with_items:
+    - transmission-daemon
+    - transmission-cli
+
+- name: start transmission
+  service:
+    name: transmission
+    enabled: yes
+    state: started
+
+- name: fix the config
+  merge_json:
+    path: "{{ transmission_home }}/settings.json"
+    data:
+      rpc-bind-address: "127.0.0.1"
+      rpc-enabled: true
+      rpc-whitelist: "127.0.0.1"
+      rpc-whitelist-enabled: true
+    indent: 4
+  notify:
+    - reload transmission

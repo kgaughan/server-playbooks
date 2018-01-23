@@ -1,0 +1,5 @@
+---
+- name: reload transmission
+  service:
+    name: transmission
+    state: reloaded

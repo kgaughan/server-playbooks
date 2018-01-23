@@ -11,3 +11,4 @@
 - include: webservers.yml
 - include: nameservers.yml
 - include: xmpp.yml
+- include: torrent.yml

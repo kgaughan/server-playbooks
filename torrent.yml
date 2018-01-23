@@ -1,0 +1,6 @@
+---
+- hosts: torrent
+  remote_user: keith
+  become: true
+  roles:
+    - torrent
