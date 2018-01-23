@@ -1,9 +1,4 @@
 ---
-- name: ensure the en_IE locale is present
-  locale_gen:
-    name: en_IE.UTF-8
-    state: present
-
 - name: install .login_conf
   copy:
     src: login.conf
