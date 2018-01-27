@@ -35,11 +35,11 @@
   notify:
     - mount all
 
-- include: pf.yml
-- include: fbsd-update.yml
-- include: ssh.yml
-- include: ntimed.yml
-- include: sendmail.yml
-- include: dma.yml
+- import_tasks: pf.yml
+- import_tasks: fbsd-update.yml
+- import_tasks: ssh.yml
+- import_tasks: ntimed.yml
+- import_tasks: sendmail.yml
+- import_tasks: dma.yml
   when: "'mailservers' not in group_names"
-- include: tarsnap.yml
+- import_tasks: tarsnap.yml

@@ -1,5 +1,5 @@
 ---
-- include: misc.yml
-- include: rspamd.yml
-- include: postfix.yml
-- include: dovecot.yml
+- import_tasks: misc.yml
+- import_tasks: rspamd.yml
+- import_tasks: postfix.yml
+- import_tasks: dovecot.yml
