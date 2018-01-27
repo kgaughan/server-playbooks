@@ -34,6 +34,7 @@
 
 - name: expire bruteforce blocklist entries after 2 hours of inactivity
   command: pfctl -t bruteforce -T expire 7200
+  changed_when: false
 
 - name: have sshguard listen to syslog
   lineinfile:

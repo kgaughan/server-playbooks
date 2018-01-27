@@ -6,6 +6,7 @@
 
 - name: configure ntimed
   command: "sysrc ntimed_flags=\"{{ ntp_servers | join(' ') }}\""
+  changed_when: false
 
 - name: start ntimed
   service:
