@@ -7,6 +7,12 @@
     group: wheel
     mode: 0644
 
+- name: populate authorized_keys
+  authorized_key:
+    user: keith
+    key: https://github.com/kgaughan.keys
+    state: present
+
 - name: ensure timezone is UTC
   timezone:
     name: UTC
