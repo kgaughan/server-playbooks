@@ -19,3 +19,12 @@
     name: flush queue
     minute: '*/15'
     job: 'test -x /usr/local/libexec/dma && /usr/local/libexec/dma -q'
+
+- name: set up aliases
+  lineinfile:
+    dest: /etc/aliases
+    regexp: '^#?{{ item.user }}:'
+    line: "{{ item.user }}: {{ item.email }}"
+  with_items: "{{ forwarding }}"
+  notify:
+    - run newaliases

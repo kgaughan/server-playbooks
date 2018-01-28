@@ -16,3 +16,6 @@
   service:
     name: pf
     state: reloaded
+
+- name: run newaliases
+  command: /usr/bin/newaliases
