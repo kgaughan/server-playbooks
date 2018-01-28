@@ -1,6 +1,0 @@
----
-- hosts: nameservers
-  remote_user: keith
-  become: true
-  roles:
-    - nameserver

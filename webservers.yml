@@ -1,6 +1,0 @@
----
-- hosts: webservers
-  remote_user: keith
-  become: true
-  roles:
-    - webserver

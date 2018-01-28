@@ -1,6 +1,0 @@
----
-- hosts: dbservers
-  remote_user: keith
-  become: true
-  roles:
-    - dbserver

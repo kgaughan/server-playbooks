@@ -5,10 +5,66 @@
   roles:
     - common
 
-- import_playbook: acme.yml
-- import_playbook: dbservers.yml
-- import_playbook: mailservers.yml
-- import_playbook: webservers.yml
-- import_playbook: nameservers.yml
-- import_playbook: xmpp.yml
-- import_playbook: torrent.yml
+- hosts: acme
+  remote_user: keith
+  become: true
+  roles:
+    - acme
+  tags:
+    - acme
+
+- hosts: buildservers
+  remote_user: keith
+  become: true
+  roles:
+    - buildserver
+  tags:
+    - buildserver
+
+- hosts: dbservers
+  remote_user: keith
+  become: true
+  roles:
+    - dbserver
+  tags:
+    - dbserver
+
+- hosts: mailservers
+  remote_user: keith
+  become: true
+  roles:
+    - mailserver
+  tags:
+    - mailserver
+
+- hosts: nameservers
+  remote_user: keith
+  become: true
+  roles:
+    - nameserver
+  tags:
+    - nameserver
+
+- hosts: torrent
+  remote_user: keith
+  become: true
+  roles:
+    - torrent
+  tags:
+    - torrent
+
+- hosts: webservers
+  remote_user: keith
+  become: true
+  roles:
+    - webserver
+  tags:
+    - webserver
+
+- hosts: xmpp
+  remote_user: keith
+  become: true
+  roles:
+    - xmpp
+  tags:
+    - xmpp

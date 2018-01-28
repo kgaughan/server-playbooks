@@ -1,6 +1,0 @@
----
-- hosts: xmpp
-  remote_user: keith
-  become: true
-  roles:
-    - xmpp
