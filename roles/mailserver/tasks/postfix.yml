@@ -42,17 +42,11 @@
   notify:
     - restart postfix
 
-- name: copy database schema up using temporary jankballs method
-  copy:
-    src: virtual.sql
-    dest: "/tmp/"
-  register: dbschema
-
 - name: initialise virtual mailbox database
-  command: sqlite3 -init {{ dbschema.path }} {{ vbox_db_path }}
+  command: sqlite3 {{ vbox_db_path }}
   args:
     creates: "{{ vbox_db_path }}"
-  when: dbschema.changed
+    stdin: "{{ lookup('file', 'virtual.sql') }}"
 
 - name: configure mailwrapper to use postfix
   copy:
