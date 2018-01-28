@@ -49,3 +49,5 @@
 - import_tasks: dma.yml
   when: "'mailservers' not in group_names"
 - import_tasks: tarsnap.yml
+  tags:
+    - tarsnap

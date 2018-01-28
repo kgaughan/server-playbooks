@@ -10,7 +10,7 @@ bootstrap:
 	ansible-playbook -i $(HOSTS) bootstrap.yml --ask-pass
 
 site:
-	ansible-playbook -i $(HOSTS) site.yml
+	ansible-playbook -i $(HOSTS) site.yml --ask-vault-pass
 
 acme:
 	ansible-playbook -i $(HOSTS) acme.yml

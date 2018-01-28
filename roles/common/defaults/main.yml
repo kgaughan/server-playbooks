@@ -1,2 +1,4 @@
 ---
 backup_enabled: false
+tarsnap_key_path: /root/tarsnap.key
+tarsnap_user: k@stereochro.me
