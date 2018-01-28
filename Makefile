@@ -10,7 +10,9 @@ bootstrap:
 	ansible-playbook -i $(HOSTS) bootstrap.yml --ask-pass
 
 all:
-	ansible-playbook -i $(HOSTS) site.yml --ask-vault-pass
+	# buildserver isn't included by default as I tend to use Synth more
+	# than Poudriere, but it's good to have documented.
+	ansible-playbook -i $(HOSTS) site.yml --skip-tags=buildserver --ask-vault-pass
 
 acme:
 	ansible-playbook -i $(HOSTS) site.yml --tags=acme --ask-vault-pass
