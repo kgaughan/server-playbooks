@@ -1,11 +1,16 @@
 ---
-- name: install .login_conf
+- name: install user configuration files
   copy:
-    src: login.conf
-    dest: /home/keith/.login_conf
+    src: "home/{{ item }}"
+    dest: "/home/keith/.{{ item }}"
     owner: keith
     group: wheel
     mode: 0644
+  with_items:
+    - cshrc
+    - login
+    - login_conf
+    - tmux.conf
 
 - name: populate authorized_keys
   authorized_key:
