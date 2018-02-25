@@ -1,5 +1,7 @@
 HOSTS:=hosts
 
+CMD:=ansible-playbook -i $(HOSTS) $(if $(wildcard ./vault-password),--vault-password-file=./vault-password,--ask-vault-pass) site.yml
+
 default: all
 
 clean:
@@ -12,28 +14,28 @@ bootstrap:
 all:
 	# buildserver isn't included by default as I tend to use Synth more
 	# than Poudriere, but it's good to have documented.
-	ansible-playbook -i $(HOSTS) site.yml --skip-tags=buildserver --ask-vault-pass
+	$(CMD) --skip-tags=buildserver
 
 acme:
-	ansible-playbook -i $(HOSTS) site.yml --tags=acme --ask-vault-pass
+	$(CMD) --tags=acme
 
 dbservers:
-	ansible-playbook -i $(HOSTS) site.yml --tags=dbserver --ask-vault-pass
+	$(CMD) --tags=dbserver
 
 mailservers:
-	ansible-playbook -i $(HOSTS) site.yml --tags=mailserver --ask-vault-pass
+	$(CMD) --tags=mailserver
 
 nameservers:
-	ansible-playbook -i $(HOSTS) site.yml --tags=nameserver --ask-vault-pass
+	$(CMD) --tags=nameserver
 
 webservers:
-	ansible-playbook -i $(HOSTS) site.yml --tags=webserver --ask-vault-pass
+	$(CMD) --tags=webserver
 
 xmpp:
-	ansible-playbook -i $(HOSTS) site.yml --tags=xmpp --ask-vault-pass
+	$(CMD) --tags=xmpp
 
 buildservers:
-	ansible-playbook -i $(HOSTS) site.yml --tags=buildserver --ask-vault-pass
+	$(CMD) --tags=buildserver
 
 .PHONY: bootstrap clean default site
 .PHONY: mailservers nameservers buildservers dbservers webservers acme xmpp

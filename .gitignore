@@ -4,3 +4,4 @@
 *~
 *.retry
 /facts/
+/vault-password
