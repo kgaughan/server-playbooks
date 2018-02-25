@@ -73,16 +73,16 @@ To do
 
 Configure:
 
- * OAuth server.
+* OAuth server.
 
 Nice to have:
 
- * Secondary MX
+* Secondary MX
 
 Notes:
 
- * Activate 'weekly_acme_client_enable' in roles/acme/tasks/main.yml once the
-   webserver is set up.
- * Generate and back up a key on each server.
+* Activate 'weekly_acme_client_enable' in roles/acme/tasks/main.yml once the
+  webserver is set up.
+* Generate and back up a key on each server.
 
 .. vim:set ft=rst:
