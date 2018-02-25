@@ -2,9 +2,5 @@
   https://gioarc.me/2017/05/29/blacklistd-a-new-approach-to-blocking-attackers/
 * SSHFP:
   http://jpmens.net/2012/11/03/an-action-plugin-for-ansible-to-handle-ssh-host-keys/
-* tarsnap:
-  https://www.tarsnap.com/gettingstarted.html
-* Migrating IMAP servers (Dovecot):
-  https://wiki2.dovecot.org/Migration
 
 .. vim:set ft=rst:
