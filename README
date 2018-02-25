@@ -60,4 +60,29 @@ To do this::
 I haven't had issues since, and should probably make that a task, but haven't
 thought of a nice way to do it.
 
+Ideas for further changes
+=========================
+
+* Consider blacklistd:
+  https://gioarc.me/2017/05/29/blacklistd-a-new-approach-to-blocking-attackers/
+* SSHFP:
+  http://jpmens.net/2012/11/03/an-action-plugin-for-ansible-to-handle-ssh-host-keys/
+
+To do
+=====
+
+Configure:
+
+ * OAuth server.
+
+Nice to have:
+
+ * Secondary MX
+
+Notes:
+
+ * Activate 'weekly_acme_client_enable' in roles/acme/tasks/main.yml once the
+   webserver is set up.
+ * Generate and back up a key on each server.
+
 .. vim:set ft=rst:
