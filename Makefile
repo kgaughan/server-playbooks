@@ -11,9 +11,9 @@ clean:
 bootstrap:
 	ansible-playbook -i $(HOSTS) bootstrap.yml --ask-pass
 
+# buildserver isn't included by default as I tend to use Synth more than
+# Poudriere, but it's good to have documented.
 all:
-	# buildserver isn't included by default as I tend to use Synth more
-	# than Poudriere, but it's good to have documented.
 	$(CMD) --skip-tags=buildserver
 
 acme:

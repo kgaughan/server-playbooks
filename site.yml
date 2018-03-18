@@ -5,7 +5,7 @@
   roles:
     - common
 
-- hosts: !mailservers
+- hosts: "!mailservers"
   remote_user: keith
   become: true
   roles:
