@@ -21,12 +21,12 @@ alias ll	ls -lAF
 setenv	EDITOR	vi
 setenv	PAGER	more
 
-setenv LS_COLORS "di=33;1:fi=37;1:ln=36;1:ex=01;31:pi=40;33:so=01;34:bd=40;33;01:cd=4;33;01:*.o=37:*.log=37"
-
 if ($?prompt) then
 	# An interactive shell -- set some stuff up
 	set prompt = "%{\033[0;36m%}%S%N@%m%s %B%~%b%{\033[0m%} %# "
 	set promptchars = "%#"
+
+	setenv LS_COLORS "di=33;1:fi=37;1:ln=36;1:ex=01;31:pi=40;33:so=01;34:bd=40;33;01:cd=4;33;01:*.o=37:*.log=37"
 
 	set color
 	set filec
@@ -37,12 +37,16 @@ if ($?prompt) then
 	# Use history to aid expansion
 	set autoexpand
 	set autorehash
+	set autocorrect
+	set fignore = (.pyc)
 	set mail = (/var/mail/$USER)
 	if ( $?tcsh ) then
 		bindkey "^W" backward-delete-word
 		bindkey -k up history-search-backward
 		bindkey -k down history-search-forward
+		bindkey "\e[1~" beginning-of-line  # Home
+		bindkey "\e[3~" delete-char        # Delete
+		bindkey "\e[4~" end-of-line        # End
 		bindkey "^R" i-search-back
 	endif
-
 endif

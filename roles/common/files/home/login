@@ -5,3 +5,13 @@
 #
 
 # if ( -x /usr/bin/fortune ) /usr/bin/fortune freebsd-tips
+
+# Completions grabbed from various places.
+complete cd      'p/1/d/'
+complete rmdir   'p/1/d/'
+complete fg      'c/%/j/'
+complete man     'C/*/c/'
+complete service 'c/-/(e l r v)/' 'p/1/`service -l`/' 'n/*/(start stop reload restart status rcvar onestart onestop)/'
+complete tmux    'n/*/(attach detach has kill-server kill-session lsc lscm ls lockc locks new refresh rename showmsgs source start suspendc switchc)/'
+complete make    'n@*@`make -pn | sed -n -E "/^[#_.\/[:blank:]]+/d; /=/d; s/[[:blank:]]*:.*//gp;"`@'
+complete pkill   'c/-/S/' 'n/*/`ps -axc -o command="" | sort -u`/'
