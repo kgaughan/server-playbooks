@@ -20,3 +20,10 @@
     name: dovecot
     enabled: yes
     state: started
+
+- name: restart on cert deployment
+  lineinfile:
+    path: "{{ acme_client_root }}/deploy.sh"
+    state: present
+    insertafter: EOF
+    line: "service dovecot reload"

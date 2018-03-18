@@ -28,10 +28,13 @@
     mode: 0555
 
 - name: generate the deploy script
-  copy:
-    src: deploy.sh
-    dest: "{{ acme_client_root }}/"
+  lineinfile:
+    path: "{{ acme_client_root }}/deploy.sh"
     mode: 0555
+    create: yes
+    state: present
+    insertbefore: BOF
+    line: "#!/bin/sh"
 
 - name: populate domains.txt
   lineinfile:
