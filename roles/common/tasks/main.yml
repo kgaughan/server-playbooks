@@ -30,7 +30,6 @@
   with_items:
     - ca_root_nss
     - duff
-    - lsof
     - pkg-rmleaf
     - pwgen
     - rsync
