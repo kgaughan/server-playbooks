@@ -36,7 +36,6 @@
     - pwgen
     - rsync
     - tmux
-    - zoneinfo
 
 - name: include fdesc in fstab
   lineinfile:
