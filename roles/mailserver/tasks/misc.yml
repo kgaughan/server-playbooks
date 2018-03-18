@@ -5,3 +5,4 @@
     cached: yes
   with_items:
     - fdm
+    - mutt-lite

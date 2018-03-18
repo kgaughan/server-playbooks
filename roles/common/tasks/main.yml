@@ -31,7 +31,6 @@
     - ca_root_nss
     - duff
     - lsof
-    - mutt-lite
     - pkg-rmleaf
     - pwgen
     - rsync
