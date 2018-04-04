@@ -34,6 +34,7 @@
     name: nginx
     enabled: yes
     state: started
+  ignore_errors: yes
 
 - name: restart on cert deployment
   lineinfile:

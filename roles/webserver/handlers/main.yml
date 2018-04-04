@@ -4,3 +4,4 @@
     name: nginx
     enabled: yes
     state: reloaded
+  ignore_errors: yes
