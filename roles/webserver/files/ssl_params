@@ -9,7 +9,7 @@ ssl_prefer_server_ciphers	on;
 
 add_header Strict-Transport-Security 'max-age=15768000; preload';
 
-ssl_ciphers 'EECDH+CHACHA20:ECDH+AESGCM:ECDH+AES128:ECDH+AES256:RSA+AESGCM:RSA+AES128:RSA+AES256:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!RC4:!DSS:!PSK:!DH';
+ssl_ciphers 'EECDH+CHACHA20:ECDH+AESGCM:ECDH+AES128:ECDH+AES256:!RSA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!RC4:!DSS:!PSK:!DH';
 
 ssl_stapling on;
 ssl_stapling_verify on;
