@@ -12,6 +12,11 @@
     name: syslogd
     state: reloaded
 
+- name: reload sshguard
+  service:
+    name: sshguard
+    state: reloaded
+
 - name: reload pf
   service:
     name: pf

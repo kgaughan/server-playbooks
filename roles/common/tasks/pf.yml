@@ -1,24 +1,37 @@
 ---
+- name: ensure legacy packages aren't present
+  pkgng:
+    name: sshguard-pf
+    state: absent
+
 - name: install packages
   pkgng:
     name: '{{ item }}'
     cached: yes
   with_items:
     - pftop
-    - sshguard-pf
+    - sshguard
 
-- name: ensure ssh whitelist is present
-  file:
-    path: '{{ ssh_whitelist }}'
-    state: touch
+- name: ensure sshguard config is present
+  copy:
+    src: '{{ item }}'
+    dest: '/usr/local/etc/'
     owner: root
     group: wheel
     mode: 0644
+  with_items:
+    - ssh.whitelist
+    - sshguard.conf
+  notify:
+    - reload pf
+    - reload sshguard
 
 - name: deploy pf config
   template:
     src: pf.conf.j2
     dest: /etc/pf.conf
+  notify:
+    - reload pf
 
 - name: start pf
   service:
@@ -36,19 +49,16 @@
   command: pfctl -t bruteforce -T expire 7200
   changed_when: false
 
-- name: have sshguard listen to syslog
+- name: ensure old syslog config for sshguard is gone
   lineinfile:
     dest: /etc/syslog.conf
     regexp: sshguard
-    line: 'auth.info;authpriv.info |exec /usr/local/sbin/sshguard -w {{ ssh_whitelist }}'
+    state: absent
   notify:
     - reload syslog
 
-- name: whitelist key addresses
-  lineinfile:
-    dest: '{{ ssh_whitelist }}'
-    line: '{{ item }}'
-  with_items: '{{ ssh_whitelist_ips }}'
-  notify:
-    - reload pf
-    - reload syslog
+- name: start sshguard
+  service:
+    name: sshguard
+    enabled: yes
+    state: started

@@ -1,25 +1,10 @@
 ---
 iface: '{{ ansible_default_ipv4.interface }}'
-ssh_whitelist: '/usr/local/etc/ssh.whitelist'
 ntp_servers:
   - 0.europe.pool.ntp.org
   - 1.europe.pool.ntp.org
   - 2.europe.pool.ntp.org
   - 3.europe.pool.ntp.org
-ssh_whitelist_ips:
-  # cian
-  - 45.55.149.240
-  - 2604:a880:800:10::716:6001
-  # manann
-  - 5.9.82.71
-  - 2a01:4f8:162:4e::1:1
-  # lir
-  - 78.153.202.217
-  - 2a01:a8:201::217
-  # Work (37.0.7.2 might be enough)
-  - 37.0.0.0/21
-  # Home (Digiweb)
-  - 84.203.0.0/16
 tls_root: /usr/local/etc/ssl/acme
 webserver_config: /usr/local/etc/nginx
 backup_locations:

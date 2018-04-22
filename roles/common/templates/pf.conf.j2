@@ -59,7 +59,7 @@ pass in on $ext_if proto { udp, tcp } to port 54
 pass in on $ext_if proto udp to port 60000:61000
 
 # IPs that should never be blocked.
-table <goodguys> persist file "{{ ssh_whitelist }}"
+table <goodguys> persist file "/usr/local/etc/ssh.whitelist"
 pass in quick on $ext_if proto tcp from <goodguys> to port ssh
 
 # Kill SSH fast brute forces attacks early.
