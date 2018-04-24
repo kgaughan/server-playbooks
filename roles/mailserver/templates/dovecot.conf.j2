@@ -47,6 +47,12 @@ service auth {
   unix_listener auth-master {
     mode = 0600
   }
+  unix_listener auth-prosody {
+    path = /var/run/auth-prosody
+    mode = 0600
+    user = prosody
+    group = prosody
+  }
   user = root
 }
 service imap-login {
