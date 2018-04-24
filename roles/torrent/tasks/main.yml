@@ -12,6 +12,12 @@
     enabled: yes
     state: started
 
+- name: fix permissions
+  file:
+    path: "{{ transmission_home }}"
+    owner: transmission
+    group: transmission
+
 - name: fix the config
   merge_json:
     path: "{{ transmission_home }}/settings.json"
