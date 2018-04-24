@@ -7,6 +7,21 @@
     - dovecot
     - dovecot-pigeonhole
 
+- name: create diffie-hellman parameters
+  shell: "dd if=/var/db/dovecot/ssl-parameters.dat bs=1 skip=88 | openssl dhparam -inform der > dh.pem"
+  args:
+    chdir: "{{ dovecot_root }}"
+    creates: dh.pem
+  notify:
+    - restart dovecot
+
+- name: make the parameters available to dovecot only
+  file:
+    name: "{{ dovecot_root }}/dh.pem"
+    mode: 0640
+    owner: dovecot
+    group: dovecot
+
 - name: deploy dovecot.conf
   template:
     src: dovecot.conf.j2
