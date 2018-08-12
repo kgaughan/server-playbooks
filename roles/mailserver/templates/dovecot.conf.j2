@@ -18,7 +18,7 @@ ssl = required
 ssl_cert = <{{ mail_tls_cert_file }}
 ssl_key = <{{ mail_tls_key_file }}
 ssl_dh = <{{ dovecot_root }}/dh.pem
-ssl_cipher_list = ECDH+AES128:ECDH+AES256:DH+AES128:DH+AES256:AES128:AES256:!RSA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!RC4:!DSS:!PSK
+ssl_cipher_list = ECDH+AES128:ECDH+AES256:DH+AES128:DH+AES256:AES128:AES256:!RSA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!RC4:!DSS:!PSK:!CBC:!SHA
 ssl_min_protocol = TLSv1.2
 
 mail_location = maildir:~/Mail
