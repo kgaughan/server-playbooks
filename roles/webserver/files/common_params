@@ -26,3 +26,10 @@ location = /.well-known/apple-app-site-association {
 	log_not_found off;
 	access_log off;
 }
+
+add_header Content-Security-Policy "default-src 'self'" always;
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-Xss-Protection "1; mode=block" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header Referrer-Policy "no-referrer-when-downgrade" always;
+add_header Feature-Policy "autoplay 'none'" always;
