@@ -13,7 +13,7 @@
     groups: wheel
     shell: /bin/tcsh
     state: present
-    generate_ssh_key: yes
+    generate_ssh_key: true
     ssh_key_type: ed25519
 
 - name: populate authorized_keys
