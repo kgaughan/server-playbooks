@@ -11,7 +11,9 @@ eimhir.talideon.com
 [freebsd:vars]
 ansible_python_interpreter=/usr/local/bin/python
 
-[bootstrap]
+[baremetal]
+lir.talideon.com
+manann.talideon.com
 
 [digitalocean]
 eimhir.talideon.com
