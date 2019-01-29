@@ -1,11 +1,10 @@
 ---
 - name: install poudriere
   pkgng:
-    name: "{{ item }}"
-    cached: yes
-  with_items:
-    - poudriere
-    - dialog4ports
+    name:
+      - poudriere
+      - dialog4ports
+    cached: true
 
 - name: copy up config
   template:

@@ -12,5 +12,5 @@
 - name: restart rspamd
   service:
     name: rspamd
-    enabled: yes
+    enabled: true
     state: reloaded

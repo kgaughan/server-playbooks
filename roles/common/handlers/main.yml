@@ -15,7 +15,7 @@
 - name: reload sshguard
   service:
     name: sshguard
-    state: restart
+    state: restarted
 
 - name: reload pf
   service:

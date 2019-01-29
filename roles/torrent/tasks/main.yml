@@ -1,15 +1,15 @@
 ---
 - name: install transmission
   pkgng:
-    name: '{{ item }}'
-  with_items:
-    - transmission-daemon
-    - transmission-cli
+    name:
+      - transmission-daemon
+      - transmission-cli
+    cached: true
 
 - name: start transmission
   service:
     name: transmission
-    enabled: yes
+    enabled: true
     state: started
 
 - name: fix permissions

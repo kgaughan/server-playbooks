@@ -2,7 +2,7 @@
 - name: install acme-client
   pkgng:
     name: acme-client
-    cached: yes
+    cached: true
 
 - name: create the challenge directory
   file:
@@ -31,7 +31,7 @@
   lineinfile:
     path: "{{ acme_client_root }}/deploy.sh"
     mode: 0555
-    create: yes
+    create: true
     state: present
     insertbefore: BOF
     line: "#!/bin/sh"
@@ -39,10 +39,10 @@
 - name: populate domains.txt
   lineinfile:
     dest: "{{ acme_client_root }}/domains.txt"
-    create: yes
+    create: true
     regexp: "^{{ item }} "
     line: "{{ item }} {{ item | subdomains(acme_domains[item]) | join(' ') }}"
-  with_items: '{{ acme_domains.keys() }}'
+  with_items: '{{ acme_domains.keys() | list }}'
 
 - name: populate periodic.conf
   lineinfile:

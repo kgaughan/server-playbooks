@@ -1,8 +1,7 @@
 ---
 - name: install miscellaneous mail packages
   pkgng:
-    name: '{{ item }}'
-    cached: yes
-  with_items:
-    - fdm
-    - mutt-lite
+    name:
+      - fdm
+      - mutt-lite
+    cached: true

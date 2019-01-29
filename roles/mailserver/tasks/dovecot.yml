@@ -1,11 +1,10 @@
 ---
 - name: install dovecot
   pkgng:
-    name: '{{ item }}'
-    cached: yes
-  with_items:
-    - dovecot
-    - dovecot-pigeonhole
+    name:
+      - dovecot
+      - dovecot-pigeonhole
+    cached: true
 
 - name: create diffie-hellman parameters
   openssl_dhparam:
@@ -27,7 +26,7 @@
 - name: start dovecot
   service:
     name: dovecot
-    enabled: yes
+    enabled: true
     state: started
 
 - name: restart on cert deployment

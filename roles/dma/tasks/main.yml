@@ -2,7 +2,7 @@
 - name: install dma
   pkgng:
     name: dma
-    cached: yes
+    cached: true
 
 - name: configure mailwrapper to use dma
   copy:

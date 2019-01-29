@@ -1,12 +1,11 @@
 ---
 - name: install packages
   pkgng:
-    name: '{{ item }}'
-    cached: yes
-  with_items:
-    - postfix
-    - sqlite3
-    - py27-sqlite3
+    name:
+      - postfix
+      - sqlite3
+      - py27-sqlite3
+    cached: true
 
 - name: ensure the postfix configuration root exists
   file:
@@ -56,7 +55,7 @@
 - name: start postfix
   service:
     name: postfix
-    enabled: yes
+    enabled: true
     state: started
 
 - name: restart on cert deployment

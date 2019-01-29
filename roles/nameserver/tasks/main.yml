@@ -2,7 +2,7 @@
 - name: install nsd
   pkgng:
     name: nsd
-    cached: yes
+    cached: true
 
 - name: ensure zones directory exists
   file:
@@ -43,5 +43,5 @@
 - name: start nsd
   service:
     name: nsd
-    enabled: yes
+    enabled: true
     state: started

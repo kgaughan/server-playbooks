@@ -2,7 +2,7 @@
 - name: install ntimed
   pkgng:
     name: ntimed
-    cached: yes
+    cached: true
 
 - name: configure ntimed
   command: "sysrc ntimed_flags=\"{{ ntp_servers | join(' ') }}\""
@@ -11,5 +11,5 @@
 - name: start ntimed
   service:
     name: ntimed
-    enabled: yes
+    enabled: true
     state: started

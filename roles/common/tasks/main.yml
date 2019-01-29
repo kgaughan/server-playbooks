@@ -25,15 +25,14 @@
 
 - name: install essential packages
   pkgng:
-    name: "{{ item }}"
+    name:
+      - ca_root_nss
+      - duff
+      - pkg-rmleaf
+      - pwgen
+      - rsync
+      - tmux
     cached: true
-  with_items:
-    - ca_root_nss
-    - duff
-    - pkg-rmleaf
-    - pwgen
-    - rsync
-    - tmux
 
 - name: include fdesc in fstab
   lineinfile:

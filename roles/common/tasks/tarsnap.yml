@@ -4,11 +4,10 @@
 
 - name: install tarsnap
   pkgng:
-    name: "{{ item }}"
-    cached: yes
-  with_items:
-    - tarsnap
-    - tarsnap-periodic
+    name:
+      - tarsnap
+      - tarsnap-periodic
+    cached: true
 
 - name: install config for tarsnap
   copy:
@@ -18,10 +17,10 @@
 - name: check if the tarsnap key file exists
   stat:
     path: "{{ tarsnap_key_path }}"
-    get_attributes: no
-    get_checksum: no
-    get_md5: no
-    get_mime: no
+    get_attributes: false
+    get_checksum: false
+    get_md5: false
+    get_mime: false
   register: key_stat
 
 - block:
@@ -32,7 +31,7 @@
         owner: root
         group: wheel
         mode: 0600
-        backup: yes
+        backup: true
       when: vault_tarsnap_key is defined
 
     - debug:

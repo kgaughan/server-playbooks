@@ -1,12 +1,11 @@
 ---
 - name: install postgresql
   pkgng:
-    name: '{{ item }}'
-    cached: yes
-  with_items:
-    - postgresql95-client
-    - postgresql95-server
-    - py27-psycopg2
+    name:
+      - postgresql95-client
+      - postgresql95-server
+      - py27-psycopg2
+    cached: true
 
 - name: initialise database
   command: /usr/local/etc/rc.d/postgresql initdb
@@ -16,5 +15,5 @@
 - name: start postgresql
   service:
     name: postgresql
-    enabled: yes
+    enabled: true
     state: started

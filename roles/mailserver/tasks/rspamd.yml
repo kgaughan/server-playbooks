@@ -1,16 +1,15 @@
 ---
 - name: install rspamd
   pkgng:
-    name: '{{ item }}'
-    cached: yes
-  with_items:
-    - rspamd
-    - redis
+    name:
+      - rspamd
+      - redis
+    cached: true
 
 - name: start redis
   service:
     name: redis
-    enabled: yes
+    enabled: true
     state: started
 
 - name: create config directories
