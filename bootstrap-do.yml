@@ -1,0 +1,7 @@
+---
+- hosts: digitalocean
+  remote_user: freebsd
+  gather_facts: false
+  become: true
+  roles:
+    - bootstrap
