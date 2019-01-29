@@ -1,0 +1,26 @@
+====
+TODO
+====
+
+Playbook
+========
+
+* Configure `role dependencies`_.
+* Split the nameserver role up into a base role and a secondary role.
+* Rename the 'dbserver' role to 'pgsql'.
+* Create a 'mysql' (really for MariaDB) role, and a 'ttrss' role based on that.
+
+.. _role dependencies: https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#role-dependencies
+
+Hosts
+=====
+
+* Ensure `site deployment <https://github.com/kgaughan/sites>`_ works properly.
+* Reconcile my `zones <https://github.com/kgaughan/zones>`_ repo with what's
+  currently on cian.
+* Test manann as a primary MX.
+* Deploy webmail.talideon.com on eimhir as a test run of splitting my ACME and
+  webserver configuration up.
+* Configure a WebDAV server on manann, possibly dav.talideon.com.
+
+.. vim:set ft=rst:

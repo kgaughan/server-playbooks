@@ -1,0 +1,95 @@
+=====================
+Host Responsibilities
+=====================
+
+There are three managed servers/VMs.
+
+=================== ======================= =========
+Server              Location                Type
+=================== ======================= =========
+lir.talideon.com    Blacknight (Carlow, IE) Baremetal
+manann.talideon.com Hetzner (DE)            Baremetal
+eimhir.talideon.com DigitalOcean (TOR1, CA) VM
+=================== ======================= =========
+
+These are located to give a geographical spread.
+
+Additionally, there is cian.talideon.com, which is in DigitalOcean NYC3. This
+is an older type of droplet, and I want to get everything currently on it
+distributed across my other machines/VMs.
+
+Nameservers
+===========
+
+Additionally, I use the DNS service provided by Blacknight as a secondary
+nameserver host. That's hosted in a different location from lir, however. That
+gives me a total of four nameservers. ns{1,2,3,4}.talideon.com are currently
+`configured <https://github.com/kgaughan/zones>`_ as follows:
+
+=== ===========================
+NS  Actual
+=== ===========================
+ns1 n/a
+ns2 statler.moybella.net
+ns3 ns2.blacknightsolutions.com
+ns4 cian.talideon.com
+=== ===========================
+
+I intend on keeping most of this setup, but replacing ns1 and ns4. ns1 will
+become lir.talideon.com, and ns4 will become eimhir.talideon.com.
+
+There are currently some configuration differences between the zones as
+deployed on cian and `my zones repo <https://github.com/kgaughan/zones>`_.
+These need to be resolved.
+
+ns4 is currently acting as the primary nameserver, but I intend on making
+lir (ns1) the primary again, as soon as cian can be deprecated and replaced
+with eimhir.
+
+Mailservers
+===========
+
+manann is intended to take over as my primary MX from cian. Currently, mail
+on cian is replicated form cian over to manann.
+
+All other hosts forward their mail on through DMA_ to manann, which acts as a
+`smart host`_ for the others.
+
+.. _DMA: https://github.com/corecode/dma
+.. _smart host: https://en.wikipedia.org/wiki/Smart_host
+
+Virtual mail hosting is currently less than optimally designed at present.
+
+Webservers
+==========
+
+Most of the websites will be moved over to manann, with eimhir taking over
+reader.talideon.com and webmail.talideon.com. This is because I want to keep
+PHP off all my hosts, and TT-RSS_ and RoundCube_ are the only third-party PHP
+software I use.
+
+.. _TT-RSS: https://tt-rss.org/
+.. _RoundCube: https://roundcube.net/
+
+The downside of this setup is that my MX will be hosted in Germany and my
+webmail reader will be hosted in Canada, which is a bit funky, but as I
+require STARTTLS for IMAP, it's only the lag that's an issue.
+
+All other sites will be distributed between lir and manann as I see fit.
+
+manann will also act as a WebDAV server so I can have a backing store for
+Joplin__.
+
+. __: https://joplin.cozic.net/
+
+XMPP
+====
+
+TBD.
+
+Build server
+============
+
+TBS, likely lir.
+
+.. vim:set ft=rst:
