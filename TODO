@@ -23,4 +23,10 @@ Hosts
   webserver configuration up.
 * Configure a WebDAV server on manann, possibly dav.talideon.com.
 
+Bugs
+====
+
+* The *mynetworks* list is hardwired in *roles/mailserver/templates/main.cf.j2*
+  making it difficult to keep the list of host IPs in sync.
+
 .. vim:set ft=rst:
