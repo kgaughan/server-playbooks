@@ -19,14 +19,6 @@
   tags:
     - buildserver
 
-- hosts: dbservers
-  remote_user: keith
-  become: true
-  roles:
-    - dbserver
-  tags:
-    - dbserver
-
 - hosts: mailservers
   remote_user: keith
   become: true

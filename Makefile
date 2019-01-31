@@ -22,9 +22,6 @@ all:
 acme:
 	$(CMD) --tags=acme
 
-dbservers:
-	$(CMD) --tags=dbserver
-
 mailservers:
 	$(CMD) --tags=mailserver
 
@@ -41,4 +38,4 @@ buildservers:
 	$(CMD) --tags=buildserver
 
 .PHONY: bootstrap clean default site
-.PHONY: mailservers nameservers buildservers dbservers webservers acme xmpp
+.PHONY: mailservers nameservers buildservers webservers acme xmpp
