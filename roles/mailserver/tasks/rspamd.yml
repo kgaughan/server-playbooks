@@ -1,16 +1,8 @@
 ---
 - name: install rspamd
   pkgng:
-    name:
-      - rspamd
-      - redis
+    name: rspamd
     cached: true
-
-- name: start redis
-  service:
-    name: redis
-    enabled: true
-    state: started
 
 - name: create config directories
   file:

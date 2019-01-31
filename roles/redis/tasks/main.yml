@@ -1,0 +1,11 @@
+---
+- name: install redis
+  pkgng:
+    name: redis
+    cached: true
+
+- name: start redis
+  service:
+    name: redis
+    enabled: true
+    state: started
