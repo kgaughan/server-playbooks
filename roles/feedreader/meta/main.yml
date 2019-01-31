@@ -2,3 +2,7 @@
 dependencies:
   - role: mysql
   - role: php
+  - role: acme
+    vars:
+      acme_domains:
+        "reader.talideon.com": []

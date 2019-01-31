@@ -10,16 +10,19 @@
     state: directory
     mode: 0755
 
-- name: ensure nginx directory exists
-  file:
-    name: "{{ webserver_config }}"
-    state: directory
-    mode: 0755
+- name: copy up ssl_params
+  copy:
+    src: ssl_params
+    dest: "{{ webserver_config }}/"
+  notify:
+    - reload nginx
 
 - name: generate the nginx fragment
   template:
     src: letsencrypt_params.j2
     dest: "{{ webserver_config }}/letsencrypt_params"
+  notify:
+    - reload nginx
 
 - name: generate the renewal script
   template:
@@ -36,6 +39,13 @@
     insertbefore: BOF
     line: "#!/bin/sh"
 
+- name: restart webserver on cert deployment
+  lineinfile:
+    path: "{{ acme_client_root }}/deploy.sh"
+    state: present
+    insertafter: EOF
+    line: "service nginx reload"
+
 - name: populate domains.txt
   lineinfile:
     dest: "{{ acme_client_root }}/domains.txt"
@@ -50,6 +60,6 @@
     regexp: "^#?{{ item.split('=', 1) | first }}="
     line: "{{ item }}"
   with_items:
-    - weekly_acme_client_enable={{ "YES" if acme_enabled else "NO" }}
+    - weekly_acme_client_enable={{ "YES" if acme_domains else "NO" }}
     - weekly_acme_client_renewscript="{{ acme_client_root }}/acme-client.sh"
     - weekly_acme_client_deployscript="{{ acme_client_root }}/deploy.sh"

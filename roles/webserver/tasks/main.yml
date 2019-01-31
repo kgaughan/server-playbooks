@@ -21,7 +21,6 @@
   with_items:
     - nginx.conf
     - common_params
-    - ssl_params
   notify:
     - reload nginx
 
@@ -31,10 +30,3 @@
     enabled: true
     state: started
   ignore_errors: true
-
-- name: restart on cert deployment
-  lineinfile:
-    path: "{{ acme_client_root }}/deploy.sh"
-    state: present
-    insertafter: EOF
-    line: "service nginx reload"
