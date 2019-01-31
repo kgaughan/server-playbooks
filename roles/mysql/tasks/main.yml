@@ -1,0 +1,13 @@
+---
+- name: install mariadb
+  pkgng:
+    name:
+      - mariadb103-client
+      - mariadb103-server
+    cached: true
+
+- name: start mariadb (mysql)
+  service:
+    name: mysql-server
+    enabled: true
+    state: started
