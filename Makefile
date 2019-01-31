@@ -19,8 +19,8 @@ bootstrap-do:
 all:
 	$(CMD) --skip-tags=buildserver
 
-acme:
-	$(CMD) --tags=acme
+feedreaders:
+	$(CMD) --tags=feedreader
 
 mailservers:
 	$(CMD) --tags=mailserver

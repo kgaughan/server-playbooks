@@ -22,9 +22,6 @@
     - nginx.conf
     - common_params
     - ssl_params
-    # This is for completeness only. I might deploy something behind php-fpm
-    # at some point in the future.
-    - php_params
   notify:
     - reload nginx
 

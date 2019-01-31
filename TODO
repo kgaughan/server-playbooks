@@ -5,10 +5,8 @@ TODO
 Playbook
 ========
 
-* Configure `role dependencies`_.
-* Create a 'ttrss' role based, with the 'mysql' role as a dependency.
-
-.. _role dependencies: https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#role-dependencies
+* Create a 'feedreader' role that properly configures TT-RSS in single-user
+  mode, creates the database, and starts the daemon.
 
 Hosts
 =====

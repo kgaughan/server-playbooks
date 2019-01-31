@@ -1,0 +1,21 @@
+---
+- name: install packages
+  pkgng:
+    name:
+      - php72
+    cached: true
+
+- name: start php-fpm
+  service:
+    name: php-fpm
+    enabled: true
+    state: started
+
+- name: copy up config fragments
+  copy:
+    src: "{{ item }}"
+    dest: "{{ webserver_config }}/"
+  with_items:
+    - php_params
+  notify:
+    - reload nginx

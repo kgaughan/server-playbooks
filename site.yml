@@ -19,11 +19,18 @@
   tags:
     - buildserver
 
+- hosts: feedreaders
+  remote_user: keith
+  become: true
+  roles:
+    - feedreader
+  tags:
+    - feedreader
+
 - hosts: mailservers
   remote_user: keith
   become: true
   roles:
-    - acme
     - mailserver
   tags:
     - mailserver
@@ -48,7 +55,6 @@
   remote_user: keith
   become: true
   roles:
-    - acme
     - webserver
   tags:
     - webserver
@@ -57,7 +63,6 @@
   remote_user: keith
   become: true
   roles:
-    - acme
     - xmpp
   tags:
     - xmpp

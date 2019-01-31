@@ -1,0 +1,7 @@
+---
+- name: install packages
+  pkgng:
+    name:
+      - tt-rss
+      - php72-filter  # missing dependency
+    cached: true
