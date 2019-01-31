@@ -14,8 +14,6 @@ Hosts
 =====
 
 * Ensure `site deployment <https://github.com/kgaughan/sites>`_ works properly.
-* Reconcile my `zones <https://github.com/kgaughan/zones>`_ repo with what's
-  currently on cian.
 * Test manann as a primary MX.
 * Deploy webmail.talideon.com on eimhir as a test run of splitting my ACME and
   webserver configuration up.
