@@ -5,16 +5,14 @@ TODO
 Playbook
 ========
 
-* Create a 'feedreader' role that properly configures TT-RSS in single-user
-  mode, creates the database, and starts the daemon.
+* Create a 'dav' role for spinning up a WebDAV server on manann, possibly
+  dav.talideon.com.
 
 Hosts
 =====
 
 * Ensure `site deployment <https://github.com/kgaughan/sites>`_ works properly.
 * Test manann as a primary MX.
-* Configure a WebDAV server on manann, possibly dav.talideon.com.
-* Get managesieve working.
 
 Bugs
 ====
@@ -22,10 +20,10 @@ Bugs
 * The *mynetworks* list is hardwired in *roles/mailserver/templates/main.cf.j2*
   making it difficult to keep the list of host IPs in sync.
 
-* Deploying a new site needs an extra step with ACME. First, you need to deploy
-  a basic vhost listening on port 80, and run
-  ``/usr/local/etc/periodic/weekly/000.acme-client.sh`` to trigger the process
-  of generating the certificate. Then and only then can the HTTPS vhost be
-  deployed.
+* Deploying a new site needs an extra step with ACME. While there's a default
+  vhost listening on port 80, the deployment of the vhost configuration before
+  running ``/usr/local/etc/periodic/weekly/000.acme-client.sh`` will prevent
+  the generation of the certificate. The job should be run *before* the vhost
+  config is deployed if the vhost config isn't already present.
 
 .. vim:set ft=rst:
