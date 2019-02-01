@@ -7,8 +7,6 @@ server {
 	root /usr/local/www/roundcube;
 	index index.php index.html index.htm;
 
-	include letsencrypt_params;
-
 	add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'" always;
 
 	ssl_certificate {{ tls_root }}/{{ webmail_site }}/fullchain.pem;

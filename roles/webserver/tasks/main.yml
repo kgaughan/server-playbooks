@@ -20,13 +20,17 @@
     state: directory
     mode: 0755
 
-- name: copy up config fragments
+- name: copy up server config
   copy:
-    src: "{{ item }}"
+    src: nginx.conf
     dest: "{{ webserver_config }}/"
-  with_items:
-    - nginx.conf
-    - common_params
+  notify:
+    - reload nginx
+
+- name: copy up common_params
+  template:
+    src: common_params.j2
+    dest: "{{ webserver_config }}/common_params"
   notify:
     - reload nginx
 

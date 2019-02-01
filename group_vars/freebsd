@@ -8,6 +8,7 @@ ntp_servers:
 tls_root: /usr/local/etc/ssl/acme
 webserver_config: /usr/local/etc/nginx
 webserver_logs: /var/log/www
+acme_challenge_dir: /usr/local/www/acme
 backup_locations:
   - /home/keith
 backup_enabled: true

@@ -27,6 +27,14 @@ location = /.well-known/apple-app-site-association {
 	access_log off;
 }
 
+# Not pretty, as this should really be in the acme role, but the alternatives
+# are equally terrible.
+location ^~ /.well-known/acme-challenge {
+	alias "{{ acme_challenge_dir }}";
+	default_type "text/plain";
+	try_files $uri =404;
+}
+
 add_header X-Frame-Options "SAMEORIGIN" always;
 add_header X-Xss-Protection "1; mode=block" always;
 add_header X-Content-Type-Options "nosniff" always;

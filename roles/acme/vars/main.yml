@@ -1,3 +1,2 @@
 ---
-acme_challenge_dir: /usr/local/www/acme
 acme_client_root: /usr/local/etc/acme

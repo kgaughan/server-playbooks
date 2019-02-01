@@ -17,13 +17,6 @@
   notify:
     - reload nginx
 
-- name: generate the nginx fragment
-  template:
-    src: letsencrypt_params.j2
-    dest: "{{ webserver_config }}/letsencrypt_params"
-  notify:
-    - reload nginx
-
 - name: generate the renewal script
   template:
     src: acme-client.sh.j2
