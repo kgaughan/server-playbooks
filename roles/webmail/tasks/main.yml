@@ -36,9 +36,17 @@
     password: "{{ webmail_db_password }}"
     priv: "roundcube.*:SELECT,INSERT,UPDATE,DELETE"
 
-- name: deploy config
+- name: deploy roundcube config
   template:
-    src: config.inc.php.j2
+    src: roundcube.config.inc.php.j2
     dest: "/usr/local/www/roundcube/config/config.inc.php"
-  notify:
-    - reload nginx
+    owner: www
+    group: www
+    mode: 0700
+
+- name: deploy managesieve config
+  template:
+    src: managesieve.config.inc.php.j2
+    dest: "/usr/local/www/roundcube/plugins/managesieve/config.inc.php"
+    owner: www
+    group: www
