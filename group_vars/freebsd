@@ -7,6 +7,7 @@ ntp_servers:
   - 3.europe.pool.ntp.org
 tls_root: /usr/local/etc/ssl/acme
 webserver_config: /usr/local/etc/nginx
+webserver_logs: /var/log/www
 backup_locations:
   - /home/keith
 backup_enabled: true

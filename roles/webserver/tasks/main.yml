@@ -14,6 +14,12 @@
     - extra
     - vhosts
 
+- name: ensure log directory exist
+  file:
+    name: "{{ webserver_logs }}"
+    state: directory
+    mode: 0755
+
 - name: copy up config fragments
   copy:
     src: "{{ item }}"
