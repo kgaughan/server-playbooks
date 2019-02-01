@@ -14,14 +14,6 @@
   notify:
     - reload nginx
 
-- name: ensure creds directory exists
-  file:
-    dest: /usr/local/etc/creds
-    state: directory
-    owner: root
-    group: wheel
-    mode: 0700
-
 - name: create database
   mysql_db:
     name: roundcube
