@@ -12,6 +12,7 @@ backup_locations:
   - /home/keith
 backup_enabled: true
 smarthost: mail.talideon.com
+webmail_site: webmail.talideon.com
 forwarding:
   - user: root
     email: k@stereochro.me

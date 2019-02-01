@@ -23,4 +23,10 @@ Bugs
 * The *mynetworks* list is hardwired in *roles/mailserver/templates/main.cf.j2*
   making it difficult to keep the list of host IPs in sync.
 
+* Deploying a new site needs an extra step with ACME. First, you need to deploy
+  a basic vhost listening on port 80, and run
+  ``/usr/local/etc/periodic/weekly/000.acme-client.sh`` to trigger the process
+  of generating the certificate. Then and only then can the HTTPS vhost be
+  deployed.
+
 .. vim:set ft=rst:

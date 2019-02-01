@@ -51,6 +51,14 @@
   tags:
     - torrent
 
+- hosts: webmail
+  remote_user: keith
+  become: true
+  roles:
+    - webmail
+  tags:
+    - webmail
+
 - hosts: webservers
   remote_user: keith
   become: true

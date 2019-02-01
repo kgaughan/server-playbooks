@@ -28,6 +28,9 @@ mailservers:
 nameservers:
 	$(CMD) --tags=nameserver
 
+webmail:
+	$(CMD) --tags=webmail
+
 webservers:
 	$(CMD) --tags=webserver
 

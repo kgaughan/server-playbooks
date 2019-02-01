@@ -1,0 +1,17 @@
+server {
+	include common_params;
+	include php_params;
+	include ssl_params;
+
+	server_name {{ webmail_site }};
+	root /usr/local/www/roundcube;
+	index index.php index.html index.htm;
+
+	include letsencrypt_params;
+
+	ssl_certificate {{ tls_root }}/{{ webmail_site }}/fullchain.pem;
+	ssl_certificate_key {{ tls_root }}/private/{{ webmail_site }}.pem;
+
+	access_log {{ webserver_logs }}/{{ webmail_site }}.access.log combined;
+	error_log {{ webserver_logs }}/{{ webmail_site }}.error.log;
+}

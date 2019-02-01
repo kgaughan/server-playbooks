@@ -1,0 +1,8 @@
+---
+dependencies:
+  - role: mysql
+  - role: php
+  - role: acme
+    vars:
+      acme_domains:
+        "webmail.talideon.com": []

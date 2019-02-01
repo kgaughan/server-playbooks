@@ -1,0 +1,44 @@
+---
+- name: install packages
+  pkgng:
+    name:
+      - roundcube-php72
+      - roundcube-sieverules-php72
+      - py27-pymysql
+    cached: true
+
+- name: deploy vhost
+  template:
+    src: vhost.j2
+    dest: "{{ webserver_config }}/vhosts/{{ webmail_site }}"
+  notify:
+    - reload nginx
+
+- name: ensure creds directory exists
+  file:
+    dest: /usr/local/etc/creds
+    state: directory
+    owner: root
+    group: wheel
+    mode: 0700
+
+- name: create database
+  mysql_db:
+    name: roundcube
+    state: present
+    encoding: utf8
+  notify:
+    - initialise roundcube database
+
+- name: create roundcube database user
+  mysql_user:
+    name: roundcube
+    password: "{{ webmail_db_password }}"
+    priv: "roundcube.*:SELECT,INSERT,UPDATE,DELETE"
+
+- name: deploy config
+  template:
+    src: config.inc.php.j2
+    dest: "/usr/local/www/roundcube/config/config.inc.php"
+  notify:
+    - reload nginx
