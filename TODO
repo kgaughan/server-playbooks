@@ -13,9 +13,8 @@ Hosts
 
 * Ensure `site deployment <https://github.com/kgaughan/sites>`_ works properly.
 * Test manann as a primary MX.
-* Deploy webmail.talideon.com on eimhir as a test run of splitting my ACME and
-  webserver configuration up.
 * Configure a WebDAV server on manann, possibly dav.talideon.com.
+* Get managesieve working.
 
 Bugs
 ====

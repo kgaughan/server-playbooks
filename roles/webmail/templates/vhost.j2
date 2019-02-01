@@ -9,6 +9,8 @@ server {
 
 	include letsencrypt_params;
 
+	add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'" always;
+
 	ssl_certificate {{ tls_root }}/{{ webmail_site }}/fullchain.pem;
 	ssl_certificate_key {{ tls_root }}/private/{{ webmail_site }}.pem;
 
