@@ -1,7 +1,5 @@
 ---
-- name: reload nginx
+- name: reload php-fpm
   service:
-    name: nginx
-    enabled: true
+    name: php-fpm
     state: reloaded
-  ignore_errors: true

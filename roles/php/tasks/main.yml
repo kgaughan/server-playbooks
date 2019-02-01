@@ -5,17 +5,29 @@
       - php72
     cached: true
 
+- name: copy up upstream php-fpm socket config
+  copy:
+    src: php_socket
+    dest: "{{ webserver_config }}/extra/"
+  notify:
+    - reload nginx
+
+- name: copy up vhost config fragment
+  copy:
+    src: php_params
+    dest: "{{ webserver_config }}/"
+  notify:
+    - reload nginx
+
+- name: copy up php-fpm.conf
+  copy:
+    src: php-fpm.conf
+    dest: "/usr/local/etc/"
+  notify:
+    - reload php-fpm
+
 - name: start php-fpm
   service:
     name: php-fpm
     enabled: true
     state: started
-
-- name: copy up config fragments
-  copy:
-    src: "{{ item }}"
-    dest: "{{ webserver_config }}/"
-  with_items:
-    - php_params
-  notify:
-    - reload nginx
