@@ -46,6 +46,8 @@
     regexp: "^{{ item }} "
     line: "{{ item }} {{ item | subdomains(acme_domains[item]) | join(' ') }}"
   with_items: '{{ acme_domains.keys() | list }}'
+  notify:
+    - generate missing certificates
 
 - name: populate periodic.conf
   lineinfile:

@@ -1,0 +1,17 @@
+server {
+	include common_params;
+	include php_params;
+	include ssl_params;
+
+	server_name {{ feedreader_site }};
+	root /usr/local/www/tt-rss;
+	index index.php index.html index.htm;
+
+	add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: *; object-src 'self' https:" always;
+
+	ssl_certificate {{ tls_root }}/{{ feedreader_site }}/fullchain.pem;
+	ssl_certificate_key {{ tls_root }}/private/{{ feedreader_site }}.pem;
+
+	access_log {{ webserver_logs }}/{{ feedreader_site }}.access.log combined;
+	error_log {{ webserver_logs }}/{{ feedreader_site }}.error.log;
+}

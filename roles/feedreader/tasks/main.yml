@@ -4,4 +4,41 @@
     name:
       - tt-rss
       - php72-filter  # missing dependency
+      - php72-opcache  # recommended
+      - py27-pymysql
     cached: true
+
+- name: deploy vhost
+  template:
+    src: vhost.j2
+    dest: "{{ webserver_config }}/vhosts/{{ feedreader_site }}"
+  notify:
+    - reload nginx
+
+- name: create database
+  mysql_db:
+    name: ttrss
+    state: present
+    encoding: utf8
+  notify:
+    - initialise tt-rss database
+
+- name: create database user
+  mysql_user:
+    name: ttrss
+    password: "{{ ttrss_db_password }}"
+    priv: "ttrss.*:SELECT,INSERT,UPDATE,DELETE"
+
+- name: deploy roundcube config
+  template:
+    src: config.php.j2
+    dest: "/usr/local/www/tt-rss/config.php"
+    owner: www
+    group: www
+    mode: 0700
+
+- name: enable update daemon
+  service:
+    name: ttrssd
+    enabled: true
+    state: started
