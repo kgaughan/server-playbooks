@@ -22,8 +22,8 @@ Bugs
 
 * Deploying a new site needs an extra step with ACME. While there's a default
   vhost listening on port 80, the deployment of the vhost configuration before
-  running ``/usr/local/etc/periodic/weekly/000.acme-client.sh`` will prevent
-  the generation of the certificate. The job should be run *before* the vhost
-  config is deployed if the vhost config isn't already present.
+  running ``/usr/local/etc/acme/acme-client.sh`` will prevent the generation of
+  the certificate. The job should be run *before* the vhost config is deployed
+  if the vhost config isn't already present.
 
 .. vim:set ft=rst:
