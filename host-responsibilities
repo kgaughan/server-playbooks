@@ -26,14 +26,14 @@ nameserver host. That's hosted in a different location from lir, however. That
 gives me a total of four nameservers. ns{1,2,3,4}.talideon.com are currently
 `configured <https://github.com/kgaughan/zones>`_ as follows:
 
-=== ===========================
-NS  Actual
-=== ===========================
-ns1 n/a
-ns2 statler.moybella.net
-ns3 ns2.blacknightsolutions.com
-ns4 cian.talideon.com
-=== ===========================
+=== =========================== ===========================
+NS  Actual                      Eventual
+=== =========================== ===========================
+ns1 n/a                         lir.talideon.com
+ns2 statler.moybella.net        floyd.moybella.net
+ns3 ns2.blacknightsolutions.com ns2.blacknightsolutions.com
+ns4 cian.talideon.com           eimhir.talideon.com
+=== =========================== ===========================
 
 I intend on keeping most of this setup, but replacing ns1 and ns4. ns1 will
 become lir.talideon.com, and ns4 will become eimhir.talideon.com.
