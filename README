@@ -6,6 +6,13 @@ These are the Ansible playbooks I use for setting up my servers. I use FreeBSD
 on them exclusively, so they may be of limited utility to people using other
 OSs.
 
+See the TODO__ file for details on what work I have left. For a summary of
+what each of the individual baremetal machines and VMs is for, see
+host-responsibilities__.
+
+.. __: TODO
+.. __: host-responsibilities
+
 Use
 ===
 
@@ -27,8 +34,10 @@ Nameserver role
 ===============
 
 This role just does basic setup needed for both primary and secondary
-nameservers. The actual heavy lifting is in a seperate repo which contains the
-zonefiles.
+nameservers. The actual heavy lifting is in a `seperate repo`__ which contains
+the zonefiles.
+
+.. __: https://github.com/kgaughan/zones
 
 Buildserver role
 ================
@@ -59,24 +68,5 @@ To do this::
 
 I haven't had issues since, and should probably make that a task, but haven't
 thought of a nice way to do it.
-
-Ideas for further changes
-=========================
-
-* Consider blacklistd:
-  https://gioarc.me/2017/05/29/blacklistd-a-new-approach-to-blocking-attackers/
-* SSHFP:
-  http://jpmens.net/2012/11/03/an-action-plugin-for-ansible-to-handle-ssh-host-keys/
-
-To do
-=====
-
-Configure:
-
-* OAuth server.
-
-Nice to have:
-
-* Secondary MX
 
 .. vim:set ft=rst:

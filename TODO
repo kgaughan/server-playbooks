@@ -9,9 +9,13 @@ Playbook
   dav.talideon.com. This is pending the merger of a patch__ into the FreeBSD
   ports tree.
 
-.. __: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235423
-
 * Separate out a 'tarsnap' role.
+
+* It would be nice to have a role for deploying an OAuth server.
+
+* A nice to have would be a *secondary MX*.
+
+.. __: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235423
 
 Hosts
 =====
@@ -22,9 +26,9 @@ Hosts
   domains.txt customisation. Need got switch subdomains other than 'www' away
   from using a common certificate.]
 
-.. __: https://github.com/kgaughan/sites
-
 * Test manann as a primary MX. [Will require certificate migration.]
+
+.. __: https://github.com/kgaughan/sites
 
 Bugs
 ====
@@ -37,5 +41,15 @@ Bugs
   running ``/usr/local/etc/acme/acme-client.sh`` will prevent the generation of
   the certificate. The job should be run *before* the vhost config is deployed
   if the vhost config isn't already present.
+
+Ideas for further changes
+=========================
+
+* Consider blacklistd__
+
+* SSHFP__
+
+.. __: https://gioarc.me/2017/05/29/blacklistd-a-new-approach-to-blocking-attackers/
+.. __: http://jpmens.net/2012/11/03/an-action-plugin-for-ansible-to-handle-ssh-host-keys/
 
 .. vim:set ft=rst:

@@ -80,16 +80,16 @@ All other sites will be distributed between lir and manann as I see fit.
 manann will also act as a WebDAV server so I can have a backing store for
 Joplin__.
 
-. __: https://joplin.cozic.net/
+.. __: https://joplin.cozic.net/
 
 XMPP
 ====
 
-TBD.
+TBD. There's a role there, but I don't know if I'll ever use it.
 
 Build server
 ============
 
-TBS, likely lir.
+TBD, likely lir.
 
 .. vim:set ft=rst:
