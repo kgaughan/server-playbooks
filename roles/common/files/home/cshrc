@@ -11,6 +11,11 @@ alias la	ls -aF
 alias lf	ls -FA
 alias ll	ls -lAF
 
+# Make life a bit easier regarding svn when I need it.
+if (! -e /usr/local/bin/svn && -e /usr/bin/svnlite) then
+	alias svn svnlite
+endif
+
 # These are normally set through /etc/login.conf.  You may override them here
 # if wanted.
 # set path = (/sbin /bin /usr/sbin /usr/bin /usr/local/sbin /usr/local/bin $HOME/bin)
