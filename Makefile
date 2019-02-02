@@ -19,6 +19,9 @@ bootstrap-do:
 all:
 	$(CMD) --skip-tags=buildserver
 
+dav:
+	$(CMD) --tags=dav
+
 feedreaders:
 	$(CMD) --tags=feedreader
 
@@ -41,4 +44,5 @@ buildservers:
 	$(CMD) --tags=buildserver
 
 .PHONY: bootstrap clean default site
-.PHONY: mailservers nameservers buildservers webservers acme xmpp
+.PHONY: mailservers nameservers buildservers webservers xmpp
+.PHONY: dav feedreaders webmail

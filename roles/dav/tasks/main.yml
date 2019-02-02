@@ -1,0 +1,6 @@
+---
+- name: install packages
+  pkgng:
+    name:
+      - py27-WsgiDAV
+    cached: true

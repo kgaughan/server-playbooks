@@ -19,6 +19,14 @@
   tags:
     - buildserver
 
+- hosts: dav
+  remote_user: keith
+  become: true
+  roles:
+    - dav
+  tags:
+    - dav
+
 - hosts: feedreaders
   remote_user: keith
   become: true

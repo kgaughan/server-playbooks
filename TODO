@@ -8,6 +8,8 @@ Playbook
 * Create a 'dav' role for spinning up a WebDAV server on manann, possibly
   dav.talideon.com.
 
+* Separate out a 'tarsnap' role.
+
 Hosts
 =====
 

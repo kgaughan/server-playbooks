@@ -15,6 +15,9 @@ ansible_python_interpreter=/usr/local/bin/python
 lir.talideon.com
 manann.talideon.com
 
+[dav]
+manann.talideon.com
+
 [digitalocean]
 eimhir.talideon.com
 
@@ -23,10 +26,6 @@ eimhir.talideon.com
 
 [mailservers]
 manann.talideon.com
-
-[webservers]
-manann.talideon.com
-eimhir.talideon.com
 
 [nameservers]
 lir.talideon.com
