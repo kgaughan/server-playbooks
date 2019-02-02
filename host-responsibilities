@@ -29,8 +29,8 @@ gives me a total of four nameservers. ns{1,2,3,4}.talideon.com are currently
 === =========================== ===========================
 NS  Actual                      Eventual
 === =========================== ===========================
-ns1 n/a                         lir.talideon.com
-ns2 statler.moybella.net        floyd.moybella.net
+ns1 lir.talideon.com            lir.talideon.com
+ns2 floyd.moybella.net          floyd.moybella.net
 ns3 ns2.blacknightsolutions.com ns2.blacknightsolutions.com
 ns4 cian.talideon.com           eimhir.talideon.com
 === =========================== ===========================
@@ -42,9 +42,9 @@ There are currently some configuration differences between the zones as
 deployed on cian and `my zones repo <https://github.com/kgaughan/zones>`_.
 These need to be resolved.
 
-ns4 is currently acting as the primary nameserver, but I intend on making
-lir (ns1) the primary again, as soon as cian can be deprecated and replaced
-with eimhir.
+ns1 is now the master, but, ns1, ns2, and ns4 will all need to have their
+corresponding glue records updated. eimhir is prepped for changeover to
+become the new ns4.
 
 Mailservers
 ===========
