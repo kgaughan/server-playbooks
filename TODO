@@ -6,15 +6,25 @@ Playbook
 ========
 
 * Create a 'dav' role for spinning up a WebDAV server on manann, possibly
-  dav.talideon.com.
+  dav.talideon.com. This is pending the merger of a patch__ into the FreeBSD
+  ports tree.
+
+.. __: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235423
 
 * Separate out a 'tarsnap' role.
 
 Hosts
 =====
 
-* Ensure `site deployment <https://github.com/kgaughan/sites>`_ works properly.
-* Test manann as a primary MX.
+* Ensure `site deployment`__ works properly. [Update: after some work, I got
+  mirrors.talideon.com to deploy, but it needs some work regarding
+  talideon.com itself. Will need some mechanism for vhost customisation and
+  domains.txt customisation. Need got switch subdomains other than 'www' away
+  from using a common certificate.]
+
+.. __: https://github.com/kgaughan/sites
+
+* Test manann as a primary MX. [Will require certificate migration.]
 
 Bugs
 ====
