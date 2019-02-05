@@ -1,0 +1,12 @@
+---
+- name: install packages
+  pkgng:
+    name:
+      - immortal
+    cached: true
+
+- name: start the service
+  service:
+    name: immortaldir
+    enabled: true
+    state: started
