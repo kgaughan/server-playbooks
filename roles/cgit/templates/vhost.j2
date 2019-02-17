@@ -1,0 +1,38 @@
+server {
+	include common_params;
+	include ssl_params;
+
+	server_name {{ repos_site }};
+	root /usr/local/www/cgit;
+
+	try_files $uri @cgit;
+
+	location @cgit {
+		include fastcgi_params;
+
+		fastcgi_param SCRIPT_FILENAME $document_root/cgit.cgi;
+		fastcgi_param PATH_INFO       $uri;
+		fastcgi_param QUERY_STRING    $args;
+		fastcgi_param HTTP_HOST       $server_name;
+
+		fastcgi_pass unix:/var/run/fcgiwrap/fcgiwrap.sock;
+	}
+
+	add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: *; object-src 'self' https:" always;
+
+	ssl_certificate {{ tls_root }}/{{ repos_site }}/fullchain.pem;
+	ssl_certificate_key {{ tls_root }}/private/{{ repos_site }}.pem;
+
+	access_log {{ webserver_logs }}/{{ repos_site }}.access.log combined;
+	error_log {{ webserver_logs }}/{{ repos_site }}.error.log;
+}
+
+server {
+	include common_params;
+
+	listen 80;
+	listen [::]:80;
+
+	server_name {{ repos_site }};
+	return 301 https://{{ repos_site }}$request_uri;
+}

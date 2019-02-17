@@ -15,6 +15,7 @@ backup_enabled: true
 smarthost: mail.talideon.com
 webmail_site: webmail.talideon.com
 feedreader_site: reader.talideon.com
+repos_site: repos.talideon.com
 forwarding:
   - user: root
     email: k@stereochro.me

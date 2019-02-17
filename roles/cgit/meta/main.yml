@@ -1,0 +1,7 @@
+---
+dependencies:
+  - role: acme
+    vars:
+      acme_domains:
+        "{{ repos_site }}": []
+  - role: fcgiwrap

@@ -1,0 +1,13 @@
+---
+- name: install package
+  pkgng:
+    name:
+      - cgit
+    cached: true
+
+- name: deploy vhost
+  template:
+    src: vhost.j2
+    dest: "{{ webserver_config }}/vhosts/{{ repos_site }}"
+  notify:
+    - reload nginx

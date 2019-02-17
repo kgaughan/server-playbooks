@@ -51,6 +51,14 @@
   tags:
     - nameserver
 
+- hosts: repos
+  remote_user: keith
+  become: true
+  roles:
+    - cgit
+  tags:
+    - repo
+
 - hosts: torrent
   remote_user: keith
   become: true

@@ -43,6 +43,9 @@ xmpp:
 buildservers:
 	$(CMD) --tags=buildserver
 
+repos:
+	$(CMD) --tags=repo
+
 .PHONY: bootstrap clean default site
 .PHONY: mailservers nameservers buildservers webservers xmpp
-.PHONY: dav feedreaders webmail
+.PHONY: dav feedreaders webmail repos
