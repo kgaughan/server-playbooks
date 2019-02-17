@@ -46,15 +46,16 @@
     regexp: "^{{ item }} "
     line: "{{ item }} {{ item | subdomains(acme_domains[item]) | join(' ') }}"
   loop: '{{ acme_domains.keys() | list }}'
-  notify:
-    - generate missing certificates
 
 - name: populate periodic.conf
   lineinfile:
     dest: /etc/periodic.conf
     regexp: "^#?{{ item.split('=', 1) | first }}="
     line: "{{ item }}"
-  with_items:
+  loop:
     - weekly_acme_client_enable=YES
     - weekly_acme_client_renewscript="{{ acme_client_root }}/acme-client.sh"
     - weekly_acme_client_deployscript="{{ acme_client_root }}/deploy.sh"
+
+- include_tasks: bootstrap.yml
+  loop: "{{ acme_domains | dict2items }}"

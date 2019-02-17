@@ -1,3 +1,0 @@
----
-- name: generate missing certificates
-  command: /usr/local/etc/periodic/weekly/000.acme-client.sh

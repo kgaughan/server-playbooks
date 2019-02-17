@@ -1,0 +1,8 @@
+server {
+	include common_params;
+
+	listen 80;
+	listen [::]:80;
+
+	server_name {{ item.key }} {{ item.key | subdomains(item.value) | join(' ') }};
+}
