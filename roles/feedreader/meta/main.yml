@@ -5,4 +5,4 @@ dependencies:
   - role: acme
     vars:
       acme_domains:
-        "reader.talideon.com": []
+        "{{ feedreader_site }}": []
