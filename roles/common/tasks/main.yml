@@ -6,7 +6,7 @@
     owner: keith
     group: wheel
     mode: 0644
-  with_items:
+  loop:
     - cshrc
     - login
     - login_conf

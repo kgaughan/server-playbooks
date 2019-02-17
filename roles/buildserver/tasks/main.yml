@@ -31,4 +31,4 @@
   command: poudriere jail -c -j {{ item.name | quote }} -v {{ item.version | quote }}
   args:
     creates: "{{ poudriere_basefs }}/jails/{{ item.name }}"
-  with_items: "{{ build_jails }}"
+  loop: "{{ build_jails }}"

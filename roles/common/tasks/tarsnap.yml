@@ -44,7 +44,7 @@
     dest: /etc/periodic.conf
     regexp: "^#?{{ item.split('=', 1) | first }}="
     line: "{{ item }}"
-  with_items:
+  loop:
     # Daily backups are kept for only a week.
     - daily_tarsnap_backup_enable={{ "YES" if backup_enabled else "NO" }}
     - daily_tarsnap_backup_paths="{{ backup_locations | join(' ') }}"

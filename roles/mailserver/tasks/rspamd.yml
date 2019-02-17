@@ -8,7 +8,7 @@
   file:
     dest: "{{ rspamd_root }}/{{ item }}"
     state: directory
-  with_items:
+  loop:
     - local.d
     - override.d
 

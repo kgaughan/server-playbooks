@@ -21,7 +21,7 @@
     user: "{{ item }}"
     key: https://github.com/kgaughan.keys
     state: present
-  with_items:
+  loop:
     - root
     - keith
 

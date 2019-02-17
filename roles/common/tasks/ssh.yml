@@ -23,7 +23,7 @@
     regexp: "^#?{{ item.key }}\\s"
     line: '{{ item.key }} {{ item["values"] | join(",") }}'
     validate: '/usr/sbin/sshd -T -f %s'
-  with_items:
+  loop:
     - key: KexAlgorithms
       values:
         - curve25519-sha256@libssh.org

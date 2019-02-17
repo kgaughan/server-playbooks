@@ -25,6 +25,6 @@
     dest: /etc/aliases
     regexp: '^#?{{ item.user }}:'
     line: "{{ item.user }}: {{ item.email }}"
-  with_items: "{{ forwarding }}"
+  loop: "{{ forwarding }}"
   notify:
     - run newaliases
