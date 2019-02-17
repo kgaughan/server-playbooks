@@ -5,7 +5,7 @@
       - fcgiwrap
     cached: true
 
-- name: configure ntimed
+- name: configure the socket group to allow nginx to access it
   command: "sysrc fcgiwrap_socket_group='www'"
   changed_when: false
 
