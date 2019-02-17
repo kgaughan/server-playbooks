@@ -1,0 +1,16 @@
+---
+- name: install package
+  pkgng:
+    name:
+      - fcgiwrap
+    cached: true
+
+- name: configure ntimed
+  command: "sysrc fcgiwrap_socket_group='www'"
+  changed_when: false
+
+- name: start the service
+  service:
+    name: fcgiwrap
+    enabled: true
+    state: started
