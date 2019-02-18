@@ -15,7 +15,12 @@ Playbook
 
 * A nice to have would be a *secondary MX*.
 
+* Add a wireguard__ role. This would give me a VPN between my various servers,
+  allowing me to expose services between servers without exposing them to the
+  internet as a whole.
+
 .. __: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235423
+.. __: https://www.wireguard.com/
 
 Hosts
 =====
