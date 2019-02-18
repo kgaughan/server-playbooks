@@ -1,4 +1,4 @@
-ext_if="{{ iface }}"
+ext_if="{{ ansible_default_ipv4.interface }}"
 
 # Services to allow through
 http = "{ http https 8080 }"

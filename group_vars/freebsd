@@ -1,22 +1,19 @@
 ---
-iface: '{{ ansible_default_ipv4.interface }}'
-ntp_servers:
-  - 0.europe.pool.ntp.org
-  - 1.europe.pool.ntp.org
-  - 2.europe.pool.ntp.org
-  - 3.europe.pool.ntp.org
+# Where TLS certs are stored.
 tls_root: /usr/local/etc/ssl/acme
 webserver_config: /usr/local/etc/nginx
 webserver_logs: /var/log/www
+# The directory exposed as /.well-known/acme-challenge everywhere.
 acme_challenge_dir: /usr/local/www/acme
+
 backup_locations:
   - /home/keith
 backup_enabled: true
+
+# The host anything running DMA should use as a smarthost.
 smarthost: mail.talideon.com
-dav_site: dav.talideon.com
-webmail_site: webmail.talideon.com
-feedreader_site: reader.talideon.com
-repos_site: repos.talideon.com
+
+# The address to which various accounts should forward their email.
 forwarding:
   - user: root
     email: k@stereochro.me

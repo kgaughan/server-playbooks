@@ -1,4 +1,15 @@
 ---
+# Whether tarsnap should be enabled. Once tarsnap is separated out into its
+# own role, this will be obsolete.
 backup_enabled: false
+# Directories subject to backup with tarsnap.
+backup_locations: []
 tarsnap_key_path: /root/tarsnap.key
 tarsnap_user: k@stereochro.me
+
+# A reasonable set of defaults.
+ntp_servers:
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org

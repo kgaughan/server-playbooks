@@ -1,2 +1,6 @@
 ---
+# A dictionary with a set of domains as the keys and a list of subdomains as
+# the values.
 acme_domains: {}
+# The directory exposed as /.well-known/acme-challenge everywhere.
+acme_challenge_dir: /usr/local/www/acme
