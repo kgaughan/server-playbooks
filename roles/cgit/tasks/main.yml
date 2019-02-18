@@ -1,9 +1,21 @@
 ---
-- name: install package
+- name: install packages
   pkgng:
     name:
       - cgit
+      - git
     cached: true
+
+- name: deploy configuration
+  template:
+    src: cgitrc.j2
+    dest: /usr/local/etc/cgitrc
+
+- name: ensure repo directory exists
+  file:
+    path: "{{ repos_path }}"
+    state: directory
+    mode: 0755
 
 - name: deploy vhost
   template:
