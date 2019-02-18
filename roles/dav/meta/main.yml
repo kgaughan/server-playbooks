@@ -3,4 +3,4 @@ dependencies:
   - role: acme
     vars:
       acme_domains:
-        "dav.talideon.com": []
+        "{{ dav_site }}": []

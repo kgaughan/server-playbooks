@@ -13,6 +13,7 @@ backup_locations:
   - /home/keith
 backup_enabled: true
 smarthost: mail.talideon.com
+dav_site: dav.talideon.com
 webmail_site: webmail.talideon.com
 feedreader_site: reader.talideon.com
 repos_site: repos.talideon.com
