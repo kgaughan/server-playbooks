@@ -1,9 +1,0 @@
----
-poudriere_basefs: /usr/local/poudriere
-distfiles_cache: /usr/ports/distfiles
-build_jails:
-  # The point of this jail is to build a version of Dovecot with LZ4 support.
-  # This will let me get at some mail I haven't had access to in quite some
-  # time.
-  - name: 10amd64
-    version: 10.3-RELEASE

@@ -11,14 +11,6 @@
   roles:
     - dma
 
-- hosts: buildservers
-  remote_user: keith
-  become: true
-  roles:
-    - buildserver
-  tags:
-    - buildserver
-
 - hosts: dav
   remote_user: keith
   become: true

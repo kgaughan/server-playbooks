@@ -39,17 +39,6 @@ the zonefiles.
 
 .. __: https://github.com/kgaughan/zones
 
-Buildserver role
-================
-
-To build a port (here 'mail/dovecot' in the '10amd64' jail), run::
-
-    sudo poudriere bulk -j 10amd64 mail/dovecot
-
-To update the ports tree::
-
-    sudo poudriere ports -u
-
 Hetzner
 =======
 

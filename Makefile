@@ -14,10 +14,8 @@ bootstrap:
 bootstrap-do:
 	ansible-playbook -i $(HOSTS) bootstrap-do.yml
 
-# buildserver isn't included by default as I tend to use Synth more than
-# Poudriere, but it's good to have documented.
 all:
-	$(CMD) --skip-tags=buildserver
+	$(CMD)
 
 dav:
 	$(CMD) --tags=dav
@@ -40,12 +38,9 @@ webservers:
 xmpp:
 	$(CMD) --tags=xmpp
 
-buildservers:
-	$(CMD) --tags=buildserver
-
 repos:
 	$(CMD) --tags=repo
 
 .PHONY: bootstrap clean default site
-.PHONY: mailservers nameservers buildservers webservers xmpp
+.PHONY: mailservers nameservers webservers xmpp
 .PHONY: dav feedreaders webmail repos
