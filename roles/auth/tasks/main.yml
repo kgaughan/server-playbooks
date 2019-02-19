@@ -1,9 +1,22 @@
 ---
+- name: install packages
+  pkgng:
+    name:
+      - python3
+    cached: true
+
 - name: ensure the tools directory exists
   file:
     name: "{{ tools_root }}"
     state: directory
-    mode: 755
+    mode: 0755
+
+- name: ensure the socket directory exists
+  file:
+    name: "{{ auth_app_sock | dirname }}"
+    state: directory
+    mode: 0755
+    owner: www
 
 - name: copy up the app
   copy:

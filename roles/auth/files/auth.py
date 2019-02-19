@@ -148,9 +148,9 @@ def main():
 
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
 
-    if os.path.exists(os.unix):
+    if os.path.exists(args.unix):
         logging.info("Removing existing socket at %s", args.unix)
-        os.unlink(os.unix)
+        os.unlink(args.unix)
 
     server = UnixWSGIServer(args.unix, simple_server.WSGIRequestHandler)
     server.set_app(AuthServer(args.service, args.mech, args.dap))

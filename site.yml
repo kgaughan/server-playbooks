@@ -11,6 +11,14 @@
   roles:
     - dma
 
+- hosts: auth
+  remote_user: keith
+  become: true
+  roles:
+    - auth
+  tags:
+    - auth
+
 - hosts: dav
   remote_user: keith
   become: true

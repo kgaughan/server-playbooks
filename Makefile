@@ -41,6 +41,9 @@ xmpp:
 repos:
 	$(CMD) --tags=repo
 
+auth:
+	$(CMD) --tags=auth
+
 .PHONY: bootstrap clean default site
 .PHONY: mailservers nameservers webservers xmpp
-.PHONY: dav feedreaders webmail repos
+.PHONY: dav feedreaders webmail repos auth
