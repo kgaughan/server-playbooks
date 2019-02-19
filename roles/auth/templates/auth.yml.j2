@@ -1,0 +1,14 @@
+---
+cmd: /usr/local/bin/python3 {{ tools_root }}/auth.py --unix {{ auth_app_sock }} --dap /var/run/dovecot/auth-client
+env:
+  PYTHONPATH: {{ tools_root }}
+log:
+  file: {{ webserver_logs }}/auth.log
+  age: 86400
+  num: 7
+  size: 1
+user: www
+group: mail
+wait: 1
+
+# vim:set ft=yaml:

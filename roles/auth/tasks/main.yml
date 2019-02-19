@@ -1,0 +1,24 @@
+---
+- name: ensure the tools directory exists
+  file:
+    name: "{{ tools_root }}"
+    state: directory
+    mode: 755
+
+- name: copy up the app
+  copy:
+    src: "{{ item }}"
+    dest: "{{ tools_root }}"
+  loop:
+    - auth.py
+    - dovecotauth.py
+
+- name: deploy immortal configuration
+  template:
+    src: auth.yml.j2
+    dest: "/usr/local/etc/immortal/auth.yml"
+
+- name: deploy nginx fragment
+  template:
+    src: auth_params.j2
+    dest: "{{ webserver_config }}/auth_params"

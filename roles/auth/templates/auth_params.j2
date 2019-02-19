@@ -1,0 +1,19 @@
+# To use this, include this in your server block and add the following to your
+# location block:
+#
+#     auth_request /auth;
+#
+location = /auth {
+	# Not exposed to the outside world.
+	internal;
+
+	proxy_pass http://unix:{{ auth_app_sock }}:/;
+
+	# We only need the headers.
+	proxy_pass_request_body off;
+	proxy_set_header Content-Length "";
+
+	proxy_set_header Host $host;
+	proxy_set_header X-Real-IP $remote_addr;
+	proxy_set_header X-Origin-URI $request_uri;
+}
