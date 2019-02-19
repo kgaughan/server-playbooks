@@ -18,6 +18,8 @@ import socket
 import sys
 from wsgiref import simple_server
 
+import dovecotauth
+
 
 class HTTPError(Exception):
     """
@@ -81,6 +83,12 @@ class AuthServer:
     The WSGI app itself.
     """
 
+    def __init__(self, service, mech, dap):
+        super().__init__()
+        self.service = service
+        self.mech = mech
+        self.dap = dap
+
     def run(self, environ):
         """
         Dispatch request.
@@ -98,8 +106,9 @@ class AuthServer:
         raise BadRequest("Bad Authorization header")
 
     def check(self, username, password):
-        # XXX: basic implementation that always fails.
-        return False
+        with dovecotauth.connect(self.service, unix=self.dap) as proto:
+            success, _ = proto.auth(self.mech, username, password)
+        return success is True  # can be False or None
 
     def __call__(self, environ, start_response):
         """
@@ -132,6 +141,9 @@ class UnixWSGIServer(simple_server.WSGIServer):
 def main():
     parser = argparse.ArgumentParser(description="Simple WSGI auth server.")
     parser.add_argument("--unix", help="Unix socket path", required=True)
+    parser.add_argument("--dap", help="Unix socket path (DAP)", required=True)
+    parser.add_argument("--service", help="Service name", default="imap")
+    parser.add_argument("--mech", help="SASL mechanism", default="PLAIN")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
@@ -141,7 +153,7 @@ def main():
         os.unlink(os.unix)
 
     server = UnixWSGIServer(args.unix, simple_server.WSGIRequestHandler)
-    server.set_app(AuthServer())
+    server.set_app(AuthServer(args.service, args.mech, args.dap))
     server.serve_forever()
 
 
