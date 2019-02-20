@@ -5,8 +5,11 @@
       - fcgiwrap
     cached: true
 
-- name: configure the socket group to allow nginx to access it
-  command: "sysrc fcgiwrap_socket_group='www'"
+- name: push up fcgiwrap config
+  command: "sysrc {{ item }}"
+  loop:
+    - fcgiwrap_user="www"
+    - fcgiwrap_socket_owner="www"
   changed_when: false
 
 - name: start the service

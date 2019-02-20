@@ -18,6 +18,25 @@ server {
 		fastcgi_pass unix:/var/run/fcgiwrap/fcgiwrap.sock;
 	}
 
+	include auth_params;
+	location ~* "^(/.*/(git-receive-pack|git-upload-pack|HEAD|info/refs))$" {
+		# Need to fiddle with wsgiref before enabling this.
+		# auth_request /auth;
+
+		include fastcgi_params;
+
+		# Requests can be *big*
+		client_max_body_size              0;
+
+		fastcgi_param SCRIPT_FILENAME     /usr/local/libexec/git-core/git-http-backend;
+		fastcgi_param GIT_PROJECT_ROOT    "{{ repos_path }}";
+		fastcgi_param GIT_HTTP_EXPORT_ALL "";
+		fastcgi_param REMOTE_USER         $remote_user;
+		fastcgi_param PATH_INFO           $1;
+
+		fastcgi_pass unix:/var/run/fcgiwrap/fcgiwrap.sock;
+	}
+
 	add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: *; object-src 'self' https:" always;
 
 	ssl_certificate {{ tls_root }}/{{ repos_site }}/fullchain.pem;

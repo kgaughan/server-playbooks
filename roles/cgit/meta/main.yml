@@ -5,3 +5,4 @@ dependencies:
       acme_domains:
         "{{ repos_site }}": []
   - role: fcgiwrap
+  - role: auth
