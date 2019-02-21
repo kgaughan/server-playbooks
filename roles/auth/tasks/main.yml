@@ -25,6 +25,8 @@
   loop:
     - auth.py
     - dovecotauth.py
+  notify:
+    - touch the config file to reload
 
 - name: deploy immortal configuration
   template:
