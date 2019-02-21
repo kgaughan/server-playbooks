@@ -92,8 +92,6 @@ class AuthServer:
         """
         Dispatch request.
         """
-        if environ["PATH_INFO"] != "/auth":
-            raise NotFound()
         auth = environ.get("HTTP_AUTHORIZATION")
         if auth is None:
             raise Unauthorized("talideon.com")
