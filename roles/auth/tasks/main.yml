@@ -3,6 +3,7 @@
   pkgng:
     name:
       - python3
+      - py36-bjoern
     cached: true
 
 - name: ensure the tools directory exists

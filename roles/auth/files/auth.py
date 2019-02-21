@@ -14,10 +14,9 @@ from base64 import b64decode
 import logging
 from http import client
 import os
-import socket
 import sys
-from wsgiref import simple_server
 
+import bjoern
 import dovecotauth
 
 
@@ -75,7 +74,7 @@ def make_status_line(code):
     """
     Create a HTTP status line.
     """
-    return "{0} {1}".format(code, client.responses[code])
+    return "{} {}".format(code, client.responses[code])
 
 
 class AuthServer:
@@ -100,14 +99,18 @@ class AuthServer:
             raise Unauthorized("talideon.com")
         parts = auth.split(" ", 1)
         if len(parts) == 2 and parts[0].lower() == "basic":
-            decoded = b64decode(parts[1]).split(":", 1)
-            if len(decoded) == 2 and self.check(decoded[0], decoded[1]):
-                return (client.OK, [], [])
+            creds = b64decode(parts[1]).split(b":", 1)
+            if len(creds) == 2:
+                if self.check(creds[0].decode(), creds[1].decode()):
+                    return (client.OK, [], [])
+                raise Unauthorized("talideon.com")
         raise BadRequest("Bad Authorization header")
 
     def check(self, username, password):
+        logging.info("Checking %s", username)
         with dovecotauth.connect(self.service, unix=self.dap) as proto:
             success, _ = proto.auth(self.mech, username, password)
+        logging.info("Result checking %s: %s", username, success is True)
         return success is True  # can be False or None
 
     def __call__(self, environ, start_response):
@@ -130,14 +133,6 @@ class AuthServer:
             return content
 
 
-class UnixWSGIServer(simple_server.WSGIServer):
-    """
-    Tweaked version of WSGIServer that uses Unix domain sockets.
-    """
-
-    address_family = socket.AF_UNIX
-
-
 def main():
     parser = argparse.ArgumentParser(description="Simple WSGI auth server.")
     parser.add_argument("--unix", help="Unix socket path", required=True)
@@ -146,15 +141,18 @@ def main():
     parser.add_argument("--mech", help="SASL mechanism", default="PLAIN")
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO, stream=sys.stderr)
+    logging.basicConfig(
+        level=logging.INFO,
+        stream=sys.stderr,
+        format="%(asctime)-15s %(levelname)s %(message)s",
+    )
 
     if os.path.exists(args.unix):
         logging.info("Removing existing socket at %s", args.unix)
         os.unlink(args.unix)
 
-    server = UnixWSGIServer(args.unix, simple_server.WSGIRequestHandler)
-    server.set_app(AuthServer(args.service, args.mech, args.dap))
-    server.serve_forever()
+    app = AuthServer(args.service, args.mech, args.dap)
+    bjoern.run(app, "unix:" + args.unix)
 
 
 if __name__ == "__main__":

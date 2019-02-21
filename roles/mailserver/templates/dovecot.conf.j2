@@ -48,10 +48,12 @@ service auth {
     mode = 0600
   }
   unix_listener auth-prosody {
-    path = /var/run/auth-prosody
     mode = 0600
     user = prosody
-    group = prosody
+  }
+  unix_listener auth-www {
+    mode = 0600
+    user = www
   }
   user = root
 }

@@ -20,8 +20,7 @@ server {
 
 	include auth_params;
 	location ~* "^(/.*/(git-receive-pack|git-upload-pack|HEAD|info/refs))$" {
-		# Need to fiddle with wsgiref before enabling this.
-		# auth_request /auth;
+		auth_request /auth;
 
 		include fastcgi_params;
 
