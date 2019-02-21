@@ -26,7 +26,7 @@
     - auth.py
     - dovecotauth.py
   notify:
-    - touch the config file to reload
+    - touch auth supervisor config file to reload
 
 - name: deploy immortal configuration
   template:
