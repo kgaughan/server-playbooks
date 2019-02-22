@@ -8,7 +8,6 @@ acme_challenge_dir: /usr/local/www/acme
 
 backup_locations:
   - /home/keith
-backup_enabled: true
 
 # The host anything running DMA should use as a smarthost.
 smarthost: mail.talideon.com

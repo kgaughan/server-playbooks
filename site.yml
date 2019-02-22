@@ -4,6 +4,7 @@
   become: true
   roles:
     - common
+    - tarsnap
 
 - hosts: "!mailservers"
   remote_user: keith

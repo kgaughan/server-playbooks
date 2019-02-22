@@ -1,7 +1,4 @@
 ---
-# Whether tarsnap should be enabled. Once tarsnap is separated out into its
-# own role, this will be obsolete.
-backup_enabled: false
 # Directories subject to backup with tarsnap.
 backup_locations: []
 tarsnap_key_path: /root/tarsnap.key

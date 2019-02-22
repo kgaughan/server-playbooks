@@ -9,8 +9,6 @@ Playbook
   dav.talideon.com. This is pending the merger of a patch__ into the FreeBSD
   ports tree.
 
-* Separate out a 'tarsnap' role.
-
 * It would be nice to have a role for deploying an OAuth server.
 
 * A nice to have would be a *secondary MX*.

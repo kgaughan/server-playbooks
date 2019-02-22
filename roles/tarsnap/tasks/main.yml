@@ -46,16 +46,16 @@
     line: "{{ item }}"
   loop:
     # Daily backups are kept for only a week.
-    - daily_tarsnap_backup_enable={{ "YES" if backup_enabled else "NO" }}
+    - daily_tarsnap_backup_enable="YES"
     - daily_tarsnap_backup_paths="{{ backup_locations | join(' ') }}"
     - daily_tarsnap_backup_keep=7
 
     # Weekly backups are kept for 35 days (just over a month).
-    - weekly_tarsnap_backup_enable={{ "YES" if backup_enabled else "NO" }}
+    - weekly_tarsnap_backup_enable="YES"
     - weekly_tarsnap_backup_paths="{{ backup_locations | join(' ') }}"
     - weekly_tarsnap_backup_keep=5
 
     # Keep monthly backups for six months.
-    - monthly_tarsnap_backup_enable={{ "YES" if backup_enabled else "NO" }}
+    - monthly_tarsnap_backup_enable="YES"
     - monthly_tarsnap_backup_paths="{{ backup_locations | join(' ') }}"
     - monthly_tarsnap_backup_keep=6
