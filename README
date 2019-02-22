@@ -30,6 +30,14 @@ playbooks with::
 
 This runs all the playbooks listed in `site.yml`.
 
+TLS certs for various sites can be configured initially using::
+
+    make acme
+
+The sites themselves are subsequently deployed from the sites__ repo.
+
+.. __: https://github.com/kgaughan/sites/
+
 Nameserver role
 ===============
 

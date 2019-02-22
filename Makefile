@@ -1,6 +1,6 @@
 HOSTS:=hosts
 
-CMD:=ansible-playbook -i $(HOSTS) $(if $(wildcard ./vault-password),--vault-password-file=./vault-password,--ask-vault-pass) site.yml
+CMD:=ansible-playbook -i $(HOSTS) $(if $(wildcard ./vault-password),--vault-password-file=./vault-password,--ask-vault-pass)
 
 default: all
 
@@ -15,35 +15,38 @@ bootstrap-do:
 	ansible-playbook -i $(HOSTS) bootstrap-do.yml
 
 all:
-	$(CMD)
+	$(CMD) site.yml
 
 dav:
-	$(CMD) --tags=dav
+	$(CMD) site.yml --tags=dav
 
 feedreaders:
-	$(CMD) --tags=feedreader
+	$(CMD) site.yml --tags=feedreader
 
 mailservers:
-	$(CMD) --tags=mailserver
+	$(CMD) site.yml --tags=mailserver
 
 nameservers:
-	$(CMD) --tags=nameserver
+	$(CMD) site.yml --tags=nameserver
 
 webmail:
-	$(CMD) --tags=webmail
+	$(CMD) site.yml --tags=webmail
 
 webservers:
-	$(CMD) --tags=webserver
+	$(CMD) site.yml --tags=webserver
 
 xmpp:
-	$(CMD) --tags=xmpp
+	$(CMD) site.yml --tags=xmpp
 
 repos:
-	$(CMD) --tags=repo
+	$(CMD) site.yml --tags=repo
 
 auth:
-	$(CMD) --tags=auth
+	$(CMD) site.yml --tags=auth
 
-.PHONY: bootstrap clean default site
+acme:
+	$(CMD) acme.yml
+
+.PHONY: bootstrap bootstrap-do clean default
 .PHONY: mailservers nameservers webservers xmpp
 .PHONY: dav feedreaders webmail repos auth
