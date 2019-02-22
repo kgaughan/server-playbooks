@@ -35,12 +35,6 @@ Hosts
 
 .. __: https://github.com/kgaughan/sites
 
-Bugs
-====
-
-* The *mynetworks* list is hardwired in *roles/mailserver/templates/main.cf.j2*
-  making it difficult to keep the list of host IPs in sync.
-
 Ideas for further changes
 =========================
 

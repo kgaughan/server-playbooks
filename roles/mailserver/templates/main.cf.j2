@@ -1,23 +1,7 @@
 # Keep, don't change.
 compatibility_level = 2
 
-mynetworks =
-  # locahost
-  127.0.0.0/8
-  [::1]/128
-  [fe80::]/64
-  # lir (actually have a /64)
-  78.153.202.217
-  [2a01:a8:201::217]
-  # cian
-  45.55.149.240
-  [2604:a880:800:10::716:6001]
-  # manann
-  5.9.82.71
-  [2a01:4f8:162:4e::1:1]
-  # eimhir
-  159.203.59.98
-  2604:a880:cad:d0::c6a:a001
+mynetworks = {{ my_networks | join(" ") }}
 
 myhostname = {{ ansible_fqdn }}
 recipient_delimiter = +
