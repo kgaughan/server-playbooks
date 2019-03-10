@@ -15,3 +15,13 @@ server {
 	access_log {{ webserver_logs }}/{{ webmail_site }}.access.log combined;
 	error_log {{ webserver_logs }}/{{ webmail_site }}.error.log;
 }
+
+server {
+	include common_params;
+
+	listen 80;
+	listen [::]:80;
+
+	server_name {{ webmail_site }};
+	return 301 https://$host$request_uri;
+}
