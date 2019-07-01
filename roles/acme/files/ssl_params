@@ -5,11 +5,13 @@ ssl							on;
 ssl_protocols				TLSv1.2 TLSv1.3;
 ssl_session_cache			shared:SSL:10m;
 ssl_session_timeout			15m;
+ssl_session_tickets			off;
 ssl_prefer_server_ciphers	on;
 
 add_header Strict-Transport-Security 'max-age=15768000; preload';
 
-ssl_ciphers 'CHACHA20:ECDH+AESGCM';
+ssl_ciphers		'CHACHA20:ECDH+AESGCM';
+ssl_ecdh_curve	secp384r1;
 
 ssl_stapling on;
 ssl_stapling_verify on;
