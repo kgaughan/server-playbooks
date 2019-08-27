@@ -42,6 +42,14 @@
   notify:
     - mount all
 
+- name: deactivate unwanted services
+  service:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  loop:
+    - moused
+
 - import_tasks: pf.yml
 - import_tasks: fbsd-update.yml
 - import_tasks: ssh.yml
