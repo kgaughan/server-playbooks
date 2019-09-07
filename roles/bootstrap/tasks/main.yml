@@ -2,16 +2,18 @@
 - name: install python
   raw: sh -c "ASSUME_ALWAYS_YES=yes pkg install python"
 
-- name: install sudo
+- name: install bootstrap packages
   pkgng:
-    name: sudo
+    name:
+      - fish
+      - sudo
 
 - name: create a user
   user:
     name: keith
     comment: Keith Gaughan
     groups: wheel
-    shell: /bin/tcsh
+    shell: /usr/local/bin/fish
     state: present
     generate_ssh_key: true
     ssh_key_type: ed25519

@@ -7,8 +7,6 @@
     group: wheel
     mode: 0644
   loop:
-    - cshrc
-    - login
     - login_conf
     - nexrc
     - tmux.conf
@@ -28,9 +26,11 @@
     name:
       - ca_root_nss
       - duff
+      - fish
       - pkg-rmleaf
       - pwgen
       - rsync
+      - sudo
       - tmux
     cached: true
 
