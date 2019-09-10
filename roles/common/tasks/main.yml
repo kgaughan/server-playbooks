@@ -55,6 +55,3 @@
 - import_tasks: ssh.yml
 - import_tasks: ntimed.yml
 - import_tasks: sendmail.yml
-- import_tasks: tarsnap.yml
-  tags:
-    - tarsnap

@@ -1,0 +1,5 @@
+---
+# Directories subject to backup with tarsnap.
+backup_locations: []
+tarsnap_key_path: /root/tarsnap.key
+tarsnap_user: k@stereochro.me

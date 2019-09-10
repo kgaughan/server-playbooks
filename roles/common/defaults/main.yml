@@ -1,9 +1,4 @@
 ---
-# Directories subject to backup with tarsnap.
-backup_locations: []
-tarsnap_key_path: /root/tarsnap.key
-tarsnap_user: k@stereochro.me
-
 # A reasonable set of defaults.
 ntp_servers:
   - 0.pool.ntp.org
