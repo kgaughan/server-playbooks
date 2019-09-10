@@ -45,7 +45,7 @@
     create: true
     regexp: "^{{ item }} ?"
     line: "{{ item }} {{ item | subdomains(acme_domains[item]) | join(' ') }}"
-  loop: '{{ acme_domains.keys() | list }}'
+  loop: "{{ acme_domains.keys() | list }}"
 
 - name: populate periodic.conf
   lineinfile:

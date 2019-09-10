@@ -9,7 +9,7 @@ eimhir.talideon.com
 ;cian.talideon.com
 
 [freebsd:vars]
-ansible_python_interpreter=/usr/local/bin/python
+ansible_python_interpreter=/usr/local/bin/python3
 
 [baremetal]
 lir.talideon.com

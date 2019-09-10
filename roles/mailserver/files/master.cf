@@ -82,3 +82,8 @@ proxywrite unix -       -       n       -       1       proxymap
 
 sockmap   unix  -      n       n       -       1       spawn
   user=nobody argv=/usr/local/libexec/socketmap-sql
+#smtp      inet  n       -       n       -       1       postscreen
+#smtpd     pass  -       -       n       -       -       smtpd
+#dnsblog   unix  -       -       n       -       0       dnsblog
+#tlsproxy  unix  -       -       n       -       0       tlsproxy
+postlog   unix-dgram n  -       n       -       1       postlogd
