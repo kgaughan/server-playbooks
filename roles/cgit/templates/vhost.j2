@@ -52,5 +52,5 @@ server {
 	listen [::]:80;
 
 	server_name {{ repos_site }};
-	return 301 https://$host$request_uri;
+	return 301 https://{{ repos_site }}$request_uri;
 }

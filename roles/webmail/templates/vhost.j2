@@ -23,5 +23,5 @@ server {
 	listen [::]:80;
 
 	server_name {{ webmail_site }};
-	return 301 https://$host$request_uri;
+	return 301 https://{{ webmail_site }}$request_uri;
 }
