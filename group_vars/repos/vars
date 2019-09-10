@@ -1,0 +1,7 @@
+---
+repos_site: repos.talideon.com
+
+acme_domains:
+  "repos.talideon.com": []
+
+# vim:set ft=yaml:

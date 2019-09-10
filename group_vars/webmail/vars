@@ -1,0 +1,7 @@
+---
+webmail_site: webmail.talideon.com
+
+acme_domains:
+  "webmail.talideon.com": []
+
+# vim:set ft=yaml:

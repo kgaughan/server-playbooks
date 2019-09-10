@@ -1,6 +1,3 @@
 ---
 dependencies:
   - role: acme
-    vars:
-      acme_domains:
-        "{{ dav_site }}": []
