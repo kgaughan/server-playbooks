@@ -2,11 +2,8 @@
 acme_domains:
   talideon.com:
     - bethisad
-    - mail
     - mirrors
     - projects
-    - reader
-    - repos
     - www
   canthack.it:
     - i
