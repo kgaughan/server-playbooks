@@ -6,8 +6,7 @@ Playbook
 ========
 
 * Create a 'dav' role for spinning up a WebDAV server on manann, possibly
-  dav.talideon.com. This is pending the merger of a patch__ into the FreeBSD
-  ports tree.
+  dav.talideon.com.
 
 * It would be nice to have a role for deploying an OAuth server.
 
@@ -17,7 +16,6 @@ Playbook
   allowing me to expose services between servers without exposing them to the
   internet as a whole.
 
-.. __: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235423
 .. __: https://www.wireguard.com/
 
 Hosts

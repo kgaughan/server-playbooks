@@ -2,5 +2,7 @@
 - name: install packages
   pkgng:
     name:
+      - python3
+      - py36-bjoern
       - py36-WsgiDAV
     cached: true
