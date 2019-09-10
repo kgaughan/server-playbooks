@@ -1,0 +1,7 @@
+---
+acme_domains:
+  canthack.it:
+    - i
+    - www
+
+# vim:set ft=yaml:

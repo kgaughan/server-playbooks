@@ -8,9 +8,6 @@ acme_domains:
     - mirrors
     - projects
     - www
-  canthack.it:
-    - i
-    - www
   stereochro.me:
     - www
   dav.talideon.com: []
