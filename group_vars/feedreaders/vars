@@ -1,7 +1,0 @@
----
-feedreader_site: reader.talideon.com
-
-acme_domains:
-  "reader.talideon.com": []
-
-# vim:set ft=yaml:

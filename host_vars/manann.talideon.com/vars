@@ -1,4 +1,7 @@
 ---
+dav_site: dav.talideon.com
+repos_site: repos.talideon.com
+
 acme_domains:
   talideon.com:
     - bethisad
@@ -10,5 +13,8 @@ acme_domains:
     - www
   stereochro.me:
     - www
+  dav.talideon.com: []
+  mail.talideon.com: []
+  repos.talideon.com: []
 
 # vim:set ft=yaml:

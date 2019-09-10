@@ -1,0 +1,9 @@
+---
+feedreader_site: reader.talideon.com
+webmail_site: webmail.talideon.com
+
+acme_domains:
+  reader.talideon.com: []
+  webmail.talideon.com: []
+
+# vim:set ft=yaml:

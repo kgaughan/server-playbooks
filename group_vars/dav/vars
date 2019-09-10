@@ -1,7 +1,0 @@
----
-dav_site: dav.talideon.com
-
-acme_domains:
-  "dav.talideon.com": []
-
-# vim:set ft=yaml:

@@ -22,7 +22,4 @@ my_networks:
   - "159.203.59.98"
   - "[2604:a880:cad:d0::c6a:a001]"
 
-acme_domains:
-  "mail.talideon.com": []
-
 # vim:set ft=yaml:
