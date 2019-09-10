@@ -1,6 +1,6 @@
 HOSTS:=hosts
 
-CMD:=ansible-playbook -i $(HOSTS) $(if $(wildcard ./vault-password),--vault-password-file=./vault-password,--ask-vault-pass)
+CMD:=ansible-playbook -i $(HOSTS) $(if $(wildcard ./vault-password),--vault-password-file=./vault-password,--ask-vault-pass) --diff
 
 default: all
 
@@ -41,12 +41,6 @@ xmpp:
 repos:
 	$(CMD) site.yml --tags=repo
 
-auth:
-	$(CMD) site.yml --tags=auth
-
-acme:
-	$(CMD) acme.yml
-
 .PHONY: bootstrap bootstrap-do clean default
 .PHONY: mailservers nameservers webservers xmpp
-.PHONY: dav feedreaders webmail repos auth
+.PHONY: dav feedreaders webmail repos
