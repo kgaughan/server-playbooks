@@ -25,7 +25,10 @@ if test -e "$base_dir/domains.txt"; then
 
 		# Ensure the domain private key exists
 		domain_key="$tls_dir/private/$domain.pem"
-		test -e "$domain_key" || openssl genrsa 4096 > "$domain_key"
+		if ! test -e "$domain_key"; then
+			openssl genrsa 4096 > "$domain_key"
+			chmod 500 "$domain_key"
+		fi
 
 		# Generate the CSR configuration
 		(
@@ -45,5 +48,6 @@ if test -e "$base_dir/domains.txt"; then
 		acme_tiny --account-key "$base_dir/privkey.pem" \
 				  --csr "$ac_tmp/domain.csr" \
 				  --acme-dir "$challenge_dir" > "$certs_dir/fullchain.pem"
+		chmod 555 "$certs_dir/fullchain.pem"
 	done < "$base_dir/domains.txt"
 fi
