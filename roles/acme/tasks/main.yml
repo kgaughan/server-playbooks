@@ -67,7 +67,7 @@
   file:
     name: "{{ acme_client_root }}/privkey.pem"
     state: file
-    mode: 0500
+    mode: 0400
 
 - name: populate periodic.conf
   lineinfile:

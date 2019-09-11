@@ -32,7 +32,7 @@ account_key="$config_dir/privkey.pem"
 if ! test -e "$account_key"; then
 	# Ensure we have an account key
 	openssl genrsa -out "$account_key" 4096
-	chmod 500 "$account_key"
+	chmod 400 "$account_key"
 fi
 
 mkdir -pm700 "$tls_dir/private"
@@ -76,5 +76,5 @@ while read domain line; do
 	acme_tiny --account-key "$account_key" \
 			  --csr "$ac_tmp/domain.csr" \
 			  --acme-dir "$challenge_dir" > "$cert"
-	chmod 555 "$cert"
+	chmod 444 "$cert"
 done < "$config_dir/domains.txt"
