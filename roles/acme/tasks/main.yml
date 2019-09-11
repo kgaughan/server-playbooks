@@ -18,8 +18,8 @@
     - reload nginx
 
 - name: copy up periodic task
-  copy:
-    src: periodic.sh
+  template:
+    src: weekly.j2
     dest: "/usr/local/etc/periodic/weekly/000.acme-tiny.sh"
     mode: 0755
 
@@ -28,10 +28,10 @@
     name: "{{ acme_client_root }}"
     state: directory
 
-- name: generate the renewal script
-  template:
-    src: acme-client.sh.j2
-    dest: "{{ acme_client_root }}/acme-client.sh"
+- name: copy up renewal script
+  copy:
+    src: acme-domain-renew
+    dest: "{{ acme_client_root }}"
     mode: 0555
 
 - name: generate the deploy script

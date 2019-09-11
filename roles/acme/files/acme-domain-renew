@@ -1,0 +1,80 @@
+#!/bin/sh -e
+
+while getopts hc:w:t: name; do
+	case $name in
+	c)
+		config_dir="$OPTARG"
+		;;
+	w)
+		challenge_dir="$OPTARG"
+		;;
+	t)
+		tls_dir="$OPTARG"
+		;;
+	h)
+		echo "usage: ${0##*/} [-c config_dir] [-w challenge_dir] [-t cert_dir]"
+		exit 2
+		;;
+	esac
+done
+
+: ${config_dir:=/etc/acme-tiny}
+: ${challenge_dir:=/var/www/challenges}
+: ${tls_dir:=/etc/ssl/acme}
+
+# Only run if domains.txt exists
+test -e "$config_dir/domains.txt" || exit 0
+
+# This isn't set by default on all platforms.
+: ${TMPDIR:=/tmp}
+
+account_key="$config_dir/privkey.pem"
+if ! test -e "$account_key"; then
+	# Ensure we have an account key
+	openssl genrsa -out "$account_key" 4096
+	chmod 500 "$account_key"
+fi
+
+mkdir -pm700 "$tls_dir/private"
+
+# Directory in which we put our temporary config files and CSRs
+ac_tmp=$(mktemp -d "$TMPDIR/acme-tiny.XXXXXX")
+trap "rm -rf $ac_tmp" EXIT
+
+while read domain line; do
+	private_key="$tls_dir/private/$domain.pem"
+	cert_dir="$tls_dir/$domain"
+	cert="$cert_dir/fullchain.pem"
+	mkdir -pm755 "$cert_dir"
+
+	# If the cert doesn't need renewing (i.e., two weeks remain), skip it
+	if test -e "$cert" && openssl x509 -checkend 6480000 -noout -in "$cert"; then
+		continue
+	fi
+
+	# Ensure the domain private key exists
+	if ! test -e "$private_key"; then
+		openssl genrsa -out "$private_key" 4096
+		chmod 500 "$private_key"
+	fi
+
+	# Generate the CSR configuration
+	(
+		cat /etc/ssl/openssl.cnf
+		echo "[SAN]"
+		for i in $domain $line; do
+			echo "DNS:$i"
+		done | tr '\n' ',' | sed -E 's/(.*),$/subjectAltName=\1/'
+	) > "$ac_tmp/csr.cnf"
+
+	# Generate the CSR
+	openssl req -new -sha256 \
+		-key "$private_key" -subj "/" -reqexts SAN \
+		-config "$ac_tmp/csr.cnf" -out "$ac_tmp/domain.csr"
+
+	# Request the certificate
+	acme_tiny --account-key "$account_key" \
+			  --csr "$ac_tmp/domain.csr" \
+			  --acme-dir "$challenge_dir" > "$cert"
+	chmod 555 "$cert"
+done < "$config_dir/domains.txt"

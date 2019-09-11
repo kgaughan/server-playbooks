@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if test -r /etc/defaults/periodic.conf; then
+    . /etc/defaults/periodic.conf
+    source_periodic_confs
+fi
+
+export PATH=$PATH:/usr/local/bin:/usr/local/sbin
+
+: ${weekly_acme_tiny_enable:=NO}
+: ${weekly_acme_tiny_config_dir:={{ acme_client_root }}}
+: ${weekly_acme_tiny_deployscript:={{ acme_client_root }}/deploy.sh}
+: ${weekly_acme_tiny_challenge_dir:={{ acme_challenge_dir }}}
+: ${weekly_acme_tiny_tls_dir:={{ tls_root }}}
+
+case "$weekly_acme_tiny_enable" in
+[Yy][Ee][Ss])
+	echo
+	echo "Checking Let's Encrypt certificate status:"
+	{{ acme_client_root }}/acme-domain-renew \
+		-c "${weekly_acme_tiny_config_dir}" \
+		-w "${weekly_acme_tiny_challenge_dir}" \
+		-t "${weekly_acme_tiny_tls_dir}"
+
+	if test -x ${weekly_acme_tiny_deployscript}; then
+		echo "Deploying Let's Encrypt certificates:"
+		${weekly_acme_tiny_deployscript}
+	else
+		echo "Skipped, deploy script does not exist or is not executable"
+	fi
+	;;
+esac
