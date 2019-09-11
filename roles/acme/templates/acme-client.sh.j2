@@ -1,5 +1,8 @@
 #!/bin/sh -e
 
+# Only run if domains.txt exists
+test -e "$base_dir/domains.txt" || exit
+
 base_dir="{{ acme_client_root }}"
 tls_dir="{{ tls_root }}"
 challenge_dir="{{ acme_challenge_dir }}"
@@ -13,41 +16,39 @@ mkdir -pm700 "$tls_dir/private"
 ac_tmp=$(mktemp -d "$TMPDIR/acme-client.XXXXXX")
 trap "rm -rf $ac_tmp" EXIT
 
-if test -e "$base_dir/domains.txt"; then
-	while read domain line; do
-		certs_dir="$tls_dir/$domain"
-		mkdir -pm755 "$certs_dir"
+while read domain line; do
+	certs_dir="$tls_dir/$domain"
+	mkdir -pm755 "$certs_dir"
 
-		# The cert doesn't need renewing, so skip it
-		if test -e "$certs_dir/fullchain.pem" && openssl x509 -checkend 6480000 -noout -in "$certs_dir/fullchain.pem"; then
-			continue
-		fi
+	# The cert doesn't need renewing, so skip it
+	if test -e "$certs_dir/fullchain.pem" && openssl x509 -checkend 6480000 -noout -in "$certs_dir/fullchain.pem"; then
+		continue
+	fi
 
-		# Ensure the domain private key exists
-		domain_key="$tls_dir/private/$domain.pem"
-		if ! test -e "$domain_key"; then
-			openssl genrsa 4096 > "$domain_key"
-			chmod 500 "$domain_key"
-		fi
+	# Ensure the domain private key exists
+	domain_key="$tls_dir/private/$domain.pem"
+	if ! test -e "$domain_key"; then
+		openssl genrsa 4096 > "$domain_key"
+		chmod 500 "$domain_key"
+	fi
 
-		# Generate the CSR configuration
-		(
-			cat /etc/ssl/openssl.cnf
-			echo "[SAN]"
-			for i in $domain $line; do
-				echo "DNS:$i"
-			done | tr '\n' ',' | sed -E 's/(.*),$/subjectAltName=\1/'
-		) > "$ac_tmp/csr.cnf"
+	# Generate the CSR configuration
+	(
+		cat /etc/ssl/openssl.cnf
+		echo "[SAN]"
+		for i in $domain $line; do
+			echo "DNS:$i"
+		done | tr '\n' ',' | sed -E 's/(.*),$/subjectAltName=\1/'
+	) > "$ac_tmp/csr.cnf"
 
-		# Generate the CSR
-		openssl req -new -sha256 \
-			-key "$domain_key" -subj "/" -reqexts SAN \
-			-config "$ac_tmp/csr.cnf" -out "$ac_tmp/domain.csr"
+	# Generate the CSR
+	openssl req -new -sha256 \
+		-key "$domain_key" -subj "/" -reqexts SAN \
+		-config "$ac_tmp/csr.cnf" -out "$ac_tmp/domain.csr"
 
-		# Request the certificate
-		acme_tiny --account-key "$base_dir/privkey.pem" \
-				  --csr "$ac_tmp/domain.csr" \
-				  --acme-dir "$challenge_dir" > "$certs_dir/fullchain.pem"
-		chmod 555 "$certs_dir/fullchain.pem"
-	done < "$base_dir/domains.txt"
-fi
+	# Request the certificate
+	acme_tiny --account-key "$base_dir/privkey.pem" \
+			  --csr "$ac_tmp/domain.csr" \
+			  --acme-dir "$challenge_dir" > "$certs_dir/fullchain.pem"
+	chmod 555 "$certs_dir/fullchain.pem"
+done < "$base_dir/domains.txt"

@@ -77,12 +77,5 @@
   loop:
     - weekly_acme_tiny_enable="YES"
 
-- name: deploy temporary vhost for {{ item.key }}
-  template:
-    src: vhost.j2
-    dest: "{{ webserver_config }}/vhosts/{{ item.key }}"
-    force: false
-  loop: "{{ acme_domains | dict2items }}"
-  notify:
-    - reload nginx
-    - generate missing certificates
+- name: generate missing certificates
+  command: "{{ acme_client_root }}/acme-client.sh"
