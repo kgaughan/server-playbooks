@@ -1,7 +1,7 @@
 ---
-- name: install acme-client
+- name: install acme-tiny
   pkgng:
-    name: acme-client
+    name: acme-tiny
     cached: true
 
 - name: create the challenge directory
@@ -16,6 +16,17 @@
     dest: "{{ webserver_config }}/"
   notify:
     - reload nginx
+
+- name: copy up periodic task
+  copy:
+    src: periodic.sh
+    dest: "/usr/local/etc/periodic/weekly/000.acme-tiny.sh"
+    mode: 0755
+
+- name: create the client directory
+  file:
+    name: "{{ acme_client_root }}"
+    state: directory
 
 - name: generate the renewal script
   template:
@@ -47,15 +58,31 @@
     line: "{{ item }} {{ item | subdomains(acme_domains[item]) | join(' ') }}"
   loop: "{{ acme_domains.keys() | list }}"
 
+- name: ensure account key exists
+  command: openssl genrsa -out "{{ acme_client_root }}/privkey.pem" 4096
+  args:
+    creates: "{{ acme_client_root }}/privkey.pem"
+
+- name: protect account key
+  file:
+    name: "{{ acme_client_root }}/privkey.pem"
+    state: file
+    mode: 0500
+
 - name: populate periodic.conf
   lineinfile:
     dest: /etc/periodic.conf
     regexp: "^#?{{ item.split('=', 1) | first }}="
     line: "{{ item }}"
   loop:
-    - weekly_acme_client_enable=YES
-    - weekly_acme_client_renewscript="{{ acme_client_root }}/acme-client.sh"
-    - weekly_acme_client_deployscript="{{ acme_client_root }}/deploy.sh"
+    - weekly_acme_tiny_enable="YES"
 
-- include_tasks: bootstrap.yml
+- name: deploy temporary vhost for {{ item.key }}
+  template:
+    src: vhost.j2
+    dest: "{{ webserver_config }}/vhosts/{{ item.key }}"
+    force: false
   loop: "{{ acme_domains | dict2items }}"
+  notify:
+    - reload nginx
+    - generate missing certificates

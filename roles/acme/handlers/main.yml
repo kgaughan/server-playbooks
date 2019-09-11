@@ -1,0 +1,3 @@
+---
+- name: generate missing certificates
+  command: "{{ acme_client_root }}/acme-client.sh"
