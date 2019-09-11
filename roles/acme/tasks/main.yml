@@ -78,4 +78,12 @@
     - weekly_acme_tiny_enable="YES"
 
 - name: generate missing certificates
-  command: "{{ acme_client_root }}/acme-client.sh"
+  command:
+    argv:
+      - "{{ acme_client_root }}/acme-domain-renew"
+      - "-c"
+      - "{{ acme_client_root }}"
+      - "-w"
+      - "{{ acme_challenge_dir }}"
+      - "-t"
+      - "{{ tls_root }}"
