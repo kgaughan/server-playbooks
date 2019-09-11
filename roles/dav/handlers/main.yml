@@ -1,0 +1,5 @@
+---
+- name: touch dav supervisor config file to reload
+  file:
+    path: /usr/local/etc/immortal/dav.yml
+    state: touch

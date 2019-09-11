@@ -1,0 +1,14 @@
+---
+cmd: /usr/local/bin/python3 {{ tools_root }}/dav.py --unix {{ dav_app_sock }} --root {{ dav_root }}
+env:
+  PYTHONPATH: {{ tools_root }}
+log:
+  file: {{ webserver_logs }}/dav.log
+  age: 86400
+  num: 7
+  size: 1
+user: www
+group: www
+wait: 1
+
+# vim:set ft=yaml:

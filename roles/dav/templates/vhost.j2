@@ -1,0 +1,31 @@
+server {
+	include common_params;
+	include ssl_params;
+
+	server_name {{ dav_site }};
+	root {{ dav_root }};
+
+	location / {
+		proxy_pass http://unix:{{ dav_app_sock }}:/;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Scheme $scheme;
+		proxy_set_header X-Script-Name /;
+	}
+
+	ssl_certificate {{ tls_root }}/{{ dav_site }}/fullchain.pem;
+	ssl_certificate_key {{ tls_root }}/private/{{ dav_site }}.pem;
+
+	access_log {{ webserver_logs }}/{{ dav_site }}.access.log combined;
+	error_log {{ webserver_logs }}/{{ dav_site }}.error.log;
+}
+
+server {
+	include common_params;
+
+	listen 80;
+	listen [::]:80;
+
+	server_name {{ dav_site }};
+	return 301 https://{{ dav_site }}$request_uri;
+}

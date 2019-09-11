@@ -4,5 +4,38 @@
     name:
       - python3
       - py36-bjoern
+      - py36-python-pam
       - py36-WsgiDAV
     cached: true
+
+- name: ensure the tools directory exists
+  file:
+    name: "{{ tools_root }}"
+    state: directory
+    mode: 0755
+
+- name: ensure the socket directory exists
+  file:
+    name: "{{ dav_app_sock | dirname }}"
+    state: directory
+    mode: 0755
+    owner: www
+
+- name: copy up the app
+  copy:
+    src: dav.py
+    dest: "{{ tools_root }}"
+  notify:
+    - touch dav supervisor config file to reload
+
+- name: deploy immortal configuration
+  template:
+    src: dav.yml.j2
+    dest: "/usr/local/etc/immortal/dav.yml"
+
+- name: deploy vhost
+  template:
+    src: vhost.j2
+    dest: "{{ webserver_config }}/vhosts/{{ dav_site }}"
+  notify:
+    - reload nginx
