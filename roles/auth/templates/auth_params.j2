@@ -7,7 +7,7 @@ location = /auth {
 	# Not exposed to the outside world.
 	internal;
 
-	proxy_pass http://unix:{{ auth_app_sock }}:/;
+	proxy_pass http://127.0.0.1:5067/;
 
 	# We only need the headers.
 	proxy_pass_request_body off;

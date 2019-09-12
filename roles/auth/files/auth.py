@@ -131,8 +131,10 @@ class AuthServer:
 
 def main():
     parser = argparse.ArgumentParser(description="Simple WSGI auth server.")
-    parser.add_argument("--unix", help="Unix socket path", required=True)
-    parser.add_argument("--service", help="Service name", default="login")
+    parser.add_argument(
+        "--port", help="Port to bind to on localhost", type=int, default=5067
+    )
+    parser.add_argument("--service", help="Service name", default="http")
     parser.add_argument("--realm", help="HTTP Realm", default="auth")
     args = parser.parse_args()
 
@@ -142,15 +144,8 @@ def main():
         format="%(asctime)-15s %(levelname)s %(message)s",
     )
 
-    if os.path.exists(args.unix):
-        logging.info("Removing existing socket at %s", args.unix)
-        os.unlink(args.unix)
-
     app = AuthServer(args.service, args.realm)
-    try:
-        bjoern.run(app, "unix:" + args.unix)
-    finally:
-        os.unlink(args.unix)
+    bjoern.run(app, host="127.0.0.1", port=args.port)
 
 
 if __name__ == "__main__":

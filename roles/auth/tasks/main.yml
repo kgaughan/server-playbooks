@@ -27,6 +27,11 @@
   notify:
     - touch auth supervisor config file to reload
 
+- name: copy up PAM configuration
+  copy:
+    src: pam_http
+    dest: /etc/pam.d/http
+
 - name: deploy immortal configuration
   template:
     src: auth.yml.j2
