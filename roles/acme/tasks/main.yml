@@ -58,17 +58,6 @@
     line: "{{ item }} {{ item | subdomains(acme_domains[item]) | join(' ') }}"
   loop: "{{ acme_domains.keys() | list }}"
 
-- name: ensure account key exists
-  command: openssl genrsa -out "{{ acme_client_root }}/privkey.pem" 4096
-  args:
-    creates: "{{ acme_client_root }}/privkey.pem"
-
-- name: protect account key
-  file:
-    name: "{{ acme_client_root }}/privkey.pem"
-    state: file
-    mode: 0400
-
 - name: populate periodic.conf
   lineinfile:
     dest: /etc/periodic.conf
