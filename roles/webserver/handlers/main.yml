@@ -9,3 +9,14 @@
   file:
     path: /usr/local/etc/immortal/auth.yml
     state: touch
+
+- name: generate missing certificates
+  command:
+    argv:
+      - "{{ acme_client_root }}/acme-domain-renew"
+      - "-c"
+      - "{{ acme_client_root }}"
+      - "-w"
+      - "{{ acme_challenge_dir }}"
+      - "-t"
+      - "{{ tls_root }}"

@@ -34,6 +34,8 @@
     regexp: "^{{ item }} ?"
     line: "{{ item }} {{ item | subdomains(acme_domains[item]) | join(' ') }}"
   loop: "{{ acme_domains.keys() | list }}"
+  notify:
+    - generate missing certificates
 
 - name: populate periodic.conf
   lineinfile:
@@ -42,14 +44,3 @@
     line: "{{ item }}"
   loop:
     - weekly_acme_tiny_enable="YES"
-
-- name: generate missing certificates
-  command:
-    argv:
-      - "{{ acme_client_root }}/acme-domain-renew"
-      - "-c"
-      - "{{ acme_client_root }}"
-      - "-w"
-      - "{{ acme_challenge_dir }}"
-      - "-t"
-      - "{{ tls_root }}"
