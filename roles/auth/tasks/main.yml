@@ -4,6 +4,7 @@
     name:
       - python3
       - py36-bjoern
+      - py36-python-pam
     cached: true
 
 - name: ensure the tools directory exists
@@ -21,11 +22,8 @@
 
 - name: copy up the app
   copy:
-    src: "{{ item }}"
+    src: auth.py
     dest: "{{ tools_root }}"
-  loop:
-    - auth.py
-    - dovecotauth.py
   notify:
     - touch auth supervisor config file to reload
 

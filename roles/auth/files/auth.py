@@ -17,7 +17,7 @@ import os
 import sys
 
 import bjoern
-import dovecotauth
+import pam
 
 
 class HTTPError(Exception):
@@ -82,11 +82,11 @@ class AuthServer:
     The WSGI app itself.
     """
 
-    def __init__(self, service, mech, dap):
+    def __init__(self, service, realm):
         super().__init__()
         self.service = service
-        self.mech = mech
-        self.dap = dap
+        self.realm = realm
+        self.pam = pam.pam()
 
     def run(self, environ):
         """
@@ -94,22 +94,20 @@ class AuthServer:
         """
         auth = environ.get("HTTP_AUTHORIZATION")
         if auth is None:
-            raise Unauthorized("talideon.com")
+            raise Unauthorized(self.realm)
         parts = auth.split(" ", 1)
         if len(parts) == 2 and parts[0].lower() == "basic":
             creds = b64decode(parts[1]).split(b":", 1)
             if len(creds) == 2:
                 if self.check(creds[0].decode(), creds[1].decode()):
                     return (client.OK, [], [])
-                raise Unauthorized("talideon.com")
+                raise Unauthorized(self.realm)
         raise BadRequest("Bad Authorization header")
 
     def check(self, username, password):
-        logging.info("Checking %s", username)
-        with dovecotauth.connect(self.service, unix=self.dap) as proto:
-            success, _ = proto.auth(self.mech, username, password)
-        logging.info("Result checking %s: %s", username, success is True)
-        return success is True  # can be False or None
+        success = self.pam.authenticate(username, password, self.service)
+        logging.info("Result checking %s: %s", username, success)
+        return success
 
     def __call__(self, environ, start_response):
         """
@@ -134,9 +132,8 @@ class AuthServer:
 def main():
     parser = argparse.ArgumentParser(description="Simple WSGI auth server.")
     parser.add_argument("--unix", help="Unix socket path", required=True)
-    parser.add_argument("--dap", help="Unix socket path (DAP)", required=True)
-    parser.add_argument("--service", help="Service name", default="imap")
-    parser.add_argument("--mech", help="SASL mechanism", default="PLAIN")
+    parser.add_argument("--service", help="Service name", default="login")
+    parser.add_argument("--realm", help="HTTP Realm", default="auth")
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -149,8 +146,11 @@ def main():
         logging.info("Removing existing socket at %s", args.unix)
         os.unlink(args.unix)
 
-    app = AuthServer(args.service, args.mech, args.dap)
-    bjoern.run(app, "unix:" + args.unix)
+    app = AuthServer(args.service, args.realm)
+    try:
+        bjoern.run(app, "unix:" + args.unix)
+    finally:
+        os.unlink(args.unix)
 
 
 if __name__ == "__main__":
