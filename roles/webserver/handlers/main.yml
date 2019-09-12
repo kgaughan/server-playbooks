@@ -4,3 +4,8 @@
     name: nginx
     enabled: true
     state: reloaded
+
+- name: touch auth supervisor config file to reload
+  file:
+    path: /usr/local/etc/immortal/auth.yml
+    state: touch

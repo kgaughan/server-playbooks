@@ -2,4 +2,4 @@
 dependencies:
   - role: mysql
   - role: php
-  - role: acme
+  - role: webserver

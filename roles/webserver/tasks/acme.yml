@@ -1,32 +1,9 @@
 ---
-- name: install acme-tiny
-  pkgng:
-    name: acme-tiny
-    cached: true
-
-- name: create the challenge directory
-  file:
-    name: "{{ acme_challenge_dir }}"
-    state: directory
-    mode: 0755
-
-- name: copy up ssl_params
-  copy:
-    src: ssl_params
-    dest: "{{ webserver_config }}/"
-  notify:
-    - reload nginx
-
 - name: copy up periodic task
   template:
     src: weekly.j2
     dest: "/usr/local/etc/periodic/weekly/000.acme-tiny.sh"
     mode: 0755
-
-- name: create the client directory
-  file:
-    name: "{{ acme_client_root }}"
-    state: directory
 
 - name: copy up renewal script
   copy:

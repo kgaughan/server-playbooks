@@ -1,0 +1,34 @@
+---
+- name: ensure webserver directories exist
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop:
+    - "{{ acme_client_root }}"
+    - "{{ webserver_config }}/extra"
+    - "{{ webserver_config }}/vhosts"
+    - "{{ webserver_logs }}"
+
+- name: copy up server config
+  copy:
+    src: "{{ item }}"
+    dest: "{{ webserver_config }}/"
+  loop:
+    - nginx.conf
+    - ssl_params
+  notify:
+    - reload nginx
+
+- name: copy up common_params
+  template:
+    src: common_params.j2
+    dest: "{{ webserver_config }}/common_params"
+  notify:
+    - reload nginx
+
+- name: start nginx
+  service:
+    name: nginx
+    enabled: true
+    state: started

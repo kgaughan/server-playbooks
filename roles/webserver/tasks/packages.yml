@@ -1,0 +1,7 @@
+---
+- name: install packages
+  pkgng:
+    name:
+      - acme-tiny
+      - nginx
+    cached: true
