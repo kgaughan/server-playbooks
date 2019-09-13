@@ -1,3 +1,2 @@
 ---
 tools_root: /usr/local/www/tools
-auth_app_sock: /var/run/www/auth.sock

@@ -19,7 +19,14 @@
     name: "{{ dav_app_sock | dirname }}"
     state: directory
     mode: 0755
+
+- name: ensure the DAV root directory exists
+  file:
+    name: "{{ dav_root }}"
+    state: directory
     owner: www
+    group: www
+    mode: 0755
 
 - name: copy up the app
   copy:
