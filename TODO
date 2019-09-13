@@ -5,9 +5,6 @@ TODO
 Playbook
 ========
 
-* Create a 'dav' role for spinning up a WebDAV server on manann, possibly
-  dav.talideon.com.
-
 * It would be nice to have a role for deploying an OAuth server.
 
 * A nice to have would be a *secondary MX*.
