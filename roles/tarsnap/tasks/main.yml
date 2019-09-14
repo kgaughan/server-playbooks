@@ -14,30 +14,20 @@
     src: tarsnap.conf
     dest: /usr/local/etc/
 
-- name: check if the tarsnap key file exists
-  stat:
-    path: "{{ tarsnap_key_path }}"
-    get_attributes: false
-    get_checksum: false
-    get_md5: false
-    get_mime: false
-  register: key_stat
+- name: copy an existing key up if it doesn't exists
+  copy:
+    content: "{{ vault_tarsnap_key }}"
+    dest: "{{ tarsnap_key_path }}"
+    owner: root
+    group: wheel
+    mode: 0600
+    force: false
+  when: vault_tarsnap_key is defined
 
-- block:
-    - name: copy existing key up if it doesn't exists
-      copy:
-        content: "{{ vault_tarsnap_key }}"
-        dest: "{{ tarsnap_key_path }}"
-        owner: root
-        group: wheel
-        mode: 0600
-        backup: true
-      when: vault_tarsnap_key is defined
-
-    - debug:
-        msg: "Please run: sudo tarsnap-keygen --keyfile {{ tarsnap_key_path }} --user {{ tarsnap_user }} --machine $(hostname)"
-      when: vault_tarsnap_key is not defined
-  when: not key_stat.stat.exists
+- name: create tarsnap key if none was copied up
+  shell: "tarsnap-keygen --keyfile {{ tarsnap_key_path }} --user {{ tarsnap_user }} --machine $(hostname)"
+  stdin: "{{ tarsnap_password }}"
+  creates: "{{ tarsnap_key_path }}"
 
 - name: populate periodic.conf
   lineinfile:
