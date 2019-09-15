@@ -26,8 +26,9 @@
 
 - name: create tarsnap key if none was copied up
   shell: "tarsnap-keygen --keyfile {{ tarsnap_key_path }} --user {{ tarsnap_user }} --machine $(hostname)"
-  stdin: "{{ tarsnap_password }}"
-  creates: "{{ tarsnap_key_path }}"
+  args:
+    stdin: "{{ tarsnap_password }}"
+    creates: "{{ tarsnap_key_path }}"
 
 - name: populate periodic.conf
   lineinfile:

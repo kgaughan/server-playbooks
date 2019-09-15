@@ -1,6 +1,6 @@
 ---
 - name: install python
-  raw: sh -c "ASSUME_ALWAYS_YES=yes pkg install python"
+  raw: sh -c "ASSUME_ALWAYS_YES=yes pkg install python3"
 
 - name: install bootstrap packages
   pkgng:
