@@ -81,7 +81,7 @@ proxywrite unix -       -       n       -       1       proxymap
 # ====================================================================
 
 sockmap   unix  -      n       n       -       1       spawn
-  user=nobody argv=/usr/local/libexec/socketmap-sql
+  user=nobody argv=/usr/local/libexec/socketmap-sql --config=/usr/local/etc/socketmap-sql.ini
 #smtp      inet  n       -       n       -       1       postscreen
 #smtpd     pass  -       -       n       -       -       smtpd
 #dnsblog   unix  -       -       n       -       0       dnsblog
