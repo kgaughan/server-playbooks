@@ -1,0 +1,42 @@
+---
+- name: install packages
+  pkgng:
+    name:
+      - wireguard
+    cached: true
+
+- name: push up wireguard config
+  command: "sysrc {{ item }}"
+  loop:
+    - wireguard_interfaces="wg0"
+  changed_when: false
+
+- name: generate private key
+  command: "wg genkey"
+  register: wg_private
+
+- name: generate matching public key
+  command: "wg pubkey"
+  args:
+    stdin: "{{ wg_private.stdout }}"
+  register: wg_public
+
+- debug:
+    var: wg_public.stdout
+
+- name: generate configuration file, if necessary
+  template:
+    src: wg0.conf.j2
+    dest: "{{ wireguard_config_dir }}/wg0.conf"
+    mode: 0500
+    force: false
+
+# The rc script doesn't check if the interface already exists, so I need to use
+# 'ignore_errors' to prevent a failure. I should upstream a check such as this:
+# "/usr/sbin/arp -i ${interface} -a".
+- name: start the service
+  service:
+    name: wireguard
+    enabled: true
+    state: started
+  ignore_errors: true

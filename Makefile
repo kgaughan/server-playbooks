@@ -35,6 +35,9 @@ webmail:
 webservers:
 	$(CMD) site.yml --tags=webserver
 
+wireguard:
+	$(CMD) site.yml --tags=wireguard
+
 xmpp:
 	$(CMD) site.yml --tags=xmpp
 
@@ -43,4 +46,4 @@ repos:
 
 .PHONY: bootstrap bootstrap-do clean default
 .PHONY: mailservers nameservers webservers xmpp
-.PHONY: dav feedreaders webmail repos
+.PHONY: dav feedreaders webmail repos wireguard

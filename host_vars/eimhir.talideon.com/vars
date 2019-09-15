@@ -6,4 +6,6 @@ acme_domains:
   reader.talideon.com: []
   webmail.talideon.com: []
 
+wireguard_private_addr: 192.168.254.3/24
+
 # vim:set ft=yaml:

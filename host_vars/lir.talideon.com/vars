@@ -1,0 +1,2 @@
+---
+wireguard_private_addr: 192.168.254.2/24
