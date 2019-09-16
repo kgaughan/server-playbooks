@@ -47,6 +47,18 @@ the zonefiles.
 
 .. __: https://github.com/kgaughan/zones
 
+pgsql role
+==========
+
+The 'pgsql' user can act as a superuser for creating subsequent users,
+databases, &c. To list databases, use::
+
+    sudo -u pgsql psql --list
+
+To create a user, use::
+
+    sudo -u pgsql createuser --interactive <username>
+
 Hetzner
 =======
 

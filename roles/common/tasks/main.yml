@@ -32,6 +32,7 @@
       - rsync
       - sudo
       - tmux
+      - vim-console
     cached: true
 
 - name: include fdesc in fstab
