@@ -4,7 +4,6 @@ repos_site: repos.talideon.com
 
 acme_domains:
   dav.talideon.com: []
-  mirrors.talideon.com: []
   repos.talideon.com: []
 
 wireguard_private_addr: 192.168.254.1/24

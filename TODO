@@ -18,12 +18,6 @@ Playbook
 Hosts
 =====
 
-* Ensure `site deployment`__ works properly. [Update: after some work, I got
-  mirrors.talideon.com to deploy, but it needs some work regarding
-  talideon.com itself. Will need some mechanism for vhost customisation and
-  domains.txt customisation. Need got switch subdomains other than 'www' away
-  from using a common certificate.]
-
 * Test manann as a primary MX. [Will require certificate migration.]
 
 .. __: https://github.com/kgaughan/sites
