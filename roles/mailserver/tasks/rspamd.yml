@@ -12,13 +12,6 @@
     - local.d
     - override.d
 
-- name: create dkim key directory
-  file:
-    dest: /var/db/rspamd/dkim
-    state: directory
-    owner: nobody
-    group: nobody
-
 - name: copy up rspamd config
   copy:
     src: "{{ item }}"
@@ -27,3 +20,20 @@
     - "rspamd.local/*"
   notify:
     - restart rspamd
+
+- name: create dkim key directory
+  file:
+    dest: /var/db/rspamd/dkim
+    state: directory
+    owner: rspamd
+    group: rspamd
+    mode: "750"
+
+- name: deploy dkim keys
+  copy:
+    dest: "/var/db/rspamd/dkim/{{ item.key }}.default.key"
+    owner: rspamd
+    group: rspamd
+    mode: "640"
+    content: "{{ item.value }}"
+  loop: "{{ dkim_keys | dict2items }}"
