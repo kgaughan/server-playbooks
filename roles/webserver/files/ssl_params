@@ -6,10 +6,11 @@ ssl_session_cache			shared:SSL:10m;
 ssl_session_timeout			15m;
 ssl_session_tickets			off;
 ssl_prefer_server_ciphers	on;
+ssl_early_data				on;
 
 add_header Strict-Transport-Security 'max-age=15768000; preload';
 
-ssl_ciphers		'CHACHA20:ECDH+AESGCM';
+ssl_ciphers		'CHACHA20:ECDH+AESGCM:!DHE:!PSK';
 ssl_ecdh_curve	secp384r1;
 
 ssl_stapling on;
