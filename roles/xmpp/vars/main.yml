@@ -1,3 +1,0 @@
----
-xmpp_tls_cert_file: "{{ tls_root }}/talideon.com/fullchain.pem"
-xmpp_tls_key_file: "{{ tls_root }}/private/talideon.com.pem"

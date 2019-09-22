@@ -88,11 +88,3 @@
     - wireguard
   tags:
     - wireguard
-
-- hosts: xmpp
-  remote_user: keith
-  become: true
-  roles:
-    - xmpp
-  tags:
-    - xmpp

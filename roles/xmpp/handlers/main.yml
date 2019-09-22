@@ -1,5 +1,0 @@
----
-- name: reload prosody
-  service:
-    name: prosody
-    state: reloaded
