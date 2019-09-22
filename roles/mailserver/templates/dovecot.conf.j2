@@ -47,10 +47,6 @@ service auth {
   unix_listener auth-master {
     mode = 0600
   }
-  unix_listener auth-prosody {
-    mode = 0600
-    user = prosody
-  }
   user = root
 }
 service imap-login {
