@@ -50,6 +50,7 @@ service auth {
   user = root
 }
 service imap-login {
+  process_min_avail = 1
   inet_listener imap {
     address = *, [::]
     port = 143
