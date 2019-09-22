@@ -21,5 +21,3 @@ my_networks:
   # eimhir
   - "159.203.59.98"
   - "[2604:a880:cad:d0::c6a:a001]"
-
-# vim:set ft=yaml:

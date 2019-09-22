@@ -7,5 +7,3 @@ acme_domains:
   repos.talideon.com: []
 
 wireguard_private_addr: 192.168.254.1/24
-
-# vim:set ft=yaml:
