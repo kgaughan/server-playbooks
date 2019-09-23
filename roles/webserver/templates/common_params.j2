@@ -16,6 +16,12 @@ location = /apple-app-site-association {
 	access_log off;
 }
 
+location = /sitemap.xml {
+	allow all;
+	log_not_found off;
+	access_log off;
+}
+
 location = /crossdomain.xml {
 	allow all;
 	log_not_found off;
