@@ -21,14 +21,19 @@ location = /crossdomain.xml {
 	log_not_found off;
 	access_log off;
 }
+
 location = /.well-known/apple-app-site-association {
 	allow all;
 	log_not_found off;
 	access_log off;
 }
 
-# Not pretty, as this should really be in the acme role, but the alternatives
-# are equally terrible.
+location ~* ^/apple-touch-icon.*\.png$ {
+	allow all;
+	log_not_found off;
+	access_log off;
+}
+
 location ^~ /.well-known/acme-challenge {
 	alias "{{ acme_challenge_dir }}";
 	default_type "text/plain";
