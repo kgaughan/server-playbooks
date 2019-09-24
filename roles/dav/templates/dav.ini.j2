@@ -1,0 +1,6 @@
+[program:dav]
+command=/usr/local/bin/python3 %(program_name)s.py --unix {{ dav_app_sock }} --root {{ dav_root }}
+directory={{ tools_root }}
+user=www
+redirect_stderr=true
+stdout_logfile={{ webserver_logs }}/%(program_name)s.log

@@ -1,0 +1,24 @@
+---
+- name: install packages
+  pkgng:
+    name:
+      - py36-supervisor
+    cached: true
+
+- name: copy up server config
+  copy:
+    src: supervisord.conf
+    dest: /usr/local/etc
+  notify:
+    - reload supervisor
+
+- name: create directory for additional config
+  file:
+    path: /usr/local/etc/supervisord.d
+    state: directory
+
+- name: start supervisor
+  service:
+    name: supervisord
+    enabled: true
+    state: started

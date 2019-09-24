@@ -18,17 +18,19 @@
     src: auth.py
     dest: "{{ tools_root }}"
   notify:
-    - touch auth supervisor config file to reload
+    - reload supervisor
 
 - name: copy up PAM configuration
   copy:
     src: pam_http
     dest: /etc/pam.d/http
 
-- name: deploy immortal configuration
+- name: deploy supervisor configuration
   template:
-    src: auth.yml.j2
-    dest: "/usr/local/etc/immortal/auth.yml"
+    src: auth.ini.j2
+    dest: "/usr/local/etc/supervisord.d/auth.ini"
+  notify:
+    - reload supervisor
 
 - name: deploy nginx fragment
   template:

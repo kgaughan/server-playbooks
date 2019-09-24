@@ -33,12 +33,14 @@
     src: dav.py
     dest: "{{ tools_root }}"
   notify:
-    - touch dav supervisor config file to reload
+    - reload supervisor
 
-- name: deploy immortal configuration
+- name: deploy supervisor configuration
   template:
-    src: dav.yml.j2
-    dest: "/usr/local/etc/immortal/dav.yml"
+    src: dav.ini.j2
+    dest: "/usr/local/etc/supervisord.d/dav.ini"
+  notify:
+    - reload supervisor
 
 - name: deploy vhost
   template:
