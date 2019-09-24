@@ -1,3 +1,0 @@
----
-- name: run newaliases
-  command: /usr/bin/newaliases

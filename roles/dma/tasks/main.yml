@@ -21,5 +21,3 @@
     regexp: '^#?{{ item.user }}:'
     line: "{{ item.user }}: {{ item.email }}"
   loop: "{{ forwarding }}"
-  notify:
-    - run newaliases
