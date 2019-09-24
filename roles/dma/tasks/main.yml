@@ -1,9 +1,4 @@
 ---
-- name: install dma
-  pkgng:
-    name: dma
-    cached: true
-
 - name: configure mailwrapper to use dma
   copy:
     src: mailer.conf
@@ -12,13 +7,13 @@
 - name: configure dma
   template:
     src: dma.conf.j2
-    dest: /usr/local/etc/dma/dma.conf
+    dest: /etc/dma/dma.conf
 
 - name: periodically flush dma's queue
   cron:
     name: flush queue
     minute: '*/15'
-    job: 'test -x /usr/local/libexec/dma && /usr/local/libexec/dma -q'
+    job: '/usr/libexec/dma -q'
 
 - name: set up aliases
   lineinfile:
