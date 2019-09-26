@@ -52,6 +52,12 @@
   tags:
     - repo
 
+- hosts: supervisor
+  remote_user: keith
+  become: true
+  roles:
+    - supervisor
+
 - hosts: torrent
   remote_user: keith
   become: true
@@ -75,16 +81,3 @@
     - webserver
   tags:
     - webserver
-
-# Unlike the others, we need to configure the peers together, so we need to use
-# the linear strategy. It'd be nice if the 'meta' module supported a 'sync' or
-# 'gather' action that would wait until all machines hit that place in the
-# play.
-- hosts: wireguard
-  remote_user: keith
-  become: true
-  strategy: linear
-  roles:
-    - wireguard
-  tags:
-    - wireguard

@@ -33,6 +33,10 @@ eimhir.talideon.com
 [repos]
 manann.talideon.com
 
+; Some hosts need this installed explicitly.
+[supervisor]
+lir.talideon.com
+
 [webmail]
 eimhir.talideon.com
 

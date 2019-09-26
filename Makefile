@@ -35,9 +35,6 @@ webmail:
 webservers:
 	$(CMD) site.yml --tags=webserver
 
-wireguard:
-	$(CMD) site.yml --tags=wireguard
-
 xmpp:
 	$(CMD) site.yml --tags=xmpp
 
