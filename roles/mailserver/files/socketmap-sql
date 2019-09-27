@@ -95,19 +95,19 @@ def parse_config(fp):
             local_part = local_part.split(delimiter, 1)[0]
         return local_part
 
-    def passthrough(arg, cfg):
-        return [arg]
-
-    def local_part(arg, cfg):
-        return [process_local(arg.split("@", 1)[0], cfg)]
-
-    def domain_part(arg, cfg):
-        return [arg.split("@", 1)[1]]
-
     def split(arg, cfg):
         parts = arg.split("@", 1)
         parts[0] = process_local(parts[0], cfg)
+        parts[1] = parts[1].lower()
         return parts
+
+    transforms = {
+        "all": lambda arg, cfg: [arg],
+        "lowercase": lambda arg, cfg: [arg.lower()],
+        "local": lambda arg, cfg: [process_local(arg.split("@", 1)[0], cfg)],
+        "domain": lambda arg, cfg: [arg.split("@", 1)[1].lower()],
+        "split": split,
+    }
 
     cp = configparser.RawConfigParser()
     cp.readfp(fp)
@@ -128,15 +128,8 @@ def parse_config(fp):
                 transform_name = cp.get(section, "transform")
             except configparser.NoOptionError:
                 transform_name = "all"
-            if transform_name == "all":
-                transform = passthrough
-            elif transform_name == "local":
-                transform = local_part
-            elif transform_name == "domain":
-                transform = domain_part
-            elif transform_name == "split":
-                transform = split
-            else:
+            transform = transforms.get(transform_name)
+            if transform is None:
                 transform = resolve(*match(transform_name))
 
             result["tables"][table_name] = {
@@ -166,7 +159,7 @@ def serve_client(fh_in, fh_out, conn, timeout, tables, cfg):
 
             cur = conn.cursor()
             try:
-                cur.execute(table["query"], table["transform"](arg.lower(), cfg))
+                cur.execute(table["query"], table["transform"](arg, cfg))
                 result = cur.fetchone()
             finally:
                 cur.close()

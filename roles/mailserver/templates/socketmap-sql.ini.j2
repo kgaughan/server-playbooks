@@ -6,6 +6,7 @@ database = {{ vbox_db_path }}
 recipient_delimiter = +
 
 [table:domains]
+transform = lowercase
 query = SELECT 1 FROM domains WHERE domain = ?
 
 [table:aliases]
