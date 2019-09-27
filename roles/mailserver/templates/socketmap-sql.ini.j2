@@ -2,6 +2,9 @@
 driver = sqlite3
 database = {{ vbox_db_path }}
 
+[misc]
+recipient_delimiter = +
+
 [table:domains]
 query = SELECT 1 FROM domains WHERE domain = ?
 

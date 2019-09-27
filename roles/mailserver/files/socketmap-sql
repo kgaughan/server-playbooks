@@ -89,22 +89,34 @@ def write_netstring(fp, response):
 
 
 def parse_config(fp):
-    def passthrough(arg):
+    def process_local(local_part, cfg):
+        delimiter = cfg.get("recipient_delimiter", "").strip()
+        if delimiter != "":
+            local_part = local_part.split(delimiter, 1)[0]
+        return local_part
+
+    def passthrough(arg, cfg):
         return [arg]
 
-    def local_part(arg):
-        return [arg.split("@", 1)[0]]
+    def local_part(arg, cfg):
+        return [process_local(arg.split("@", 1)[0], cfg)]
 
-    def domain_part(arg):
+    def domain_part(arg, cfg):
         return [arg.split("@", 1)[1]]
 
-    def split(arg):
-        return arg.split("@", 1)
+    def split(arg, cfg):
+        parts = arg.split("@", 1)
+        parts[0] = process_local(parts[0], cfg)
+        return parts
 
     cp = configparser.RawConfigParser()
     cp.readfp(fp)
 
-    result = {"db": dict(cp.items("database")), "tables": {}}
+    result = {
+        "database": dict(cp.items("database")),
+        "tables": {},
+        "misc": dict(cp.items("misc")),
+    }
 
     for section in cp.sections():
         if section.startswith("table:"):
@@ -135,7 +147,7 @@ def parse_config(fp):
     return result
 
 
-def serve_client(fh_in, fh_out, conn, timeout, tables):
+def serve_client(fh_in, fh_out, conn, timeout, tables, cfg):
     try:
         while True:
             # Wait a short period before exiting.
@@ -154,7 +166,7 @@ def serve_client(fh_in, fh_out, conn, timeout, tables):
 
             cur = conn.cursor()
             try:
-                cur.execute(table["query"], table["transform"](arg.lower()))
+                cur.execute(table["query"], table["transform"](arg.lower(), cfg))
                 result = cur.fetchone()
             finally:
                 cur.close()
@@ -214,8 +226,10 @@ def main():
             write_netstring(proc.stdin, req)
             print(read_netstring(proc.stdout))
     else:
-        with contextlib.closing(connect(cfg["db"])) as conn:
-            serve_client(sys.stdin, sys.stdout, conn, args.timeout, cfg["tables"])
+        with contextlib.closing(connect(cfg["database"])) as conn:
+            serve_client(
+                sys.stdin, sys.stdout, conn, args.timeout, cfg["tables"], cfg["misc"]
+            )
 
     return 0
 
