@@ -26,12 +26,10 @@
     name:
       - ca_root_nss
       - duff
-      - fish
       - jq # needed by DO's bootstrap code
       - pkg-rmleaf
       - pwgen
       - rsync
-      - sudo
       - tmux
       - vim-console
     cached: true
