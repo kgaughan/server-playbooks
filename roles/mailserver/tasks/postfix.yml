@@ -39,6 +39,7 @@
     dest: "{{ postfix_root }}/main.cf"
     mode: 0644
   notify:
+    - generate missing certificates
     - restart postfix
 
 - name: initialise virtual mailbox database
@@ -64,8 +65,3 @@
     state: present
     insertafter: EOF
     line: "service postfix reload"
-
-- name: ensure dma isn't installed
-  pkgng:
-    name: dma
-    state: absent

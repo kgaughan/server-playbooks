@@ -21,6 +21,7 @@
     dest: "{{ dovecot_root }}/dovecot.conf"
     mode: 0644
   notify:
+    - generate missing certificates
     - restart dovecot
 
 - name: start dovecot
