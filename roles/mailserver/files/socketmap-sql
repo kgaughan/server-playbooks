@@ -154,7 +154,7 @@ def serve_client(fh_in, fh_out, conn, timeout, tables):
 
             cur = conn.cursor()
             try:
-                cur.execute(table["query"], table["transform"](arg))
+                cur.execute(table["query"], table["transform"](arg.lower()))
                 result = cur.fetchone()
             finally:
                 cur.close()
