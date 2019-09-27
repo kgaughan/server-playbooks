@@ -1,9 +1,4 @@
 ---
-- name: ensure legacy packages aren't present
-  pkgng:
-    name: sshguard-pf
-    state: absent
-
 - name: install packages
   pkgng:
     name:
@@ -47,14 +42,6 @@
 - name: expire bruteforce blocklist entries after 2 hours of inactivity
   command: pfctl -t bruteforce -T expire 7200
   changed_when: false
-
-- name: ensure old syslog config for sshguard is gone
-  lineinfile:
-    dest: /etc/syslog.conf
-    regexp: sshguard
-    state: absent
-  notify:
-    - reload syslog
 
 - name: start sshguard
   service:
