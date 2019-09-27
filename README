@@ -6,12 +6,9 @@ These are the Ansible playbooks I use for setting up my servers. I use FreeBSD
 on them exclusively, so they may be of limited utility to people using other
 OSs.
 
-See the TODO__ file for details on what work I have left. For a summary of
-what each of the individual baremetal machines and VMs is for, see
-host-responsibilities__.
+See the TODO__ file for details on what work I have left.
 
 .. __: TODO
-.. __: host-responsibilities
 
 Use
 ===
@@ -29,10 +26,6 @@ playbooks with::
     make
 
 This runs all the playbooks listed in `site.yml`.
-
-TLS certs for various sites can be configured initially using::
-
-    make acme
 
 The sites themselves are subsequently deployed from the sites__ repo.
 

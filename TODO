@@ -15,12 +15,15 @@ Playbook
 
 .. __: https://www.wireguard.com/
 
-Hosts
-=====
+* Eliminate the need for a webserver to generate certificates. nsupdate__ is
+  an option, but it's part of BIND, and I won't want to install all of BIND
+  just for that. Another alternative is ldns-update__, and seems like the best
+  choice. Alternatively, there's knsupdate__, but unfortunately that's bundled
+  with Knot DNS rather than being standalone.
 
-* Test manann as a primary MX. [Will require certificate migration.]
-
-.. __: https://github.com/kgaughan/sites
+.. __: https://en.wikipedia.org/wiki/Nsupdate
+.. __: https://www.nlnetlabs.nl/projects/ldns/
+.. __: https://www.knot-dns.cz/docs/2.8/html/man_knsupdate.html
 
 Ideas for further changes
 =========================
@@ -28,7 +31,5 @@ Ideas for further changes
 * SSHFP__
 
 .. __: http://jpmens.net/2012/11/03/an-action-plugin-for-ansible-to-handle-ssh-host-keys/
-
-* cian still functions as ns4. This should be switched to eimhir.
 
 .. vim:set ft=rst:
