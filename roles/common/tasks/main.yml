@@ -1,16 +1,4 @@
 ---
-- name: install user configuration files
-  copy:
-    src: "home/{{ item }}"
-    dest: "/home/keith/.{{ item }}"
-    owner: keith
-    group: wheel
-    mode: 0644
-  loop:
-    - login_conf
-    - nexrc
-    - tmux.conf
-
 - name: populate authorized_keys
   authorized_key:
     user: keith
@@ -25,13 +13,8 @@
   pkgng:
     name:
       - ca_root_nss
-      - duff
       - jq # needed by DO's bootstrap code
-      - pkg-rmleaf
-      - pwgen
       - rsync
-      - tmux
-      - vim-console
     cached: true
 
 - name: include fdesc in fstab
@@ -41,14 +24,6 @@
     line: 'fdesc /dev/fd fdescfs rw 0 0'
   notify:
     - mount all
-
-- name: deactivate unwanted services
-  service:
-    name: "{{ item }}"
-    enabled: false
-    state: stopped
-  loop:
-    - moused
 
 - import_tasks: pf.yml
 - import_tasks: fbsd-update.yml
