@@ -71,6 +71,22 @@
         cached: true
       become: true
 
+    - name: directory irssi config
+      file:
+        path: ".irssi/scripts"
+        state: directory
+
+    - name: install scripts
+      copy:
+        src: "{{ item }}"
+        dest: ".irssi/{{ item | basename }}"
+        mode: 0644
+      loop:
+        - irssi/config
+        - irssi/solarized-universal.theme
+      loop_control:
+        label: "{{ item | basename }}"
+
 - name: configure manann
   hosts:
     - manann.talideon.com
