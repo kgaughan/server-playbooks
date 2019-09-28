@@ -1,0 +1,113 @@
+---
+- name: install all
+  hosts: all
+  remote_user: keith
+  become: false
+  gather_facts: false
+
+  vars:
+    ansible_python_interpreter: /usr/local/bin/python3
+
+  tasks:
+    - name: install packages
+      pkgng:
+        name:
+          - duff
+          - pkg-rmleaf
+          - pwgen
+          - multitail
+          - pftop
+          - tmux
+          - vim-console
+        cached: true
+      become: true
+
+    - name: install user configuration files
+      copy:
+        src: "{{ item }}"
+        dest: ".{{ item }}"
+        mode: 0644
+      loop:
+        - login_conf
+        - nexrc
+        - tmux.conf
+        - cshrc
+        - login
+      loop_control:
+        label: ".{{ item }}"
+
+    - name: directory for scripts
+      file:
+        path: "bin"
+        state: directory
+
+    - name: install scripts
+      copy:
+        src: "{{ item }}"
+        dest: "bin/{{ item }}"
+        mode: 0644
+      loop:
+        - pkgupdate
+      loop_control:
+        label: ".{{ item }}"
+
+- name: configure lir
+  hosts:
+    - lir.talideon.com
+  remote_user: keith
+  become: false
+  gather_facts: false
+
+  vars:
+    ansible_python_interpreter: /usr/local/bin/python3
+
+  tasks:
+    - name: install packages
+      pkgng:
+        name:
+          - aerc
+          - irssi
+          - w3m
+        cached: true
+      become: true
+
+- name: configure manann
+  hosts:
+    - manann.talideon.com
+  remote_user: keith
+  become: false
+  gather_facts: false
+
+  vars:
+    ansible_python_interpreter: /usr/local/bin/python3
+
+  tasks:
+    - name: install packages
+      pkgng:
+        name:
+          - fdm
+        cached: true
+      become: true
+
+    - name: install user configuration files
+      copy:
+        src: "{{ item }}"
+        dest: ".{{ item }}"
+        mode: 0644
+      loop:
+        - fdm.conf
+      loop_control:
+        label: ".{{ item }}"
+
+    - name: add credentials for fdm
+      lineinfile:
+        dest: ".netrc"
+        mode: "0600"
+        regexp: "^machine mail.eircom.net "
+        line: "machine mail.eircom.net login {{ fdm.username }} password {{ fdm.password }}"
+
+    - name: periodically run fdm
+      cron:
+        name: run fdm
+        minute: "*/15"
+        job: "/usr/bin/nice -n 19 /usr/local/bin/fdm -l fetch"

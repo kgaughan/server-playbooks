@@ -1,0 +1,7 @@
+#!/bin/sh
+if test "$(id -u)" -eq 0; then
+	pkg update && pkg upgrade && pkg autoremove && pkg clean
+else
+	echo Switching to root...
+	exec sudo $0 "$@"
+fi

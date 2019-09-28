@@ -1,0 +1,53 @@
+#
+# .cshrc - csh resource script, read at beginning of execution by each shell
+#
+# see also csh(1), environ(7).
+# more examples available at /usr/share/examples/csh/
+#
+
+alias h		history 25
+alias j		jobs -l
+alias la	ls -aF
+alias lf	ls -FA
+alias ll	ls -lAF
+
+# Make life a bit easier regarding svn when I need it.
+if (! -e /usr/local/bin/svn && -e /usr/bin/svnlite) then
+	alias svn svnlite
+endif
+
+setenv	EDITOR	vi
+setenv	PAGER	less
+
+if ($?prompt) then
+	# An interactive shell -- set some stuff up
+	set prompt = "%{\033[0;36m%}%S%N@%m%s %B%~%b%{\033[0m%} %# "
+	set promptchars = "%#"
+
+	setenv LS_COLORS "di=33;1:fi=37;1:ln=36;1:ex=01;31:pi=40;33:so=01;34:bd=40;33;01:cd=4;33;01:*.o=37:*.log=37"
+
+	set color
+	set filec
+	set history = 1000
+	set savehist = (1000 merge)
+	set histdup = erase
+	set autolist = ambiguous
+	# Use history to aid expansion
+	set autoexpand
+	set autorehash
+	set autocorrect
+	set implicitcd
+	set noclobber
+	set fignore = (.pyc)
+	set mail = (/var/mail/$USER)
+	if ( $?tcsh ) then
+		bindkey "^W" backward-delete-word
+		bindkey -k up history-search-backward
+		bindkey -k down history-search-forward
+		bindkey "\e[1~" beginning-of-line           # Home
+		bindkey "\e[2~" overwrite-mode              # Insert
+		bindkey "\e[3~" delete-char-or-list-or-eof  # Delete
+		bindkey "\e[4~" end-of-line                 # End
+		bindkey "^R" i-search-back
+	endif
+endif
