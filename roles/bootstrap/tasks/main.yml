@@ -1,11 +1,12 @@
 ---
 - name: install python
-  raw: sh -c "ASSUME_ALWAYS_YES=yes pkg install python3"
+  raw: ASSUME_ALWAYS_YES=yes pkg install python3
+  args:
+    executable: /bin/sh
 
 - name: install bootstrap packages
   pkgng:
     name:
-      - fish
       - sudo
 
 - name: create a user
@@ -13,7 +14,7 @@
     name: keith
     comment: Keith Gaughan
     groups: wheel
-    shell: /usr/local/bin/fish
+    shell: /bin/tcsh
     state: present
     generate_ssh_key: true
     ssh_key_type: ed25519

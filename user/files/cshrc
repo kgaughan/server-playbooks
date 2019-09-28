@@ -12,16 +12,41 @@ alias lf	ls -FA
 alias ll	ls -lAF
 
 # Make life a bit easier regarding svn when I need it.
-if (! -e /usr/local/bin/svn && -e /usr/bin/svnlite) then
+if (! -X svn && -X svnlite) then
 	alias svn svnlite
+	alias svnadmin svnliteadmin
+	alias svnlook svnlitelook
+	alias svnsync svnlitesync
 endif
 
-setenv	EDITOR	vi
-setenv	PAGER	less
+if (-X vim) then
+	setenv EDITOR vim
+else
+	setenv EDITOR vi
+	alias vim vi  # Muscle memory.
+endif
+
+if (-X most) then
+	setenv PAGER most
+else if (-X w3m) then
+	setenv PAGER "w3m -T text/plain"
+else if (-X less) then
+	setenv PAGER less
+else
+	setenv PAGER more
+endif
+
+if ($?TMUX) then
+	setenv TERM screen-256color
+else if ($tty =~ ttyv*) then
+	setenv TERM cons25
+else
+	setenv TERM xterm-256color
+endif
 
 if ($?prompt) then
 	# An interactive shell -- set some stuff up
-	set prompt = "%{\033[0;36m%}%S%N@%m%s %B%~%b%{\033[0m%} %# "
+	set prompt = "%{\e[0;33m%}%N%{\e[0m%}@%{\e[34m%}%m %{\033[0;36m%}%~ %B%#%b%{\e[0m%} "
 	set promptchars = "%#"
 
 	setenv LS_COLORS "di=33;1:fi=37;1:ln=36;1:ex=01;31:pi=40;33:so=01;34:bd=40;33;01:cd=4;33;01:*.o=37:*.log=37"
@@ -37,10 +62,13 @@ if ($?prompt) then
 	set autorehash
 	set autocorrect
 	set implicitcd
-	set noclobber
+	set noclobber = (notempty ask)
+	set complete = enhance
 	set fignore = (.pyc)
 	set mail = (/var/mail/$USER)
-	if ( $?tcsh ) then
+	set globstar
+	set listlinks
+	if ($?tcsh) then
 		bindkey "^W" backward-delete-word
 		bindkey -k up history-search-backward
 		bindkey -k down history-search-forward
@@ -49,5 +77,9 @@ if ($?prompt) then
 		bindkey "\e[3~" delete-char-or-list-or-eof  # Delete
 		bindkey "\e[4~" end-of-line                 # End
 		bindkey "^R" i-search-back
+	endif
+
+	if ($?prompt3) then
+		alias postcmd 'history -S'  # save history after each command
 	endif
 endif
