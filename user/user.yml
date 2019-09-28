@@ -12,11 +12,7 @@
     - name: install packages
       pkgng:
         name:
-          - duff
           - pkg-rmleaf
-          - pwgen
-          - multitail
-          - pftop
           - tmux
           - vim-console
         cached: true
@@ -26,7 +22,7 @@
       copy:
         src: "{{ item }}"
         dest: ".{{ item }}"
-        mode: 0644
+        mode: "0640"
       loop:
         - login_conf
         - nexrc
@@ -45,11 +41,11 @@
       copy:
         src: "{{ item }}"
         dest: "bin/{{ item }}"
-        mode: 0644
+        mode: "0640"
       loop:
         - pkgupdate
       loop_control:
-        label: ".{{ item }}"
+        label: "{{ item }}"
 
 - name: configure lir
   hosts:
@@ -80,7 +76,7 @@
       copy:
         src: "{{ item }}"
         dest: ".irssi/{{ item | basename }}"
-        mode: 0644
+        mode: 0640
       loop:
         - irssi/config
         - irssi/solarized-universal.theme
@@ -109,7 +105,7 @@
       copy:
         src: "{{ item }}"
         dest: ".{{ item }}"
-        mode: 0644
+        mode: 0640
       loop:
         - fdm.conf
       loop_control:
@@ -117,7 +113,8 @@
 
     - name: add credentials for fdm
       lineinfile:
-        dest: ".netrc"
+        path: "/home/keith/.netrc"
+        create: true
         mode: "0600"
         regexp: "^machine mail.eircom.net "
         line: "machine mail.eircom.net login {{ fdm.username }} password {{ fdm.password }}"
