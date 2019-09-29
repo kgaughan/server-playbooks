@@ -51,23 +51,22 @@ if ($?prompt) then
 
 	setenv LS_COLORS "di=33;1:fi=37;1:ln=36;1:ex=01;31:pi=40;33:so=01;34:bd=40;33;01:cd=4;33;01:*.o=37:*.log=37"
 
-	set color
-	set filec
-	set history = 1000
-	set savehist = (1000 merge)
-	set histdup = erase
-	set autolist = ambiguous
-	# Use history to aid expansion
-	set autoexpand
-	set autorehash
-	set autocorrect
-	set implicitcd
-	set noclobber = (notempty ask)
-	set complete = enhance
-	set fignore = (.pyc)
-	set mail = (/var/mail/$USER)
-	set globstar
-	set listlinks
+	set autocorrect                 # fix misspellings
+	set autoexpand                  # auto invokes expand-history before completions
+	set autolist = ambiguous        # use history to aid expansion
+	set autorehash                  # remove the need to run hash to rescan PATH
+	set color                       # colour display for ls -F
+	set complete = enhance          # ignore case, consider .-_ as word separators
+	set fignore = (.pyc)            # files to ignore on completion
+	set filec                       # file completion
+	set globstar                    # support '**' globs
+	set histdup = erase             # erase older duplicate entries
+	set history = 1000              # history contains 1000 entries max
+	set implicitcd                  # typing a directory name cd's there
+	set listlinks                   # show target file type for symlinks
+	set noclobber = (notempty ask)  # restrict >> to preserve existing non-empty files
+	set savehist = (1000 merge)     # merge current session into .history
+
 	if ($?tcsh) then
 		bindkey "^W" backward-delete-word
 		bindkey -k up history-search-backward
