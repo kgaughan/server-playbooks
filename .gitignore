@@ -3,5 +3,5 @@
 *.orig
 *~
 *.retry
-/facts/
+facts/
 /vault-password

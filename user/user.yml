@@ -3,7 +3,6 @@
   hosts: all
   remote_user: keith
   become: false
-  gather_facts: false
 
   vars:
     ansible_python_interpreter: /usr/local/bin/python3
@@ -21,7 +20,7 @@
     - name: install user configuration files
       copy:
         src: "{{ item }}"
-        dest: ".{{ item }}"
+        dest: "{{ ansible_env.HOME }}/.{{ item }}"
         mode: "0640"
       loop:
         - login_conf
@@ -34,13 +33,13 @@
 
     - name: directory for scripts
       file:
-        path: "bin"
+        path: "{{ ansible_env.HOME }}/bin"
         state: directory
 
     - name: install scripts
       copy:
         src: "{{ item }}"
-        dest: "bin/{{ item }}"
+        dest: "{{ ansible_env.HOME }}/bin/{{ item }}"
         mode: "0750"
       loop:
         - pkgupdate
@@ -52,7 +51,6 @@
     - lir.talideon.com
   remote_user: keith
   become: false
-  gather_facts: false
 
   vars:
     ansible_python_interpreter: /usr/local/bin/python3
@@ -68,13 +66,13 @@
 
     - name: config directory
       file:
-        path: ".config/aerc"
+        path: "{{ ansible_env.HOME }}/.config/aerc"
         state: directory
 
     - name: deploy configuration
       copy:
         src: "{{ item }}"
-        dest: ".config/aerc/{{ item | basename }}"
+        dest: "{{ ansible_env.HOME }}/.config/aerc/{{ item | basename }}"
         mode: 0640
       loop:
         - aerc/aerc.conf
@@ -85,7 +83,7 @@
     - name: deploy account configuration
       template:
         src: aerc/accounts.conf.j2
-        dest: ".config/aerc/accounts.conf"
+        dest: "{{ ansible_env.HOME }}/.config/aerc/accounts.conf"
         mode: "0600"
 
 - name: irssi
@@ -93,7 +91,6 @@
     - lir.talideon.com
   remote_user: keith
   become: false
-  gather_facts: false
 
   vars:
     ansible_python_interpreter: /usr/local/bin/python3
@@ -108,13 +105,13 @@
 
     - name: config directory
       file:
-        path: ".irssi/scripts"
+        path: "{{ ansible_env.HOME }}/.irssi/scripts"
         state: directory
 
     - name: deploy configuration
       copy:
         src: "{{ item }}"
-        dest: ".irssi/{{ item | basename }}"
+        dest: "{{ ansible_env.HOME }}/.irssi/{{ item | basename }}"
         mode: "0640"
       loop:
         - irssi/config
@@ -127,7 +124,6 @@
     - manann.talideon.com
   remote_user: keith
   become: false
-  gather_facts: false
 
   vars:
     ansible_python_interpreter: /usr/local/bin/python3
@@ -143,7 +139,7 @@
     - name: install configuration
       copy:
         src: "{{ item }}"
-        dest: ".{{ item }}"
+        dest: "{{ ansible_env.HOME }}/.{{ item }}"
         mode: "0640"
       loop:
         - fdm.conf
@@ -152,7 +148,7 @@
 
     - name: add credentials
       lineinfile:
-        path: "/home/keith/.netrc"
+        path: "{{ ansible_env.HOME }}/.netrc"
         create: true
         mode: "0600"
         regexp: "^machine mail.eircom.net "
