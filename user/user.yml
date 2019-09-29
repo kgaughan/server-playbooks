@@ -1,5 +1,5 @@
 ---
-- name: install all
+- name: common
   hosts: all
   remote_user: keith
   become: false
@@ -41,13 +41,13 @@
       copy:
         src: "{{ item }}"
         dest: "bin/{{ item }}"
-        mode: "0640"
+        mode: "0750"
       loop:
         - pkgupdate
       loop_control:
         label: "{{ item }}"
 
-- name: configure lir
+- name: aerc
   hosts:
     - lir.talideon.com
   remote_user: keith
@@ -62,28 +62,67 @@
       pkgng:
         name:
           - aerc
-          - irssi
           - w3m
         cached: true
       become: true
 
-    - name: directory irssi config
+    - name: config directory
+      file:
+        path: ".config/aerc"
+        state: directory
+
+    - name: deploy configuration
+      copy:
+        src: "{{ item }}"
+        dest: ".config/aerc/{{ item | basename }}"
+        mode: 0640
+      loop:
+        - aerc/aerc.conf
+        - aerc/binds.conf
+      loop_control:
+        label: "{{ item | basename }}"
+
+    - name: deploy account configuration
+      template:
+        src: aerc/accounts.conf.j2
+        dest: ".config/aerc/accounts.conf"
+        mode: "0600"
+
+- name: irssi
+  hosts:
+    - lir.talideon.com
+  remote_user: keith
+  become: false
+  gather_facts: false
+
+  vars:
+    ansible_python_interpreter: /usr/local/bin/python3
+
+  tasks:
+    - name: install packages
+      pkgng:
+        name:
+          - irssi
+        cached: true
+      become: true
+
+    - name: config directory
       file:
         path: ".irssi/scripts"
         state: directory
 
-    - name: install scripts
+    - name: deploy configuration
       copy:
         src: "{{ item }}"
         dest: ".irssi/{{ item | basename }}"
-        mode: 0640
+        mode: "0640"
       loop:
         - irssi/config
         - irssi/solarized-universal.theme
       loop_control:
         label: "{{ item | basename }}"
 
-- name: configure manann
+- name: fdm
   hosts:
     - manann.talideon.com
   remote_user: keith
@@ -101,17 +140,17 @@
         cached: true
       become: true
 
-    - name: install user configuration files
+    - name: install configuration
       copy:
         src: "{{ item }}"
         dest: ".{{ item }}"
-        mode: 0640
+        mode: "0640"
       loop:
         - fdm.conf
       loop_control:
         label: ".{{ item }}"
 
-    - name: add credentials for fdm
+    - name: add credentials
       lineinfile:
         path: "/home/keith/.netrc"
         create: true
@@ -119,7 +158,7 @@
         regexp: "^machine mail.eircom.net "
         line: "machine mail.eircom.net login {{ fdm.username }} password {{ fdm.password }}"
 
-    - name: periodically run fdm
+    - name: periodically run
       cron:
         name: run fdm
         minute: "*/15"
