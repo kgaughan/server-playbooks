@@ -1,6 +1,6 @@
 HOSTS:=hosts
-
-CMD:=ansible-playbook -i $(HOSTS) $(if $(wildcard ./vault-password),--vault-password-file=./vault-password,--ask-vault-pass) --diff
+FLAGS:=
+CMD:=ansible-playbook -i $(HOSTS) $(if $(wildcard ./vault-password),--vault-password-file=./vault-password,--ask-vault-pass) $(FLAGS)
 
 default: all
 

@@ -31,6 +31,9 @@ The sites themselves are subsequently deployed from the sites__ repo.
 
 .. __: https://github.com/kgaughan/sites/
 
+My user configuration sits under the 'user' directory. This sets up the 'keith'
+user with anything I might want/need to have present on the servers.
+
 Nameserver role
 ===============
 
