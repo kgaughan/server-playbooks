@@ -3,7 +3,9 @@ compatibility_level = 2
 
 mynetworks = {{ my_networks | join(" ") }}
 
-myhostname = {{ ansible_fqdn }}
+myhostname = mail.talideon.com
+smtpd_banner = $myhostname ESMTP
+
 recipient_delimiter = +
 
 mailbox_transport = lmtp:unix:private/dovecot-lmtp
@@ -14,6 +16,8 @@ virtual_alias_domains =
 virtual_alias_maps =
   socketmap:unix:private/sockmap:aliases
   socketmap:unix:private/sockmap:users
+
+disable_vrfy_command = yes
 
 # Prevent future explosions.
 message_size_limit = 0
