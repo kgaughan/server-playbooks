@@ -16,7 +16,7 @@ from http import client
 import os
 import sys
 
-import bjoern
+from cheroot import wsgi
 import pam
 
 
@@ -145,7 +145,7 @@ def main():
     )
 
     app = AuthServer(args.service, args.realm)
-    bjoern.run(app, host="127.0.0.1", port=args.port)
+    wsgi.Server(("127.0.0.1", args.port), app).start()
 
 
 if __name__ == "__main__":
