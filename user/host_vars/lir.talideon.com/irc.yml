@@ -25,5 +25,6 @@ irc:
     tls_verify: "yes"
     channels:
       - club
-      - meta
+      - gopher
       - ireland
+      - meta
