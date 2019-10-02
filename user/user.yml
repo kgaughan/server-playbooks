@@ -43,6 +43,7 @@
         mode: "0750"
       loop:
         - pkgupdate
+        - flush-table
       loop_control:
         label: "{{ item }}"
 
