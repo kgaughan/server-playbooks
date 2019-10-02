@@ -108,16 +108,17 @@
         path: "{{ ansible_env.HOME }}/.irssi/scripts"
         state: directory
 
-    - name: deploy configuration
+    - name: deploy theme
       copy:
-        src: "{{ item }}"
-        dest: "{{ ansible_env.HOME }}/.irssi/{{ item | basename }}"
+        src: "irssi/solarized-universal.theme"
+        dest: "{{ ansible_env.HOME }}/.irssi/solarized-universal.theme"
         mode: "0640"
-      loop:
-        - irssi/config
-        - irssi/solarized-universal.theme
-      loop_control:
-        label: "{{ item | basename }}"
+
+    - name: deploy configuration
+      template:
+        src: "irssi/config.j2"
+        dest: "{{ ansible_env.HOME }}/.irssi/config"
+        mode: "0600"
 
 - name: fdm
   hosts:

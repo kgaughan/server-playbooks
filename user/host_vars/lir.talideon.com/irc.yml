@@ -1,0 +1,28 @@
+irc:
+  LSpace:
+    address: irc.linux.ie
+    port: 6697
+    use_tls: "yes"
+    channels:
+      - linux
+  Freenode:
+    address: irc.freenode.net
+    port: 7000
+    use_tls: "yes"
+    tls_verify: "yes"
+    channels:
+      - python.ie
+  UKLUGs:
+    address: irc.lug.org.uk
+    port: 6667
+    channels:
+      - surrey # http://surrey.lug.org.uk/Chat/IRC
+  TildeChat:
+    address: irc.tilde.chat
+    port: 6697
+    use_tls: "yes"
+    tls_verify: "yes"
+    channels:
+      - club
+      - meta
+      - ireland
