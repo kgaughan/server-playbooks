@@ -1,8 +1,9 @@
 irc:
   LSpace:
-    address: irc.linux.ie
+    address: irc.tuatha.org
     port: 6697
     use_tls: "yes"
+    tls_verify: "yes"
     channels:
       - linux
   Freenode:
