@@ -159,5 +159,5 @@
     - name: periodically run
       cron:
         name: run fdm
-        minute: "*/15"
+        hour: "*/3"
         job: "/usr/bin/nice -n 19 /usr/local/bin/fdm -l fetch"
