@@ -6,7 +6,7 @@ dotlock_use_excl = yes
 first_valid_gid = 1000
 first_valid_uid = 1000
 mail_privileged_group = mail
-mail_plugins = $mail_plugins zlib notify replication
+mail_plugins = $mail_plugins zlib notify
 plugin {
   sieve_dir = ~/.config/sieve
   sieve = ~/.dovecot.sieve
@@ -60,12 +60,6 @@ service lmtp {
   unix_listener /var/spool/postfix/private/dovecot-lmtp {
     user = postfix
     group = postfix
-    mode = 0600
-  }
-}
-service replicator {
-  process_min_avail = 1
-  unix_listener replicator-doveadm {
     mode = 0600
   }
 }
