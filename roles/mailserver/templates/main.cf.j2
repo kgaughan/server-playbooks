@@ -33,6 +33,7 @@ smtpd_helo_restrictions =
   reject_non_fqdn_helo_hostname
   reject_unknown_helo_hostname
   check_helo_access hash:/usr/local/etc/postfix/access
+  reject_rhsbl_helo dbl.spamhaus.org
 smtpd_sender_restrictions =
   permit_mynetworks
   permit_sasl_authenticated
