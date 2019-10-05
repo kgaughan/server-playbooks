@@ -1,2 +1,5 @@
 # Block some stuff that gets past rspamd
 # http://www.postfix.org/access.5.html
+
+.riechoice.com REJECT
+.srvgowns.com  REJECT
