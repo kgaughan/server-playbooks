@@ -32,7 +32,7 @@
     dest: "{{ acme_client_root }}/domains.txt"
     create: true
     regexp: "^{{ item }} ?"
-    line: "{{ item }} {{ item | subdomains(acme_domains[item]) | join(' ') }}"
+    line: "{{ item | acme_list(acme_domains[item]) | join(' ') }}"
   loop: "{{ acme_domains.keys() | list }}"
   notify:
     - generate missing certificates
