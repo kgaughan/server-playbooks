@@ -1,4 +1,2 @@
 ---
-tools_root: /usr/local/www/tools
-dav_app_sock: /var/run/www/wsgidav.sock
 dav_root: /usr/local/www/dav
