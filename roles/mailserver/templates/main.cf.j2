@@ -4,7 +4,7 @@ compatibility_level = 2
 mynetworks = {{ my_networks | join(" ") }}
 
 myhostname = mail.talideon.com
-smtpd_banner = $myhostname ESMTP
+smtpd_banner = ${myhostname} ESMTP
 
 recipient_delimiter = +
 
@@ -32,7 +32,7 @@ smtpd_helo_restrictions =
   reject_invalid_helo_hostname
   reject_non_fqdn_helo_hostname
   reject_unknown_helo_hostname
-  check_helo_access hash:/usr/local/etc/postfix/access
+  check_helo_access hash:${config_directory}/access
 smtpd_sender_restrictions =
   permit_mynetworks
   permit_sasl_authenticated
@@ -45,7 +45,7 @@ smtpd_recipient_restrictions =
   reject_non_fqdn_recipient
   reject_unauth_destination
   reject_unknown_recipient_domain
-  check_client_access hash:{{ postfix_root }}/access
+  check_client_access hash:${config_directory}/access
   permit
 # Block clients that speak too early.
 smtpd_data_restrictions =
@@ -90,7 +90,7 @@ smtp_tls_security_level = dane
 # rspamd (((
 smtpd_milters = inet:localhost:11332
 milter_protocol = 6
-non_smtpd_milters = $smtpd_milters
+non_smtpd_milters = ${smtpd_milters}
 milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
 milter_default_action = accept
 # )))
