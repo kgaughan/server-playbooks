@@ -1,0 +1,2 @@
+# Block some stuff that gets past rspamd
+# http://www.postfix.org/access.5.html

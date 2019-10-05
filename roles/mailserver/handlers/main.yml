@@ -1,4 +1,9 @@
 ---
+- name: rebuild access database
+  command: postmap access
+  args:
+    chdir: "{{ postfix_root }}"
+
 - name: restart postfix
   service:
     name: postfix

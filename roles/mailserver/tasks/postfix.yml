@@ -42,6 +42,15 @@
     - generate missing certificates
     - restart postfix
 
+- name: deploy access list
+  copy:
+    src: access
+    dest: "{{ postfix_root }}"
+    mode: 0644
+  notify:
+    - rebuild access database
+    - restart postfix
+
 - name: initialise virtual mailbox database
   command: sqlite3 {{ vbox_db_path }}
   args:
