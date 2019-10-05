@@ -3,5 +3,4 @@
   pkgng:
     name:
       - fdm
-      - mutt-lite
     cached: true
