@@ -5,6 +5,7 @@
 .riechoice.com REJECT
 .srvgowns.com  REJECT
 .nsehealth.com REJECT
+.wswalpha.com  REJECT
 185.217.228    REJECT
 
 # Pests
