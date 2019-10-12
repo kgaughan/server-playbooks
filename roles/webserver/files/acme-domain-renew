@@ -39,6 +39,7 @@ mkdir -pm700 "$tls_dir/private"
 
 # Directory in which we put our temporary config files and CSRs
 ac_tmp=$(mktemp -d "$TMPDIR/acme-tiny.XXXXXX")
+chmod 700 $ac_tmp
 trap "rm -rf $ac_tmp" EXIT
 
 while read domain line; do
@@ -75,6 +76,7 @@ while read domain line; do
 	# Request the certificate
 	acme_tiny --account-key "$account_key" \
 			  --csr "$ac_tmp/domain.csr" \
-			  --acme-dir "$challenge_dir" > "$cert"
+			  --acme-dir "$challenge_dir" > "$ac_tmp/$domain.fullchain.pem"
+	mv "$ac_tmp/$domain.fullchain.pem" "$cert"
 	chmod 444 "$cert"
 done < "$config_dir/domains.txt"
