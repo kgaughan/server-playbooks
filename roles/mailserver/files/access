@@ -1,12 +1,13 @@
 # Block some stuff that gets past rspamd
 # http://www.postfix.org/access.5.html
 
-.aamedia.xyz   REJECT
-.riechoice.com REJECT
-.srvgowns.com  REJECT
-.nsehealth.com REJECT
-.wswalpha.com  REJECT
-185.217.228    REJECT
+.aamedia.xyz			REJECT
+.riechoice.com			REJECT
+.srvgowns.com			REJECT
+.nsehealth.com			REJECT
+.wswalpha.com			REJECT
+.hostingdunyam.com.tr	REJECT
+185.217.228				REJECT
 
 # Pests
 .proxy-research.com REJECT
