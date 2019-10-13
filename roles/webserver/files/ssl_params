@@ -11,6 +11,7 @@ add_header Strict-Transport-Security 'max-age=15768000; preload';
 
 ssl_ciphers		'CHACHA20:ECDH+AESGCM:!DHE:!PSK';
 ssl_ecdh_curve	secp384r1;
+ssl_early_data	on;
 
 ssl_stapling on;
 ssl_stapling_verify on;
