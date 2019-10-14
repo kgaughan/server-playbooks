@@ -1,0 +1,22 @@
+---
+- name: install smartmontools
+  pkgng:
+    name:
+      - smartmontools
+    cached: true
+
+- name: deploy smartd.conf
+  copy:
+    src: 'smartd.conf'
+    dest: '/usr/local/etc/'
+    owner: root
+    group: wheel
+    mode: 0644
+  notify:
+    - reload smartd
+
+- name: start smartd
+  service:
+    name: smartd
+    enabled: true
+    state: started

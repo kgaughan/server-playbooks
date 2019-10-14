@@ -74,6 +74,12 @@
   tags:
     - webmail
 
+- hosts: smart
+  remote_user: keith
+  become: true
+  roles:
+    - smart
+
 - hosts: webservers
   remote_user: keith
   become: true
