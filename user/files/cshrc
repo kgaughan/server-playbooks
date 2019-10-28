@@ -48,7 +48,7 @@ if ($?prompt) then
 	set autorehash					# remove the need to run hash to rescan PATH
 	set color						# colour display for ls -F
 	set complete = enhance			# ignore case, consider .-_ as word separators
-	set fignore = (.pyc)			# files to ignore on completion
+	set fignore = (.pyc .o .so)		# files to ignore on completion
 	set filec						# file completion
 	set globstar					# support '**' globs
 	set histdup = erase				# erase older duplicate entries
