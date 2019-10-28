@@ -9,12 +9,10 @@ alias xh	"rm ~/.history && history -c"
 
 # Make life a bit easier regarding svn when I need it.
 if (! -X svn && -X svnlite) then
-	alias svn	svnlite
-	alias svnadmin	svnliteadmin
-	alias svnlook	svnlitelook
-	alias svnsync	svnlitesync
+	foreach suffix ("" admin bench dumpfilter fsfs look mucc rdump serve sync version)
+		alias svn$suffix svnlite$suffix
+	end
 endif
-
 
 if (-X vim) then
 	setenv EDITOR vim
