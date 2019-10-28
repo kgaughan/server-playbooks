@@ -23,15 +23,9 @@ else
 	alias vim vi  # Muscle memory.
 endif
 
-if (-X most) then
-	setenv PAGER most
-else if (-X w3m) then
-	setenv PAGER "w3m -T text/plain"
-else if (-X less) then
-	setenv PAGER less
-else
-	setenv PAGER more
-endif
+foreach PAGER (most less more cat)
+	if (-X $PAGER) break
+end
 
 if ($?TMUX) then
 	setenv TERM screen-256color
