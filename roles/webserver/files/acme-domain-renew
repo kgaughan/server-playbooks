@@ -25,9 +25,6 @@ done
 # Only run if domains.txt exists
 test -e "$config_dir/domains.txt" || exit 0
 
-# This isn't set by default on all platforms.
-: ${TMPDIR:=/tmp}
-
 account_key="$config_dir/privkey.pem"
 if ! test -e "$account_key"; then
 	# Ensure we have an account key
@@ -38,7 +35,7 @@ fi
 mkdir -pm700 "$tls_dir/private"
 
 # Directory in which we put our temporary config files and CSRs
-ac_tmp=$(mktemp -d "$TMPDIR/acme-tiny.XXXXXX")
+ac_tmp=$(mktemp -d "${TMPDIR:-/tmp}/acme-tiny.XXXXXX")
 chmod 700 $ac_tmp
 trap "rm -rf $ac_tmp" EXIT
 
