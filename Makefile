@@ -41,6 +41,9 @@ xmpp:
 repos:
 	$(CMD) site.yml --tags=repo
 
+upgrade:
+	$(CMD) upgrade.yml
+
 .PHONY: bootstrap bootstrap-do clean default
 .PHONY: mailservers nameservers webservers xmpp
 .PHONY: dav feedreaders webmail repos wireguard

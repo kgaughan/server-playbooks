@@ -1,0 +1,30 @@
+---
+- name: upgrade an instance
+  hosts: freebsd
+  remote_user: keith
+  become: true
+  gather_facts: false
+
+  tasks:
+    # https://www.freebsd.org/releases/12.0R/installation.html
+    - name: get version
+      shell: "freebsd-version | cut -f1 -d-"
+
+    - name: fetch upgrade and update kernel
+      command: |
+        freebsd-update -r {{ target_version }}-RELEASE upgrade
+        freebsd-update install
+
+    - name: reboot for new kernel
+      reboot:
+
+    - name: update userland
+      command: |
+        freebsd-update install
+        pkg update
+        pkg upgrade -y
+        pkg clean
+        freebsd-update install
+
+    - name: reboot for new userland
+      reboot:
