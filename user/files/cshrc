@@ -5,7 +5,7 @@ alias lf	ls -FA
 alias ll	ls -lAF
 # This is how I wish 'tmux attach' behaved:
 alias s		"tmux has && tmux attach || tmux"
-alias xh	"rm ~/.history && history -c"
+alias xh	"rm -f ~/.history && history -c"
 
 # Make life a bit easier regarding svn when I need it.
 if (! -X svn && -X svnlite) then
