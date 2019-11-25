@@ -3,7 +3,6 @@
   pkgng:
     name:
       - python3
-      - py36-cheroot
       - py36-python-pam
     cached: true
 

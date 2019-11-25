@@ -15,8 +15,8 @@ import logging
 from http import client
 import os
 import sys
+from wsgiref import simple_server
 
-from cheroot import wsgi
 import pam
 
 
@@ -116,7 +116,6 @@ class AuthServer:
         try:
             code, headers, content = self.run(environ)
             start_response(make_status_line(code), headers)
-            return content
         except HTTPError as exc:
             headers = exc.headers()
             if exc.code in (100, 101, 204, 304):
@@ -126,7 +125,7 @@ class AuthServer:
                 headers.append(("Content-Type", "text/plain"))
                 content = [str(exc).encode()]
             start_response(make_status_line(exc.code), headers)
-            return content
+        return content
 
 
 def main():
@@ -145,7 +144,8 @@ def main():
     )
 
     app = AuthServer(args.service, args.realm)
-    wsgi.Server(("127.0.0.1", args.port), app).start()
+    with simple_server.make_server("127.0.0.1", args.port, app) as server:
+        server.serve_forever()
 
 
 if __name__ == "__main__":
