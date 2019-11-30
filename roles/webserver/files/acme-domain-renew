@@ -70,6 +70,8 @@ while read domain line; do
 		-key "$private_key" -subj "/" -reqexts SAN \
 		-config "$ac_tmp/csr.cnf" -out "$ac_tmp/domain.csr"
 
+	echo "==> Checking $domain"
+
 	# Request the certificate
 	acme_tiny --account-key "$account_key" \
 			  --csr "$ac_tmp/domain.csr" \
