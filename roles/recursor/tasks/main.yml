@@ -1,0 +1,6 @@
+---
+- name: activate unbound
+  service:
+    name: local_unbound
+    enabled: true
+    state: started
