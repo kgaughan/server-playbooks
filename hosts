@@ -26,9 +26,6 @@ eimhir.talideon.com
 [mailservers]
 manann.talideon.com
 
-[recursors]
-manann.talideon.com
-
 [nameservers]
 lir.talideon.com
 eimhir.talideon.com

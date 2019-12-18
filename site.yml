@@ -36,14 +36,6 @@
   tags:
     - mailserver
 
-- hosts: recursors
-  remote_user: keith
-  become: true
-  roles:
-    - recursor
-  tags:
-    - recursor
-
 - hosts: nameservers
   remote_user: keith
   become: true
