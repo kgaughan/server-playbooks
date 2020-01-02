@@ -5,7 +5,7 @@ if test "$(id -u)" -eq 0; then
 		pfctl -s Tables >&2
 		exit 2
 	fi
-	pfctl -T flush -t bruteforce
+	pfctl -T flush -t "$2"
 else
 	echo Switching to root...
 	exec sudo $0 "$@"
