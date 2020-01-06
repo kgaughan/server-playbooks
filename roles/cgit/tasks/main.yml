@@ -3,7 +3,7 @@
   pkgng:
     name:
       - cgit
-      - git
+      - git-lite
     cached: true
 
 - name: deploy configuration

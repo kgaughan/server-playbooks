@@ -5,7 +5,7 @@
       - tt-rss
       - php72-filter  # missing dependency
       - php72-opcache  # recommended
-      - py36-pymysql
+      - py37-pymysql
     cached: true
 
 - name: deploy vhost
