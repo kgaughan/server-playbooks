@@ -1,7 +1,0 @@
-[Personal]
-source        = imap://{{ mail.username }}:{{ mail.password | urlencode | regex_replace('/','%2F') }}@mail.talideon.com:143
-outgoing      = smtp+plain://{{ mail.username }}:{{ mail.password | urlencode | regex_replace('/','%2F') }}@mail.talideon.com:587
-default       = INBOX
-smtp-starttls = yes
-from          = Keith Gaughan <k@stereochro.me>
-copy-to       = Sent

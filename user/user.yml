@@ -47,46 +47,6 @@
       loop_control:
         label: "{{ item }}"
 
-- name: aerc
-  hosts:
-    - lir.talideon.com
-  remote_user: keith
-  become: false
-
-  vars:
-    ansible_python_interpreter: /usr/local/bin/python3
-
-  tasks:
-    - name: install packages
-      pkgng:
-        name:
-          - aerc
-          - w3m
-        cached: true
-      become: true
-
-    - name: config directory
-      file:
-        path: "{{ ansible_env.HOME }}/.config/aerc"
-        state: directory
-
-    - name: deploy configuration
-      copy:
-        src: "{{ item }}"
-        dest: "{{ ansible_env.HOME }}/.config/aerc/{{ item | basename }}"
-        mode: 0640
-      loop:
-        - aerc/aerc.conf
-        - aerc/binds.conf
-      loop_control:
-        label: "{{ item | basename }}"
-
-    - name: deploy account configuration
-      template:
-        src: aerc/accounts.conf.j2
-        dest: "{{ ansible_env.HOME }}/.config/aerc/accounts.conf"
-        mode: "0600"
-
 - name: irssi
   hosts:
     - lir.talideon.com
