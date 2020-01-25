@@ -65,6 +65,8 @@ if ($?prompt) then
 		bindkey "\e[3~" delete-char-or-list-or-eof	# Delete
 		bindkey "\e[4~" end-of-line			# End
 		bindkey "^R" i-search-back
+		bindkey "\e[1;5D" backward-word
+		bindkey "\e[1;5C" forward-word
 	endif
 
 	# save history after each command
