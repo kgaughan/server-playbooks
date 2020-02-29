@@ -1,11 +1,12 @@
 #!/bin/sh
+set -e -o pipefail
 if test "$(id -u)" -eq 0; then
 	if test -z "${1:-}"; then
 		echo "error: please specify a table:" >&2
 		pfctl -s Tables >&2
 		exit 2
 	fi
-	pfctl -T flush -t "$2"
+	pfctl -t "$1" -T flush
 else
 	echo Switching to root...
 	exec sudo $0 "$@"
