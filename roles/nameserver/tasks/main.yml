@@ -16,6 +16,8 @@
   file:
     path: "{{ nsd_dir }}/zones.conf"
     state: touch
+    access_time: preserve
+    modification_time: preserve
     owner: nsd
     group: nsd
     mode: 0644
@@ -24,6 +26,8 @@
   file:
     path: "{{ nsd_dir }}/keys.conf"
     state: touch
+    access_time: preserve
+    modification_time: preserve
     owner: nsd
     group: nsd
     mode: 0600
