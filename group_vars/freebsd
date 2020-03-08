@@ -6,18 +6,14 @@ webserver_logs: /var/log/www
 # The directory exposed as /.well-known/acme-challenge everywhere.
 acme_challenge_dir: /usr/local/www/acme
 
-backup_locations:
-  - /home/keith
-  - /home/tommy
-
 # The host anything running DMA should use as a smarthost.
 smarthost: mail.talideon.com
 
 # The address to which various accounts should forward their email.
 forwarding:
   - user: root
-    email: k@stereochro.me
+    email: keith@gaughan.ie
   - user: keith
-    email: k@stereochro.me
+    email: keith@gaughan.ie
 
 # vim:set ft=yaml:

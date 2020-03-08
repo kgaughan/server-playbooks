@@ -8,3 +8,7 @@ acme_domains:
   mail.talideon.com: []
 
 wireguard_private_addr: 192.168.254.1/24
+
+backup_locations:
+  - /home/keith
+  - /home/tommy
