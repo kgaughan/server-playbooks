@@ -2,6 +2,7 @@
 
 set autoindent
 set fileencoding=utf-8
+set matchchars=[]{}()<>
 set number
 set ruler
 set searchincr

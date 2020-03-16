@@ -13,7 +13,6 @@
         name:
           - pkg-rmleaf
           - tmux
-          - vim-console
         cached: true
       become: true
 

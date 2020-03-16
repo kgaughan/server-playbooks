@@ -24,6 +24,7 @@ endif
 foreach PAGER (most less more cat)
 	if (-X $PAGER) break
 end
+alias m $PAGER
 
 if ($?TMUX) then
 	setenv TERM screen-256color
@@ -40,30 +41,32 @@ if ($?prompt) then
 
 	setenv LS_COLORS "di=33;1:fi=37;1:ln=36;1:ex=01;31:pi=40;33:so=01;34:bd=40;33;01:cd=4;33;01:*.o=37:*.log=37"
 
-	set autocorrect			# fix misspellings
-	set autoexpand			# auto invokes expand-history before completions
-	set autolist = ambiguous	# use history to aid expansion
-	set autorehash			# remove the need to run hash to rescan PATH
-	set color			# colour display for ls -F
-	set complete = enhance		# ignore case, consider .-_ as word separators
-	set fignore = (.pyc .o .so)	# files to ignore on completion
-	set filec			# file completion
-	set globstar			# support '**' globs
-	set histdup = erase		# erase older duplicate entries
-	set history = 1000		# history contains 1000 entries max
-	set implicitcd			# typing a directory name cd's there
-	set listlinks			# show target file type for symlinks
+	set autocorrect					# fix misspellings
+	set autoexpand					# auto invokes expand-history before completions
+	set autolist = ambiguous		# use history to aid expansion
+	set autorehash					# remove the need to run hash to rescan PATH
+	set color						# colour display for ls -F
+	set complete = enhance			# ignore case, consider .-_ as word separators
+	set filec						# file completion
+	set globstar					# support '**' globs
+	set histdup = erase				# erase older duplicate entries
+	set history = 1000				# history contains 1000 entries max
+	set implicitcd					# typing a directory name cd's there
+	set listlinks					# show target file type for symlinks
 	set noclobber = (notempty ask)	# restrict >> to preserve existing non-empty files
-	set savehist = (1000 merge)	# merge current session into .history
+	set savehist = (1000 merge)		# merge current session into .history
+
+	# files to ignore on completion
+	set fignore = (.pyc .o .so. pyo)
 
 	if ($?tcsh) then
 		bindkey "^W" backward-delete-word
 		bindkey -k up history-search-backward
 		bindkey -k down history-search-forward
-		bindkey "\e[1~" beginning-of-line		# Home
-		bindkey "\e[2~" overwrite-mode			# Insert
+		bindkey "\e[1~" beginning-of-line			# Home
+		bindkey "\e[2~" overwrite-mode				# Insert
 		bindkey "\e[3~" delete-char-or-list-or-eof	# Delete
-		bindkey "\e[4~" end-of-line			# End
+		bindkey "\e[4~" end-of-line					# End
 		bindkey "^R" i-search-back
 		bindkey "\e[1;5D" backward-word
 		bindkey "\e[1;5C" forward-word
@@ -73,4 +76,4 @@ if ($?prompt) then
 	if ($?prompt3) alias postcmd 'history -S'
 endif
 
-# vim:set ft=tcsh ts=8 sts=8 sw=8:
+# vim:set ft=tcsh ts=4 sts=4 sw=4:
