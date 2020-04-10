@@ -8,7 +8,7 @@ alias s		"tmux has && tmux attach || tmux"
 alias xh	"rm -f ~/.history && history -c"
 
 foreach dirname (~/bin ~/.local/bin)
-	if (-e $dirname) set path = ($path $dirname)
+	if (-e $dirname) set -f path = ($path $dirname)
 end
 
 # Make life a bit easier regarding svn when I need it.
