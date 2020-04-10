@@ -4,20 +4,10 @@
     name: rspamd
     cached: true
 
-- name: create config directories
-  file:
-    dest: "{{ rspamd_root }}/{{ item }}"
-    state: directory
-  loop:
-    - local.d
-    - override.d
-
 - name: copy up rspamd config
   copy:
-    src: "{{ item }}"
-    dest: "{{ rspamd_root }}/local.d/{{ item | basename }}"
-  with_fileglob:
-    - "rspamd.local/*"
+    src: "rspamd/local.d"
+    dest: "{{ rspamd_root }}"
   notify:
     - restart rspamd
 
