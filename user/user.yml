@@ -4,9 +4,6 @@
   remote_user: keith
   become: false
 
-  vars:
-    ansible_python_interpreter: /usr/local/bin/python3
-
   tasks:
     - name: install packages
       pkgng:
@@ -52,9 +49,6 @@
   remote_user: keith
   become: false
 
-  vars:
-    ansible_python_interpreter: /usr/local/bin/python3
-
   tasks:
     - name: install packages
       pkgng:
@@ -85,9 +79,6 @@
     - manann.talideon.com
   remote_user: keith
   become: false
-
-  vars:
-    ansible_python_interpreter: /usr/local/bin/python3
 
   tasks:
     - name: install packages
