@@ -121,3 +121,25 @@
         minute: "0"
         hour: "*/3"
         job: "/usr/bin/nice -n 19 /usr/local/bin/fdm -l fetch"
+
+- name: vbox management
+  hosts:
+    - mailservers
+  remote_user: keith
+  become: false
+
+  tasks:
+    - name: directory for scripts
+      file:
+        path: "{{ ansible_env.HOME }}/bin"
+        state: directory
+
+    - name: install scripts
+      copy:
+        src: "{{ item }}"
+        dest: "{{ ansible_env.HOME }}/bin/{{ item }}"
+        mode: "0750"
+      loop:
+        - manage-vbox
+      loop_control:
+        label: "{{ item }}"
