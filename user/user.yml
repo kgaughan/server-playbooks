@@ -5,14 +5,6 @@
   become: false
 
   tasks:
-    - name: install packages
-      pkgng:
-        name:
-          - pkg-rmleaf
-          - tmux
-        cached: true
-      become: true
-
     - name: install user configuration files
       copy:
         src: "{{ item }}"
@@ -26,6 +18,35 @@
         - login
       loop_control:
         label: ".{{ item }}"
+
+    - name: directory for scripts
+      file:
+        path: "{{ ansible_env.HOME }}/bin"
+        state: directory
+
+    - name: install scripts
+      copy:
+        src: "{{ item }}"
+        dest: "{{ ansible_env.HOME }}/bin/{{ item }}"
+        mode: "0750"
+      loop: []
+      loop_control:
+        label: "{{ item }}"
+
+- name: managed
+  hosts:
+    - freebsd
+  remote_user: keith
+  become: false
+
+  tasks:
+    - name: install packages
+      pkgng:
+        name:
+          - pkg-rmleaf
+          - tmux
+        cached: true
+      become: true
 
     - name: directory for scripts
       file:
