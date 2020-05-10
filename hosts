@@ -14,6 +14,8 @@ ansible_python_interpreter=/usr/local/bin/python3
 lir.talideon.com
 manann.talideon.com
 
+[shell]
+
 [dav]
 manann.talideon.com
 
