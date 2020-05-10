@@ -7,7 +7,7 @@ alias ll	ls -lAF
 alias s		"tmux has && tmux attach || tmux"
 alias xh	"rm -f ~/.history && history -c"
 
-foreach dirname (~/bin ~/.local/bin)
+foreach dirname (/sbin /usr/sbin /usr/pkg/sbin ~/bin ~/.local/bin)
 	if (-e $dirname) set -f path = ($path $dirname)
 end
 

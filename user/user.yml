@@ -5,6 +5,17 @@
   become: false
 
   tasks:
+    - name: populate authorized_keys
+      authorized_key:
+        key: https://github.com/kgaughan.keys
+        user: "{{ ansible_user }}"
+        state: present
+
+    - name: ensure SSH key exists
+      openssh_keypair:
+        path: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
+        type: ed25519
+
     - name: install user configuration files
       copy:
         src: "{{ item }}"
@@ -16,6 +27,7 @@
         - tmux.conf
         - cshrc
         - login
+        - ssh/config
       loop_control:
         label: ".{{ item }}"
 
