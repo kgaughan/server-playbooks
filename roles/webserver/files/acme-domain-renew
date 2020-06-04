@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh
+
+set -eu -o pipefail
 
 while getopts hc:w:t: name; do
 	case $name in
@@ -46,7 +48,7 @@ while read domain line; do
 	mkdir -pm755 "$cert_dir"
 
 	# If the cert doesn't need renewing (i.e., two weeks remain), skip it
-	if test -e "$cert" && openssl x509 -checkend 6480000 -noout -in "$cert"; then
+	if test -e "$cert" && openssl x509 -checkend 6480000 -noout -in "$cert" >/dev/null; then
 		continue
 	fi
 
