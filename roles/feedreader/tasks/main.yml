@@ -28,6 +28,7 @@
     name: ttrss
     password: "{{ ttrss_db_password }}"
     priv: "ttrss.*:SELECT,INSERT,UPDATE,DELETE"
+  no_log: true
 
 - name: deploy roundcube config
   template:
