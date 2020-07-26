@@ -3,7 +3,7 @@
   pkgng:
     name:
       - transmission-daemon
-      - transmission-cli
+      - transmission-utils
     cached: true
 
 - name: start transmission
