@@ -37,7 +37,7 @@
     src: nsd.conf.j2
     dest: "{{ nsd_dir }}/nsd.conf"
   notify:
-    - reload nsd
+    - restart nsd
 
 - name: configure nsd-control
   command: nsd-control-setup

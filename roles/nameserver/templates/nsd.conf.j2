@@ -1,8 +1,13 @@
 server:
 	server-count: 1
-	ip-address: 127.0.0.1
-	ip-address: ::1
-	port: 1053
+{% for ip in ansible_all_ipv4_addresses %}
+	ip-address: {{ ip }}
+{% endfor %}
+{% for ip in ansible_all_ipv6_addresses %}
+{% if ip is not match("fe80:") %}
+	ip-address: {{ ip }}
+{% endif %}
+{% endfor %}
 	do-ip4: yes
 	do-ip6: yes
 	zonesdir: {{ nsd_dir }}
