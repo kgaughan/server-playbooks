@@ -53,3 +53,8 @@ add_header X-Xss-Protection "1; mode=block" always;
 add_header X-Content-Type-Options "nosniff" always;
 add_header Referrer-Policy "no-referrer-when-downgrade" always;
 add_header Feature-Policy "autoplay 'none'" always;
+
+add_header Link "<https://fonts.gstatic.com/>; rel=dns-prefetch" always;
+add_header Link "<https://cdnjs.cloudflare.com/>; rel=dns-prefetch" always;
+add_header Link "<https://fonts.gstatic.com/>; rel=preconnect; crossorigin" always;
+add_header Link "<https://cdnjs.cloudflare.com/>; rel=preconnect; crossorigin" always;
