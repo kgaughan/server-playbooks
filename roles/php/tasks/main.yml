@@ -2,7 +2,7 @@
 - name: install packages
   pkgng:
     name:
-      - php72
+      - php74
     cached: true
 
 - name: copy up upstream php-fpm socket config

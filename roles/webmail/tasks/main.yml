@@ -2,8 +2,7 @@
 - name: install packages
   pkgng:
     name:
-      - roundcube-php72
-      - roundcube-sieverules-php72
+      - roundcube-php74
       - py37-pymysql
     cached: true
 
