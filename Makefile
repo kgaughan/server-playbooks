@@ -29,6 +29,9 @@ mailservers:
 nameservers:
 	$(CMD) site.yml --tags=nameserver
 
+torrent:
+	$(CMD) site.yml --tags=torrent
+
 webmail:
 	$(CMD) site.yml --tags=webmail
 

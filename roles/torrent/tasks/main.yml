@@ -25,6 +25,8 @@
     # available'. Minimum value to cover the default value and how much
     # Transmission wants. See: https://ostreff.info/archives/134413
     value: 5242880
+  notify:
+    - reload transmission
 
 - name: fix the config
   merge_json:
