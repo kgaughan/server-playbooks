@@ -18,6 +18,14 @@
     owner: transmission
     group: transmission
 
+- name: ensure there's enough space for the receive buffer
+  sysctl:
+    name: kern.ipc.maxsockbuf
+    # This fixes the error 'UDP failed to set receive buffer: No buffer space
+    # available'. Minimum value to cover the default value and how much
+    # Transmission wants. See: https://ostreff.info/archives/134413
+    value: 5242880
+
 - name: fix the config
   merge_json:
     path: "{{ transmission_home }}/settings.json"
