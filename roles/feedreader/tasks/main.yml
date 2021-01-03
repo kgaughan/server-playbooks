@@ -5,6 +5,8 @@
       - tt-rss
       - py37-pymysql
     cached: true
+  notify:
+    - restart ttrssd
 
 - name: deploy vhost
   template:
@@ -28,13 +30,15 @@
     priv: "ttrss.*:SELECT,INSERT,UPDATE,DELETE"
   no_log: true
 
-- name: deploy roundcube config
+- name: deploy config
   template:
     src: config.php.j2
     dest: "/usr/local/www/tt-rss/config.php"
     owner: www
     group: www
     mode: 0700
+  notify:
+    - restart ttrssd
 
 - name: enable update daemon
   service:

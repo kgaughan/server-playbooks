@@ -5,6 +5,8 @@
       - php74
       - php74-opcache  # recommended
     cached: true
+  notify:
+    - reload php-fpm
 
 - name: copy up upstream php-fpm socket config
   copy:

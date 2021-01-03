@@ -5,3 +5,8 @@
     name: ttrss
     login_user: root
     target: /usr/local/www/tt-rss/schema/ttrss_schema_mysql.sql
+
+- name: restart ttrssd
+  service:
+    name: ttrssd
+    state: restarted
