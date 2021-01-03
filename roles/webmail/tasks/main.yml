@@ -26,6 +26,7 @@
     name: roundcube
     password: "{{ webmail_db_password }}"
     priv: "roundcube.*:SELECT,INSERT,UPDATE,DELETE"
+  no_log: true
 
 - name: deploy roundcube config
   template:

@@ -27,3 +27,4 @@
     mode: "640"
     content: "{{ item.value }}"
   loop: "{{ dkim_keys | dict2items }}"
+  no_log: true

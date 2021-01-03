@@ -5,17 +5,18 @@
     key: https://github.com/kgaughan.keys
     state: present
 
-- name: ensure timezone is UTC
-  timezone:
-    name: UTC
-
 - name: install essential packages
   pkgng:
     name:
       - ca_root_nss
       - jq # needed by DO's bootstrap code
       - rsync
+      - zoneinfo
     cached: true
+
+- name: ensure timezone is UTC
+  timezone:
+    name: UTC
 
 - name: include fdesc in fstab
   lineinfile:
