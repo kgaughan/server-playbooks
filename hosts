@@ -10,18 +10,11 @@ eimhir.talideon.com
 [freebsd:vars]
 ansible_python_interpreter=/usr/local/bin/python3
 
-[netbsd]
-talideon.duckdns.org
-
-[netbsd:vars]
-ansible_python_interpreter=/usr/pkg/bin/python3.7
-
 [baremetal]
 lir.talideon.com
 manann.talideon.com
 
 [shell]
-talideon.duckdns.org
 
 [dav]
 manann.talideon.com
