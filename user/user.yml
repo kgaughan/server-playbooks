@@ -107,45 +107,6 @@
         dest: "{{ ansible_env.HOME }}/.irssi/config"
         mode: "0600"
 
-- name: fdm
-  hosts:
-    - manann.talideon.com
-  remote_user: keith
-  become: false
-
-  tasks:
-    - name: install packages
-      pkgng:
-        name:
-          - fdm
-        cached: true
-      become: true
-
-    - name: install configuration
-      copy:
-        src: "{{ item }}"
-        dest: "{{ ansible_env.HOME }}/.{{ item }}"
-        mode: "0640"
-      loop:
-        - fdm.conf
-      loop_control:
-        label: ".{{ item }}"
-
-    - name: add credentials
-      lineinfile:
-        path: "{{ ansible_env.HOME }}/.netrc"
-        create: true
-        mode: "0600"
-        regexp: "^machine webmail.eir.ie "
-        line: "machine webmail.eir.ie login {{ fdm.username }} password {{ fdm.password }}"
-
-    - name: periodically run
-      cron:
-        name: run fdm
-        minute: "0"
-        hour: "*/3"
-        job: "/usr/bin/nice -n 19 /usr/local/bin/fdm -l fetch"
-
 - name: vbox management
   hosts:
     - mailservers
