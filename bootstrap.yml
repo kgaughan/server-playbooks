@@ -2,5 +2,6 @@
 - hosts: baremetal
   remote_user: root
   gather_facts: false
+  strategy: linear
   roles:
     - bootstrap
