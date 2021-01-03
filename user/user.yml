@@ -71,7 +71,7 @@
         dest: "{{ ansible_env.HOME }}/bin/{{ item }}"
         mode: "0750"
       loop:
-        - pkgupdate
+        - pkg-update
         - flush-table
       loop_control:
         label: "{{ item }}"
