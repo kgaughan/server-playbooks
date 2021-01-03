@@ -3,6 +3,7 @@
   pkgng:
     name:
       - php74
+      - php74-opcache  # recommended
     cached: true
 
 - name: copy up upstream php-fpm socket config
