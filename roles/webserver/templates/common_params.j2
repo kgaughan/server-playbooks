@@ -4,31 +4,25 @@ location = /favicon.ico {
 	access_log off;
 }
 
-location = /robots.txt {
-	allow all;
-	log_not_found off;
-	access_log off;
-}
-
 location = /apple-app-site-association {
 	allow all;
 	log_not_found off;
 	access_log off;
 }
 
-location = /sitemap.xml {
+location ~* ^/(robots|humans|ads|security)\.txt$ {
 	allow all;
 	log_not_found off;
 	access_log off;
 }
 
-location = /crossdomain.xml {
+location ~* ^/(sitemap|crossdomain)\.xml(\.gz)?$ {
 	allow all;
 	log_not_found off;
 	access_log off;
 }
 
-location = /.well-known/apple-app-site-association {
+location ~* ^/\.well-known/(apple-app-site-association|security\.txt) {
 	allow all;
 	log_not_found off;
 	access_log off;
