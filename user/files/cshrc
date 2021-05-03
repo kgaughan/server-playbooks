@@ -1,22 +1,6 @@
-alias h		history 25
-alias j		jobs -l
-alias la	ls -aF
-alias lf	ls -FA
-alias ll	ls -lAF
-# This is how I wish 'tmux attach' behaved:
-alias s		"tmux has && tmux attach || tmux"
-alias xh	"rm -f ~/.history && history -c"
-
 foreach dirname (/sbin /usr/sbin /usr/pkg/sbin ~/bin ~/.local/bin)
 	if (-e $dirname) set -f path = ($path $dirname)
 end
-
-# Make life a bit easier regarding svn when I need it.
-if (! -X svn && -X svnlite) then
-	foreach suffix ("" admin bench dumpfilter fsfs look mucc rdump serve sync version)
-		alias svn$suffix svnlite$suffix
-	end
-endif
 
 if (-X vim) then
 	setenv EDITOR vim
@@ -30,14 +14,6 @@ foreach PAGER (most less more cat)
 end
 alias m $PAGER
 
-if ($?TMUX) then
-	setenv TERM screen-256color
-else if ($tty =~ ttyv*) then
-	setenv TERM cons25
-else
-	setenv TERM xterm-256color
-endif
-
 if ($?prompt) then
 	# An interactive shell -- set some stuff up
 	set prompt = "%{\e[0;33m%}%N%{\e[0m%}@%{\e[34m%}%m %{\033[0;36m%}%~ %B%#%b%{\e[0m%} "
@@ -45,23 +21,23 @@ if ($?prompt) then
 
 	setenv LS_COLORS "di=33;1:fi=37;1:ln=36;1:ex=01;31:pi=40;33:so=01;34:bd=40;33;01:cd=4;33;01:*.o=37:*.log=37"
 
-	set autocorrect						# fix misspellings
-	set autoexpand						# auto invokes expand-history before completions
-	set autolist = ambiguous			# use history to aid expansion
-	set autorehash						# remove the need to run hash to rescan PATH
-	set color							# colour display for ls -F
-	set complete = enhance				# ignore case, consider .-_ as word separators
-	set filec							# file completion
-	set globstar						# support '**' globs
-	set histdup = erase					# erase older duplicate entries
-	set history = 1000					# history contains 1000 entries max
-	set implicitcd						# typing a directory name cd's there
-	set listlinks						# show target file type for symlinks
-	set noclobber = (notempty ask)		# restrict >> to preserve existing non-empty files
-	set savehist = (1000 merge lock)	# merge current session into .history
+	set autocorrect							# fix misspellings
+	set autoexpand							# auto invokes expand-history before completions
+	set autolist = ambiguous				# use history to aid expansion
+	set autorehash							# remove the need to run hash to rescan PATH
+	set color								# colour display for ls -F
+	set complete = enhance					# ignore case, consider .-_ as word separators
+	set filec								# file completion
+	set globstar							# support '**' globs
+	set histdup = erase						# erase older duplicate entries
+	set history = 1000						# history contains 1000 entries max
+	set implicitcd							# typing a directory name cd's there
+	set listlinks							# show target file type for symlinks
+	set noclobber = (notempty ask)			# restrict >> to preserve existing non-empty files
+	set savehist = ($history merge lock)	# merge current session into .history
 
 	# files to ignore on completion
-	set fignore = (.pyc .o .so. pyo)
+	set fignore = (.pyc .o .so .pyo .bak .tmp \~)
 
 	if ($?tcsh) then
 		bindkey "^W" backward-delete-word
@@ -75,6 +51,21 @@ if ($?prompt) then
 		bindkey "\e[1;5D" backward-word
 		bindkey "\e[1;5C" forward-word
 	endif
-endif
 
+	alias h		history 25
+	alias j		jobs -l
+	alias la	ls -aF
+	alias lf	ls -FA
+	alias ll	ls -lAF
+	# This is how I wish 'tmux attach' behaved:
+	alias s		"tmux has && tmux attach || tmux"
+	alias xh	"rm -f ~/.history && history -c"
+
+	# Make life a bit easier regarding svn when I need it.
+	if (! -X svn && -X svnlite) then
+		foreach suffix ("" admin bench dumpfilter fsfs look mucc rdump serve sync version)
+			alias svn$suffix svnlite$suffix
+		end
+	endif
+endif
 # vim:set ft=tcsh ts=4 sts=4 sw=4:
