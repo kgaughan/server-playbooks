@@ -2,12 +2,12 @@
 # Copyright (c) Keith Gaughan, 2007.
 
 ANSIBLE_METADATA = {
-    'metadata_version': '1.0',
-    'status': ['preview'],
-    'supported_by': 'community',
+    "metadata_version": "1.0",
+    "status": ["preview"],
+    "supported_by": "community",
 }
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: merge_json
 short_description: Updates a JSON file with values
@@ -34,11 +34,11 @@ options:
     description:
       - Amount to indent by.
     default: 2
-'''
+"""
 
-RETURN = ''
+RETURN = ""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: merge some values into a file
   merge_json:
     path: /path/to/my/remote/file.json
@@ -54,7 +54,7 @@ EXAMPLES = '''
           - Barney
           - Betty
           - Bamm-Bamm
-'''
+"""
 
 import json
 import os
@@ -77,9 +77,7 @@ def _merge_dicts(d1, d2):
     """
     changed = False
     for key in d2:
-        if key in d1 and \
-                isinstance(d1[key], dict) and \
-                isinstance(d2[key], dict):
+        if key in d1 and isinstance(d1[key], dict) and isinstance(d2[key], dict):
             changed = _merge_dicts(d1[key], d2[key])
         elif key not in d1 or d1[key] != d2[key]:
             d1[key] = d2[key]
@@ -90,18 +88,18 @@ def _merge_dicts(d1, d2):
 def main():
     module = AnsibleModule(
         argument_spec={
-            'path': {'type': 'path', 'required': True},
-            'data': {'type': 'dict', 'required': True},
-            'create': {'type': 'bool', 'default': False},
-            'indent': {'type': 'int', 'default': 2},
+            "path": {"type": "path", "required": True},
+            "data": {"type": "dict", "required": True},
+            "create": {"type": "bool", "default": False},
+            "indent": {"type": "int", "default": 2},
         },
         supports_check_mode=True,
     )
 
-    path = module.params['path']
-    data = module.params['data']
-    create = module.params['create']
-    indent = module.params['indent']
+    path = module.params["path"]
+    data = module.params["data"]
+    create = module.params["create"]
+    indent = module.params["indent"]
 
     exists = False
     if os.path.isfile(path):
@@ -113,7 +111,7 @@ def main():
 
     if exists and os.path.getsize(path) > 0:
         try:
-            with open(path, 'r') as fp:
+            with open(path, "r") as fp:
                 contents = json.load(fp)
         except ValueError as exc:
             module.fail_json(msg="Could not load '{}': {}".format(path, exc))
@@ -123,13 +121,16 @@ def main():
         merged = True
 
     if merged and not module.check_mode:
-        with open(path, 'w') as fp:
-            json.dump(contents, fp,
-                      indent=indent,
-                      separators=(',', ': '),
-                      sort_keys=True)
+        with open(path, "w") as fp:
+            json.dump(
+                contents,
+                fp,
+                indent=indent,
+                separators=(",", ": "),
+                sort_keys=True,
+            )
     module.exit_json(changed=merged)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

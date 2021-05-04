@@ -11,8 +11,8 @@
 
 import argparse
 from base64 import b64decode
-import logging
 from http import client
+import logging
 import os
 import sys
 from wsgiref import simple_server
@@ -131,7 +131,10 @@ class AuthServer:
 def main():
     parser = argparse.ArgumentParser(description="Simple WSGI auth server.")
     parser.add_argument(
-        "--port", help="Port to bind to on localhost", type=int, default=5067
+        "--port",
+        help="Port to bind to on localhost",
+        type=int,
+        default=5067,
     )
     parser.add_argument("--service", help="Service name", default="http")
     parser.add_argument("--realm", help="HTTP Realm", default="auth")

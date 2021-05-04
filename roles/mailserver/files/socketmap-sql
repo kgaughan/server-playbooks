@@ -5,15 +5,14 @@ to be queried out of process.
 """
 
 import argparse
-import contextlib
 import configparser
+import contextlib
 import importlib
 import os.path
 import re
 import select
 import subprocess
 import sys
-
 
 __version__ = "0.1.0"
 
@@ -208,7 +207,10 @@ def main():
         svr_args = [arg for arg in sys.argv if arg != "--client"]
         svr_args[0] = os.path.abspath(svr_args[0])
         proc = subprocess.Popen(
-            svr_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding="utf-8"
+            svr_args,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            encoding="utf-8",
         )
         print("Type '.exit' to exit.")
         while proc.poll() is None:
@@ -221,7 +223,12 @@ def main():
     else:
         with contextlib.closing(connect(cfg["database"])) as conn:
             serve_client(
-                sys.stdin, sys.stdout, conn, args.timeout, cfg["tables"], cfg["misc"]
+                sys.stdin,
+                sys.stdout,
+                conn,
+                args.timeout,
+                cfg["tables"],
+                cfg["misc"],
             )
 
     return 0
