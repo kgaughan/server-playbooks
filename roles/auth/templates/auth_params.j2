@@ -13,6 +13,10 @@ location = /auth {
 	proxy_pass_request_body off;
 	proxy_set_header Content-Length "";
 
+	# You'd think this wouldn't be necessary with 'proxy_pass_request_body off'
+	# set, but it is. Otherwise, the DAV server won't get any large uploads.
+	client_max_body_size 0;
+
 	proxy_set_header Host $host;
 	proxy_set_header X-Real-IP $remote_addr;
 	proxy_set_header X-Origin-URI $request_uri;

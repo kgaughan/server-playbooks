@@ -3,6 +3,7 @@
   pkgng:
     name:
       - python3
+      - py37-lxml
       - py37-python-pam
       - py37-WsgiDAV
     cached: true
