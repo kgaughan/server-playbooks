@@ -3,9 +3,9 @@
   pkgng:
     name:
       - python3
-      - py37-lxml
-      - py37-python-pam
-      - py37-WsgiDAV
+      - py38-lxml
+      - py38-python-pam
+      - py38-WsgiDAV
     cached: true
 
 - name: ensure the DAV root directory exists
