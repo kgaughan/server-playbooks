@@ -14,6 +14,18 @@ foreach PAGER (most less more cat)
 end
 alias m $PAGER
 
+# If we've ssh'd in successfully, that should remove us from any blacklisting.
+# I'll need to examine exactly how I've this set up, because it's been a while,
+# but this this should at least be a good starting point.
+if (-X pfctl && $?SSH_CLIENT) then
+	# SSH_CLIENT is a string of string-separated fields. We want the first
+	# one, so this converts it into an array.
+	set fields = ($SSH_CLIENT)
+	sudo pfctl -q -t goodguys -T add "$fields[1]"
+	sudo pfctl -q -t bruteforce -T delete "$fields[1]"
+	sudo pfctl -q -t sshguard -T delete "$fields[1]"
+endif
+
 if ($?prompt) then
 	# An interactive shell -- set some stuff up
 	set prompt = "%{\e[0;33m%}%N%{\e[0m%}@%{\e[34m%}%m %{\033[0;36m%}%~ %B%#%b%{\e[0m%} "
