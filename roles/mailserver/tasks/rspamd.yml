@@ -11,6 +11,38 @@
   notify:
     - restart rspamd
 
+- name: create sieve directory
+  file:
+    dest: "{{ dovecot_root }}/sieve"
+    state: directory
+    mode: "755"
+
+- name: "copy up sieve"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ dovecot_root }}/sieve"
+    mode: "644"
+  register: sieves
+  with_fileglob:
+    - "*.sieve"
+
+- name: "compile sieve"
+  command:
+    argv:
+      - sievec
+      - "{{ item }}"
+  loop: "{{ sieves.results | rejectattr('changed', 'false') | map(attribute='dest') | list }}"
+
+- name: copy up antispam scripts
+  copy:
+    src: "{{ item }}"
+    dest: "{{ dovecot_libexec }}"
+    owner: rspamd
+    group: rspamd
+    mode: "755"
+  with_fileglob:
+    - "learn-*"
+
 - name: create dkim key directory
   file:
     dest: /var/db/rspamd/dkim

@@ -2,6 +2,7 @@
 dovecot_root: /usr/local/etc/dovecot
 postfix_root: /usr/local/etc/postfix
 rspamd_root: /usr/local/etc/rspamd
+dovecot_libexec: /usr/local/libexec/dovecot
 mail_tls_cert_file: "{{ tls_root }}/mail.talideon.com/fullchain.pem"
 mail_tls_key_file: "{{ tls_root }}/private/mail.talideon.com.pem"
 vbox_db_path: /var/db/postfix.vbox.db

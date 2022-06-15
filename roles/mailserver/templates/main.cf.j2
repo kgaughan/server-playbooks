@@ -1,5 +1,5 @@
 # Keep, don't change.
-compatibility_level = 2
+compatibility_level = 3.6
 
 mynetworks = {{ my_networks | join(" ") }}
 
@@ -20,7 +20,7 @@ virtual_alias_maps =
 disable_vrfy_command = yes
 
 # Prevent future explosions.
-message_size_limit = 0
+message_size_limit = 52428800
 mailbox_size_limit = 0
 
 smtpd_discard_ehlo_keywords = silent-discard, dsn

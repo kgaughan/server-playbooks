@@ -7,9 +7,27 @@ first_valid_gid = 1000
 first_valid_uid = 1000
 mail_privileged_group = mail
 mail_plugins = $mail_plugins zlib notify
+
 plugin {
   sieve_dir = ~/.config/sieve
   sieve = ~/.dovecot.sieve
+
+  sieve_plugins = sieve_imapsieve sieve_extprograms
+
+  # From elsewhere to Spam folder or flag changed in Spam folder
+  imapsieve_mailbox1_name = Junk
+  imapsieve_mailbox1_causes = COPY FLAG
+  imapsieve_mailbox1_before = file:{{ dovecot_root }}/sieve/report-spam.sieve
+
+  # From Spam folder to elsewhere
+  imapsieve_mailbox2_name = *
+  imapsieve_mailbox2_from = Junk
+  imapsieve_mailbox2_causes = COPY
+  imapsieve_mailbox2_before = file:{{ dovecot_root }}/sieve/report-ham.sieve
+
+  sieve_pipe_bin_dir = {{ dovecot_libexec }}
+
+  sieve_global_extensions = +vnd.dovecot.pipe +editheader
 }
 
 protocols = imap sieve lmtp
@@ -56,6 +74,10 @@ protocol lmtp {
   postmaster_address = postmaster@{{ ansible_domain }}
   mail_plugins = $mail_plugins sieve
   ssl = no
+}
+
+protocol imap {
+  mail_plugins = $mail_plugins imap_sieve
 }
 
 service auth {

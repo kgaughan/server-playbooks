@@ -5,3 +5,4 @@
 *.retry
 facts/
 /vault-password
+/mitogen*
