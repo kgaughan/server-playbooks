@@ -1,6 +1,0 @@
----
-- name: install miscellaneous mail packages
-  pkgng:
-    name:
-      - fdm
-    cached: true
