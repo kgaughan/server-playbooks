@@ -2,7 +2,7 @@
 - name: install packages
   pkgng:
     name:
-      - roundcube-php74
+      - roundcube-php80
       - py38-pymysql
     cached: true
 

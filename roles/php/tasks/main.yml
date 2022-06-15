@@ -2,8 +2,8 @@
 - name: install packages
   pkgng:
     name:
-      - php74
-      - php74-opcache  # recommended
+      - php80
+      - php80-opcache  # recommended
     cached: true
   notify:
     - reload php-fpm
