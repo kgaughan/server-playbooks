@@ -7,6 +7,7 @@ to be queried out of process.
 import argparse
 import configparser
 import contextlib
+import dataclasses
 import importlib
 import io
 import os.path
@@ -14,35 +15,45 @@ import re
 import select
 import subprocess
 import sys
-from typing import Dict, List, Optional
+from typing import Callable, Dict, List, Mapping, Optional, Tuple, TypedDict
 
 __version__ = "0.1.0"
+
+Transform = Callable[[str, Mapping[str, str]], List[str]]
+
+
+@dataclasses.dataclass
+class TableCfg:
+    query: str
+    transform: Transform
+
+
+class Cfg(TypedDict):
+    database: Dict[str, str]
+    misc:  Dict[str, str]
+    tables: Dict[str, TableCfg]
 
 
 FUNC_REF_PATTERN = re.compile(
     r"""
     ^
-    (?P<module>
-        [a-z_][a-z0-9_]*(?:\.[a-z_][a-z0-9_]*)*
-    )
+    (?P<module> [a-z_][a-z0-9_]*(?:\.[a-z_][a-z0-9_]*)* )
     :
-    (?P<object>
-        [a-z_][a-z0-9_]*(?:\.[a-z_][a-z0-9_]*)*
-    )
+    (?P<object> [a-z_][a-z0-9_]*(?:\.[a-z_][a-z0-9_]*)* )
     $
     """,
     re.I | re.X,
 )
 
 
-def match(name: str):
+def match(name: str) -> Tuple[str, str]:
     matches = FUNC_REF_PATTERN.match(name)
     if not matches:
-        raise ValueError("Malformed callable '{}'".format(name))
+        raise ValueError(f"Malformed callable '{name}'")
     return matches.group("module"), matches.group("object")
 
 
-def resolve(module_name: str, obj_name: str):
+def resolve(module_name: str, obj_name: str) -> Callable:
     """
     Resolve a named object in a module.
     """
@@ -85,23 +96,25 @@ def read_netstring(fp: io.TextIOWrapper) -> Optional[str]:
 
 
 def write_netstring(fp: io.TextIOWrapper, response: str):
-    fp.write("{}:{},".format(len(response), response))
+    fp.write(f"{len(response)}:{response},")
     fp.flush()
 
 
-def parse_config(fp: io.TextIOWrapper) -> dict:
-    def process_local(local_part: str, cfg: Dict[str, str]) -> str:
-        delimiter = cfg.get("recipient_delimiter", "").strip()
-        if delimiter != "":
-            local_part = local_part.split(delimiter, 1)[0]
-        return local_part
+def process_local(local_part: str, cfg: Mapping[str, str]) -> str:
+    delimiter = cfg.get("recipient_delimiter", "").strip()
+    if delimiter != "":
+        local_part = local_part.split(delimiter, 1)[0]
+    return local_part
 
-    def split(arg: str, cfg: Dict[str, str]) -> List[str]:
-        parts = arg.split("@", 1)
-        parts[0] = process_local(parts[0], cfg)
-        parts[1] = parts[1].lower()
-        return parts
 
+def split(arg: str, cfg: Mapping[str, str]) -> List[str]:
+    parts = arg.split("@", 1)
+    parts[0] = process_local(parts[0], cfg)
+    parts[1] = parts[1].lower()
+    return parts
+
+
+def parse_config(fp: io.TextIOWrapper) -> Cfg:
     transforms = {
         "all": lambda arg, cfg: [arg],
         "lowercase": lambda arg, cfg: [arg.lower()],
@@ -110,33 +123,27 @@ def parse_config(fp: io.TextIOWrapper) -> dict:
         "split": split,
     }
 
-    cp = configparser.RawConfigParser()
+    cp = configparser.ConfigParser(interpolation=None)
     cp.readfp(fp)
 
     tables = {}
-    for section in cp.sections():
-        if section.startswith("table:"):
-            _, table_name = section.split(":", 1)
-            if not cp.has_option(section, "query"):
+    for name, section in cp.items():
+        if name.startswith("table:"):
+            if "query" not in section:
                 continue
 
-            try:
-                transform_name = cp.get(section, "transform")
-            except configparser.NoOptionError:
-                transform_name = "all"
+            transform_name = section.get("transform", "all")
             transform = transforms.get(transform_name)
             if transform is None:
                 transform = resolve(*match(transform_name))
 
-            tables[table_name] = {
-                "transform": transform,
-                "query": cp.get(section, "query"),
-            }
+            _, table_name = name.split(":", 1)
+            tables[table_name] = TableCfg(section["query"], transform)
 
     return {
-        "database": dict(cp.items("database")),
+        "database": dict(cp["database"]),
         "tables": tables,
-        "misc": dict(cp.items("misc")),
+        "misc": dict(cp["misc"]),
     }
 
 
@@ -145,8 +152,8 @@ def serve_client(
     fh_out: io.TextIOWrapper,
     conn,
     timeout: int,
-    tables: dict,
-    cfg: dict,
+    tables: Mapping[str, TableCfg],
+    cfg: Mapping[str, str],
 ):
     try:
         while True:
@@ -168,7 +175,7 @@ def serve_client(
 
             cur = conn.cursor()
             try:
-                cur.execute(table["query"], table["transform"](arg, cfg))
+                cur.execute(table.query, table.transform(arg, cfg))
                 result = cur.fetchone()
             finally:
                 cur.close()
@@ -191,7 +198,7 @@ def connect(settings: Dict[str, str]):
     return driver.connect(**settings)
 
 
-def main():
+def make_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Database socketmap daemon.")
     parser.add_argument(
         "--config",
@@ -206,9 +213,15 @@ def main():
         default=2,
     )
     parser.add_argument(
-        "--client", action="store_true", help="Start with a debug client"
+        "--client",
+        action="store_true",
+        help="Start with a debug client",
     )
-    args = parser.parse_args()
+    return parser
+
+
+def main():
+    args = make_parser().parse_args()
 
     with contextlib.closing(args.config):
         cfg = parse_config(args.config)
