@@ -6,6 +6,7 @@ import contextlib
 import pwd
 import sqlite3
 import sys
+from typing import Any, Dict, Sequence, Set, Sized
 
 """
 CREATE TABLE domains (
@@ -36,139 +37,160 @@ CREATE TABLE aliases (
 """
 
 
-def print_table(table):
+def print_table(table: Sequence[Sequence[Any]]):
     col_width = [max(len(x) for x in col) for col in zip(*table)]
     for line in table:
-        print("| " + " | ".join("{:{}}".format(x, col_width[i])
-                                for i, x in enumerate(line)) + " |")
+        print(
+            "|",
+            " | ".join("{:{}}".format(x, col_width[i]) for i, x in enumerate(line)),
+            "|",
+        )
 
 
-def do_list(conn):
-    tbl = list(
-        conn.execute("""
-            SELECT  local, src_local || '@' || domain AS email
-            FROM    aliases
-            JOIN    users ON dest_user_id = user_id
-            JOIN    domains AS sd ON src_domain_id = sd.domain_id
-            ORDER BY local, domain, src_local
-            """))
-    print_table(tbl)
+def do_list(conn: sqlite3.Connection, args: argparse.Namespace):
+    tbl = conn.execute(
+        """
+        SELECT  local, src_local || '@' || domain AS email
+        FROM    aliases
+        JOIN    users ON dest_user_id = user_id
+        JOIN    domains AS sd ON src_domain_id = sd.domain_id
+        ORDER BY local, domain, src_local
+        """
+    )
+    print_table(list(tbl))
 
 
-def split_emails(emails):
+def split_emails(emails: Sequence[str]) -> Dict[str, Set[str]]:
     result = collections.defaultdict(set)
     for email in emails:
-        local, domain = email.split('@', 1)
+        local, domain = email.split("@", 1)
         result[domain.lower()].add(local)
     return result
 
 
-def make_placeholders(lst):
-    return ", ".join("?" * len(lst))
+def make_placeholders(col: Sized) -> str:
+    return ", ".join("?" * len(col))
 
 
-def do_alias(conn, user, emails):
+def do_alias(conn: sqlite3.Connection, args: argparse.Namespace):
     try:
-        pwd.getpwnam(user)
+        pwd.getpwnam(args.user)
     except KeyError:
-        sys.exit("No such user: {}".format(user))
+        sys.exit(f"No such user: {args.user}")
 
-    split_aliases = split_emails(emails)
+    split_aliases = split_emails(args.emails)
 
     with contextlib.closing(conn.cursor()) as cur:
         domain_ids = {}
         with conn:
             for domain in split_aliases.keys():
                 try:
-                    cur.execute("INSERT INTO domains (domain) VALUES (?)", (domain,))
+                    cur.execute(
+                        "INSERT INTO domains (domain) VALUES (?)",
+                        (domain,),
+                    )
                 except sqlite3.IntegrityError:
-                    cur.execute("SELECT domain_id FROM domains WHERE domain = ?", (domain,))
+                    cur.execute(
+                        "SELECT domain_id FROM domains WHERE domain = ?",
+                        (domain,),
+                    )
                     domain_ids[domain] = cur.fetchone()[0]
                 else:
                     domain_ids[domain] = cur.lastrowid
 
         with conn:
             try:
-                cur.execute("""
+                cur.execute(
+                    """
                     INSERT
                     INTO    users (domain_id, local)
                     SELECT  domain_id, ?
                     FROM    domains
                     WHERE   domain = 'localhost'
-                    """, (user,))
+                    """,
+                    (args.user,),
+                )
             except sqlite3.IntegrityError:
-                cur.execute("""
+                cur.execute(
+                    """
                     SELECT  user_id
                     FROM    users
                     JOIN    domains USING (domain_id)
                     WHERE   local = ? AND domain = 'localhost'
-                    """, (user,))
-                user_id =  cur.fetchone()[0]
+                    """,
+                    (args.user,),
+                )
+                user_id = cur.fetchone()[0]
             else:
                 user_id = cur.lastrowid
 
         with conn:
             for domain, src_locals in split_aliases.items():
                 for src_local in src_locals:
-                    cur.execute("""
+                    cur.execute(
+                        """
                         INSERT
                         INTO   aliases (src_domain_id, src_local, dest_user_id)
                         VALUES (?, ?, ?)
-                        """, (domain_ids[domain], src_local, user_id))
+                        """,
+                        (domain_ids[domain], src_local, user_id),
+                    )
 
 
-def do_remove(conn, emails):
-    split_aliases = split_emails(emails)
+def do_remove(conn: sqlite3.Connection, args: argparse.Namespace):
+    split_aliases = split_emails(args.emails)
 
     with contextlib.closing(conn.cursor()) as cur:
-        cur.execute("""
+        cur.execute(
+            """
             SELECT  domain, domain_id
             FROM    domains
-            WHERE   domain IN (""" + ", ".join("?" * len(split_aliases)) + ")",
-            list(split_aliases.keys()))
+            WHERE   domain IN ("""
+            + make_placeholders(split_aliases)
+            + ")",
+            list(split_aliases.keys()),
+        )
         domain_ids = cur.fetchmany(len(split_aliases))
 
         with conn:
             for domain, domain_id in domain_ids:
                 src_locals = split_aliases[domain]
-                cur.execute("""
+                cur.execute(
+                    """
                     DELETE
                     FROM   aliases
-                    WHERE  src_domain_id = ? AND src_local IN (""" + make_placeholders(src_locals) + ")",
-                    [domain_id] + list(src_locals))
+                    WHERE  src_domain_id = ? AND src_local IN ("""
+                    + make_placeholders(src_locals)
+                    + ")",
+                    [domain_id] + list(src_locals),
+                )
 
 
-def make_parser():
+def make_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--db", help="database path", default="/var/db/postfix.vbox.db")
 
-    subparsers = parser.add_subparsers(dest="cmd")
+    subparsers = parser.add_subparsers(dest="cmd", required=True)
 
-    alias_cmd = subparsers.add_parser('alias', help="add/update one or more aliases")
-    alias_cmd.add_argument('user', help="local user")
-    alias_cmd.add_argument('email', nargs='+', help="email address")
+    alias_cmd = subparsers.add_parser("alias", help="add/update one or more aliases")
+    alias_cmd.add_argument("user", help="local user")
+    alias_cmd.add_argument("email", nargs="+", help="email address")
+    alias_cmd.set_defaults(func=do_alias)
 
-    remove_cmd = subparsers.add_parser('remove', help="remove aliases")
-    remove_cmd.add_argument('email', nargs='+', help="email address")
+    remove_cmd = subparsers.add_parser("remove", help="remove aliases")
+    remove_cmd.add_argument("email", nargs="+", help="email address")
+    remove_cmd.set_defaults(func=do_remove)
 
-    list_cmd = subparsers.add_parser('list', help="list aliases and local users")
+    list_cmd = subparsers.add_parser("list", help="list aliases and local users")
+    list_cmd.set_defaults(func=do_list)
 
     return parser
 
 
 def main():
-    parser = make_parser()
-    args = parser.parse_args()
-    if args.cmd is None:
-        parser.error("missing subcommand")
-
+    args = make_parser().parse_args()
     with contextlib.closing(sqlite3.connect(args.db)) as conn:
-        if args.cmd == 'alias':
-            do_alias(conn, args.user, args.email)
-        elif args.cmd == 'remove':
-            do_remove(conn, args.email)
-        elif args.cmd == 'list':
-            do_list(conn)
+        args.func(conn, args)
 
 
 if __name__ == "__main__":
