@@ -62,7 +62,7 @@ import os
 from ansible.module_utils.basic import AnsibleModule
 
 
-def _merge_dicts(d1, d2):
+def _merge_dicts(d1: dict, d2: dict) -> bool:
     """
     Recursively merge `d2` into `d1`, and any nested dicts therein.
 
