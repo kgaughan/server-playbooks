@@ -8,11 +8,13 @@ import argparse
 import configparser
 import contextlib
 import importlib
+import io
 import os.path
 import re
 import select
 import subprocess
 import sys
+from typing import Dict, List, Optional
 
 __version__ = "0.1.0"
 
@@ -33,14 +35,14 @@ FUNC_REF_PATTERN = re.compile(
 )
 
 
-def match(name):
+def match(name: str):
     matches = FUNC_REF_PATTERN.match(name)
     if not matches:
         raise ValueError("Malformed callable '{}'".format(name))
     return matches.group("module"), matches.group("object")
 
 
-def resolve(module_name, obj_name):
+def resolve(module_name: str, obj_name: str):
     """
     Resolve a named object in a module.
     """
@@ -51,27 +53,27 @@ class MalformedNetstringError(Exception):
     pass
 
 
-def read_netstring(fp):
+def read_netstring(fp: io.TextIOWrapper) -> Optional[str]:
     """
     Reads a single netstring.
     """
-    n = ""
+    ns = ""
     while True:
         c = fp.read(1)
         if c == "":
             return None
         if c == ":":
             break
-        if len(n) > 10:
+        if len(ns) > 10:
             raise MalformedNetstringError
-        if c == "0" and n == "":
+        if c == "0" and ns == "":
             # We can't allow leading zeros.
             if fp.read(1) != ":":
                 raise MalformedNetstringError
-            n = c
+            ns = c
             break
-        n += c
-    n = int(n, 10)
+        ns += c
+    n = int(ns, 10)
     result = ""
     while n > 0:
         segment = fp.read(n)
@@ -82,19 +84,19 @@ def read_netstring(fp):
     return result
 
 
-def write_netstring(fp, response):
+def write_netstring(fp: io.TextIOWrapper, response: str):
     fp.write("{}:{},".format(len(response), response))
     fp.flush()
 
 
-def parse_config(fp):
-    def process_local(local_part, cfg):
+def parse_config(fp: io.TextIOWrapper) -> dict:
+    def process_local(local_part: str, cfg: Dict[str, str]) -> str:
         delimiter = cfg.get("recipient_delimiter", "").strip()
         if delimiter != "":
             local_part = local_part.split(delimiter, 1)[0]
         return local_part
 
-    def split(arg, cfg):
+    def split(arg: str, cfg: Dict[str, str]) -> List[str]:
         parts = arg.split("@", 1)
         parts[0] = process_local(parts[0], cfg)
         parts[1] = parts[1].lower()
@@ -111,12 +113,7 @@ def parse_config(fp):
     cp = configparser.RawConfigParser()
     cp.readfp(fp)
 
-    result = {
-        "database": dict(cp.items("database")),
-        "tables": {},
-        "misc": dict(cp.items("misc")),
-    }
-
+    tables = {}
     for section in cp.sections():
         if section.startswith("table:"):
             _, table_name = section.split(":", 1)
@@ -131,15 +128,26 @@ def parse_config(fp):
             if transform is None:
                 transform = resolve(*match(transform_name))
 
-            result["tables"][table_name] = {
+            tables[table_name] = {
                 "transform": transform,
                 "query": cp.get(section, "query"),
             }
 
-    return result
+    return {
+        "database": dict(cp.items("database")),
+        "tables": tables,
+        "misc": dict(cp.items("misc")),
+    }
 
 
-def serve_client(fh_in, fh_out, conn, timeout, tables, cfg):
+def serve_client(
+    fh_in: io.TextIOWrapper,
+    fh_out: io.TextIOWrapper,
+    conn,
+    timeout: int,
+    tables: dict,
+    cfg: dict,
+):
     try:
         while True:
             # Wait a short period before exiting.
@@ -148,6 +156,8 @@ def serve_client(fh_in, fh_out, conn, timeout, tables, cfg):
                 break
 
             request = read_netstring(fh_in)
+            if request is None:
+                break
 
             table_name, arg = request.split(" ", 1)
 
@@ -173,7 +183,7 @@ def serve_client(fh_in, fh_out, conn, timeout, tables, cfg):
         write_netstring(fh_out, "PERM " + str(exc))
 
 
-def connect(settings):
+def connect(settings: Dict[str, str]):
     """
     Connect to a database.
     """
