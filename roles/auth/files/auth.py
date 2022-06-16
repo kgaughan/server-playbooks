@@ -15,9 +15,12 @@ from http import client
 import logging
 import os
 import sys
+from typing import Dict, List, Optional, Tuple
 from wsgiref import simple_server
 
 import pam
+
+Headers = List[Tuple[str, str]]
 
 
 class HTTPError(Exception):
@@ -25,14 +28,14 @@ class HTTPError(Exception):
     Application wants to respond with the given HTTP status code.
     """
 
-    def __init__(self, code, message=None):
+    def __init__(self, code: int, message: Optional[str] = None):
         if message is None:
             message = client.responses[code]
         super().__init__(message)
         self.code = code
 
     # pylint: disable-msg=R0201
-    def headers(self):  # pragma: no cover
+    def headers(self) -> Headers:  # pragma: no cover
         """
         Additional headers to be sent.
         """
@@ -44,7 +47,7 @@ class NotFound(HTTPError):
     Resource not found.
     """
 
-    def __init__(self, message=None):
+    def __init__(self, message: Optional[str] = None):
         super().__init__(client.NOT_FOUND, message)
 
 
@@ -53,7 +56,7 @@ class BadRequest(HTTPError):
     Bad request.
     """
 
-    def __init__(self, message=None):
+    def __init__(self, message: Optional[str] = None):
         super().__init__(client.BAD_REQUEST, message)
 
 
@@ -62,19 +65,19 @@ class Unauthorized(HTTPError):
     Unauthorized; request a HTTP Basic auth response.
     """
 
-    def __init__(self, realm):
+    def __init__(self, realm: str):
         super().__init__(client.UNAUTHORIZED)
         self.realm = realm
 
-    def headers(self):
-        return [("WWW-Authenticate", 'Basic realm="{}"'.format(self.realm))]
+    def headers(self) -> Headers:
+        return [("WWW-Authenticate", f'Basic realm="{self.realm}"')]
 
 
-def make_status_line(code):
+def make_status_line(code: int) -> str:
     """
     Create a HTTP status line.
     """
-    return "{} {}".format(code, client.responses[code])
+    return f"{code} {client.responses[code]}"
 
 
 class AuthServer:
@@ -82,13 +85,13 @@ class AuthServer:
     The WSGI app itself.
     """
 
-    def __init__(self, service, realm):
+    def __init__(self, service: str, realm: str):
         super().__init__()
         self.service = service
         self.realm = realm
         self.pam = pam.pam()
 
-    def run(self, environ):
+    def run(self, environ: Dict[str, str]) -> Tuple[int, Headers, List[bytes]]:
         """
         Dispatch request.
         """
@@ -104,12 +107,12 @@ class AuthServer:
                 raise Unauthorized(self.realm)
         raise BadRequest("Bad Authorization header")
 
-    def check(self, username, password):
+    def check(self, username: str, password: str) -> bool:
         success = self.pam.authenticate(username, password, self.service)
         logging.info("Result checking %s: %s", username, success)
         return success
 
-    def __call__(self, environ, start_response):
+    def __call__(self, environ: Dict[str, str], start_response) -> List[bytes]:
         """
         Request convert the WSGI request to a more convenient format.
         """
