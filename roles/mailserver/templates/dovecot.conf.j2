@@ -16,7 +16,7 @@ plugin {
 
   # From elsewhere to Spam folder or flag changed in Spam folder
   imapsieve_mailbox1_name = Junk
-  imapsieve_mailbox1_causes = COPY FLAG
+  imapsieve_mailbox1_causes = COPY
   imapsieve_mailbox1_before = file:{{ dovecot_root }}/sieve/report-spam.sieve
 
   # From Spam folder to elsewhere

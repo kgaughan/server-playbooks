@@ -1,15 +1,5 @@
-require ["vnd.dovecot.pipe", "copy", "imapsieve", "environment", "variables"];
+require ["vnd.dovecot.pipe", "copy", "imapsieve", "environment"];
 
-if environment :matches "imap.mailbox" "*" {
-  set "mailbox" "${1}";
+if environment :matches "imap.mailbox" ["Junk"] {
+  pipe :copy "learn-spam";
 }
-
-if string "${mailbox}" ["Trash"] {
-  stop;
-}
-
-if environment :matches "imap.user" "*" {
-  set "username" "${1}";
-}
-
-pipe :copy "learn-spam" ["${username}"];
