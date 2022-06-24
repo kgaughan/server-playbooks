@@ -1,5 +1,5 @@
 [program:dav]
-command=/usr/local/bin/wsgidav --host localhost --port 8081 --root {{ dav_root }} --auth anonymous
+command=/usr/local/bin/wsgidav --host localhost --port 8081 --root {{ dav_root }} --auth anonymous --config /home/keith/workarounds/wsgidav.yaml
 user=www
 redirect_stderr=true
 stdout_logfile={{ webserver_logs }}/%(program_name)s.log

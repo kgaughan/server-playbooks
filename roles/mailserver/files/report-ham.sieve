@@ -1,8 +1,6 @@
 require ["vnd.dovecot.pipe", "copy", "editheader", "imapsieve", "environment"];
 
-if environment :matches "imap.mailbox" ["Trash"] {
-  stop;
+if not environment :matches "imap.mailbox" ["Trash"] {
+  deleteheader "X-Spam";
+  pipe :copy "learn-ham";
 }
-
-deleteheader "X-Spam";
-pipe :copy "learn-ham";
