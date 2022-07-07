@@ -3,7 +3,7 @@
   pkgng:
     name:
       - roundcube-php80
-      - py38-pymysql
+      - py39-pymysql
     cached: true
 
 - name: deploy vhost

@@ -2,9 +2,7 @@
 - name: install packages
   pkgng:
     name:
-      - python3
       - py38-lxml
-      - py38-python-pam
       - py38-WsgiDAV
     cached: true
 

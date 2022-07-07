@@ -3,7 +3,7 @@
   pkgng:
     name:
       - tt-rss
-      - py38-pymysql
+      - py39-pymysql
     cached: true
   notify:
     - restart ttrssd
