@@ -3,7 +3,7 @@
   pkgng:
     name:
       - python3
-      - py38-python-pam
+      - py39-python-pam
     cached: true
 
 - name: ensure the tools directory exists
