@@ -80,12 +80,5 @@ if ($?prompt) then
 	# This is how I wish 'tmux attach' behaved:
 	alias s		"tmux has && tmux attach || tmux"
 	alias xh	"rm -f ~/.history && history -c"
-
-	# Make life a bit easier regarding svn when I need it.
-	if (! -X svn && -X svnlite) then
-		foreach suffix ("" admin bench dumpfilter fsfs look mucc rdump serve sync version)
-			alias svn$suffix svnlite$suffix
-		end
-	endif
 endif
 # vim:set ft=tcsh ts=4 sts=4 sw=4 noet:
