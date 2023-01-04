@@ -1,0 +1,6 @@
+# Rotate the nginx logs monthly, keep 11 in addition to this month's one,
+# send SIGUSR1 (30).
+# logfilename          [owner:group]    mode count size when  flags [/pid_file] [sig_num]
+/var/log/nginx/*.log		644		12	*	$M1D0	GpX		/var/run/nginx.pid	SIGUSR1
+/var/log/www/*.access.log	644		12	*	$M1D0	GpX		/var/run/nginx.pid	SIGUSR1
+/var/log/www/*.error.log	644		12	*	$M1D0	GpX		/var/run/nginx.pid	SIGUSR1

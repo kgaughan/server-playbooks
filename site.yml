@@ -84,6 +84,7 @@
   remote_user: keith
   become: true
   roles:
+    - common
     - webserver
   tags:
     - webserver

@@ -25,6 +25,14 @@
   notify:
     - mount all
 
+- name: configuration directory for newsyslog
+  file:
+    name: /usr/local/etc/newsyslog.conf.d
+    owner: root
+    group: wheel
+    mode: 0755
+    state: directory
+
 - import_tasks: pf.yml
 - import_tasks: fbsd-update.yml
 - import_tasks: ssh.yml

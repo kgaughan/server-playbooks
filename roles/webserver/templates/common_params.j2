@@ -32,7 +32,7 @@ location ~* ".*/wp-(login|admin|plugins)\.php$" {
 	access_log off;
 }
 
-location ~* ^/(robots|humans|ads|security)\.txt$ {
+location ~* ^/(robots|humans|ads|security|sitemap)\.txt$ {
 	allow all;
 	log_not_found off;
 	access_log off;
