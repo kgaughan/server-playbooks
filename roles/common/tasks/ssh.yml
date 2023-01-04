@@ -11,7 +11,7 @@
 - name: disable ssh password login
   lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: "^#?\KbdInteractiveAuthentication\s"
+    regexp: "^#?KbdInteractiveAuthentication\\s"
     line: 'KbdInteractiveAuthentication no'
     validate: '/usr/sbin/sshd -T -f %s'
   notify:
