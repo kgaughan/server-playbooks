@@ -104,7 +104,7 @@ def process_local(local_part: str, cfg: Mapping[str, str]) -> str:
     delimiter = cfg.get("recipient_delimiter", "").strip()
     if delimiter != "":
         local_part = local_part.split(delimiter, 1)[0]
-    return local_part
+    return local_part.lower()
 
 
 def split(arg: str, cfg: Mapping[str, str]) -> List[str]:
