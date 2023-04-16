@@ -17,7 +17,9 @@ import subprocess
 import sys
 from typing import Callable, Dict, List, Mapping, Optional, Tuple, TypedDict
 
-__version__ = "0.1.0"
+
+__version__ = "0.2.0"
+
 
 Transform = Callable[[str, Mapping[str, str]], List[str]]
 
@@ -30,16 +32,16 @@ class TableCfg:
 
 class Cfg(TypedDict):
     database: Dict[str, str]
-    misc:  Dict[str, str]
+    misc: Dict[str, str]
     tables: Dict[str, TableCfg]
 
 
 FUNC_REF_PATTERN = re.compile(
     r"""
     ^
-    (?P<module> [a-z_][a-z0-9_]*(?:\.[a-z_][a-z0-9_]*)* )
+    (?P<module>[a-z_][a-z0-9_]*(?:\.[a-z_][a-z0-9_]*)*)
     :
-    (?P<object> [a-z_][a-z0-9_]*(?:\.[a-z_][a-z0-9_]*)* )
+    (?P<object>[a-z_][a-z0-9_]*(?:\.[a-z_][a-z0-9_]*)*)
     $
     """,
     re.I | re.X,
@@ -129,24 +131,34 @@ def parse_config(fp: io.TextIOWrapper) -> Cfg:
     cp.read_file(fp)
 
     tables = {}
-    for name, section in cp.items():
-        if name.startswith("table:"):
-            if "query" not in section:
+    for section in cp.sections():
+        if section.startswith("table:"):
+            _, table_name = section.split(":", 1)
+            if not cp.has_option(section, "query"):
                 continue
 
-            transform_name = section.get("transform", "all")
+            try:
+                transform_name = cp.get(section, "transform")
+            except configparser.NoOptionError:
+                transform_name = "all"
             transform = transforms.get(transform_name)
             if transform is None:
                 transform = resolve(*match(transform_name))
 
-            _, table_name = name.split(":", 1)
-            tables[table_name] = TableCfg(section["query"], transform)
+            tables[table_name] = TableCfg(
+                query=cp.get(section, "query"),
+                transform=transform,
+            )
 
-    return {
-        "database": dict(cp["database"]),
-        "tables": tables,
-        "misc": dict(cp["misc"]),
-    }
+    return Cfg(
+        database=dict(cp.items("database")),
+        tables=tables,
+        misc=dict(cp.items("misc")),
+    )
+
+
+def get_int(cfg: Mapping[str, str], key: str) -> Optional[int]:
+    return int(cfg[key]) if key in cfg else None
 
 
 def serve_client(
@@ -157,9 +169,7 @@ def serve_client(
     tables: Mapping[str, TableCfg],
     cfg: Mapping[str, str],
 ):
-    max_requests = cfg.get("max_requests")
-    if max_requests is not None:
-        max_requests = int(max_requests) + 1
+    max_requests = get_int(cfg, "max_requests")
     try:
         while True:
             if max_requests is not None:
@@ -180,8 +190,8 @@ def serve_client(
 
             table = tables.get(table_name)
             if table is None:
-                write_netstring(fh_out, "PERM no such table: " + table_name)
-                continue
+                write_netstring(fh_out, f"PERM no such table: {table_name}")
+                break
 
             cur = conn.cursor()
             try:
@@ -193,11 +203,11 @@ def serve_client(
             if result is None:
                 write_netstring(fh_out, "NOTFOUND ")
             else:
-                write_netstring(fh_out, "OK " + str(result[0]))
+                write_netstring(fh_out, f"OK {str(result[0])}")
     except MalformedNetstringError:
         write_netstring(fh_out, "PERM malformed netstring")
     except Exception as exc:
-        write_netstring(fh_out, "PERM " + str(exc))
+        write_netstring(fh_out, f"PERM {str(exc)}")
 
 
 def connect(settings: Dict[str, str]):
