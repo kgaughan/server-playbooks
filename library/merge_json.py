@@ -104,17 +104,17 @@ def main():
     exists = False
     if os.path.isfile(path):
         if not os.access(path, os.R_OK | os.W_OK):
-            module.fail_json(msg="'{}' not readable and writable".format(path))
+            module.fail_json(msg=f"'{path}' not readable and writable")
         exists = True
     elif not create:
-        module.fail_json(msg="'{}' not found".format(path))
+        module.fail_json(msg=f"'{path}' not found")
 
     if exists and os.path.getsize(path) > 0:
         try:
             with open(path, "r") as fp:
                 contents = json.load(fp)
         except ValueError as exc:
-            module.fail_json(msg="Could not load '{}': {}".format(path, exc))
+            module.fail_json(msg=f"Could not load '{path}': {exc}")
         merged = _merge_dicts(contents, data)
     else:
         contents = data

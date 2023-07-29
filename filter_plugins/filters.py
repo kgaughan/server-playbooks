@@ -1,5 +1,5 @@
 def subdomains(domain, labels):
-    return [label + "." + domain for label in labels]
+    return [f"{label}.{domain}" for label in labels]
 
 
 def acme_list(domain, labels):
