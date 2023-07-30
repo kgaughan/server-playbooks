@@ -2,7 +2,7 @@
 - name: install packages
   pkgng:
     name:
-      - py38-supervisor
+      - py39-supervisor
     cached: true
 
 - name: copy up server config
