@@ -1,4 +1,4 @@
 ---
-- import_tasks: rspamd.yml
-- import_tasks: postfix.yml
 - import_tasks: dovecot.yml
+- import_tasks: postfix.yml
+- import_tasks: rspamd.yml

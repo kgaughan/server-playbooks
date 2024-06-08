@@ -1,10 +1,10 @@
 lir.talideon.com
-manann.talideon.com
+#manann.talideon.com
 eimhir.talideon.com
 
 [freebsd]
 lir.talideon.com
-manann.talideon.com
+#manann.talideon.com
 eimhir.talideon.com
 
 [freebsd:vars]
@@ -12,12 +12,12 @@ ansible_python_interpreter=/usr/local/bin/python3
 
 [baremetal]
 lir.talideon.com
-manann.talideon.com
+#manann.talideon.com
 
 [shell]
 
 [dav]
-manann.talideon.com
+#manann.talideon.com
 
 [digitalocean]
 eimhir.talideon.com
@@ -26,14 +26,15 @@ eimhir.talideon.com
 eimhir.talideon.com
 
 [mailservers]
-manann.talideon.com
+#manann.talideon.com
+lir.talideon.com
 
 [nameservers]
 lir.talideon.com
 eimhir.talideon.com
 
 [repos]
-manann.talideon.com
+#manann.talideon.com
 
 ; Some hosts need this installed explicitly.
 [supervisor]
@@ -44,11 +45,13 @@ eimhir.talideon.com
 
 [webservers]
 lir.talideon.com
-manann.talideon.com
+#manann.talideon.com
 
 [smart]
-manann.talideon.com
+#manann.talideon.com
 
 [torrent]
 lir.talideon.com
-manann.talideon.com
+#manann.talideon.com
+
+; vim:ft=dosini:

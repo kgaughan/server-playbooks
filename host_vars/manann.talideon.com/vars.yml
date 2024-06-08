@@ -5,7 +5,7 @@ repos_site: repos.talideon.com
 acme_domains:
   dav.talideon.com: []
   repos.talideon.com: []
-  mail.talideon.com: []
+  #mail.talideon.com: []
 
 wireguard_private_addr: 192.168.254.1/24
 

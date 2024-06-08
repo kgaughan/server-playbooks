@@ -24,4 +24,6 @@ server {
 
 	server_name {{ webmail_site }};
 	return 301 https://{{ webmail_site }}$request_uri;
+
+	access_log off;
 }

@@ -1,5 +1,8 @@
 ---
 wireguard_private_addr: 192.168.254.2/24
 
+acme_domains:
+  mail.talideon.com: []
+
 backup_locations:
   - /home/keith
