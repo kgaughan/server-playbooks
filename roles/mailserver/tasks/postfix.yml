@@ -4,7 +4,7 @@
     name:
       - postfix
       - sqlite3
-      - py39-sqlite3
+      - py311-sqlite3
     cached: true
 
 - name: ensure the postfix configuration root exists

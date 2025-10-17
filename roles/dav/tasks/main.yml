@@ -2,8 +2,8 @@
 - name: install packages
   pkgng:
     name:
-      - py39-lxml
-      - py39-WsgiDAV
+      - py311-lxml
+      - py311-WsgiDAV
     cached: true
 
 - name: ensure the DAV root directory exists
