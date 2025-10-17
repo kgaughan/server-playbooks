@@ -1,7 +1,8 @@
 ---
+# !!! FIX
 - name: initialise roundcube database
   mysql_db:
     state: import
     name: roundcube
     login_user: root
-    target: /usr/local/www/roundcube/SQL/mysql.initial.sql
+    target: /usr/local/www/roundcube/SQL/postgres.initial.sql

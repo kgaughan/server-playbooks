@@ -2,8 +2,9 @@
 - name: install packages
   pkgng:
     name:
-      - roundcube-php80
-      - py39-pymysql
+      - roundcube-php89
+      - php83-pdo_pgsql
+      - py11-psycopg2
     cached: true
 
 - name: deploy vhost
@@ -13,20 +14,23 @@
   notify:
     - reload nginx
 
-- name: create database
-  mysql_db:
+- name: create roundcube database user
+  postgreql_user:
     name: roundcube
+    password: "{{ webmail_db_password }}"
+  no_log: true
+
+- name: create database
+  postgresql_db:
+    name: roundcube
+    owner: roundcube
     state: present
-    encoding: utf8
+    encoding: UTF-8
   notify:
     - initialise roundcube database
 
-- name: create roundcube database user
-  mysql_user:
-    name: roundcube
-    password: "{{ webmail_db_password }}"
-    priv: "roundcube.*:SELECT,INSERT,UPDATE,DELETE"
-  no_log: true
+- name: grant permissions on database
+  postgresql_
 
 - name: deploy roundcube config
   template:
