@@ -2,7 +2,7 @@
 - name: install packages
   pkgng:
     name:
-      - py311-supervisor
+      - py312-supervisor
     cached: true
 
 - name: copy up server config
