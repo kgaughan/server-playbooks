@@ -16,29 +16,13 @@ location = /apple-app-site-association {
 	access_log off;
 }
 
-location ^~ /.well-known/acme-challenge {
-	alias "{{ acme_challenge_dir }}";
-	default_type "text/plain";
-	try_files $uri =404;
-}
-
-location ~* "/wp-(includes|content)/" {
-	return 410;
-	access_log off;
-}
-
-location ~* ".*/wp-(login|admin|plugins)\.php$" {
-	return 410;
-	access_log off;
-}
-
 location ~* ^/(robots|humans|ads|security|sitemap)\.txt$ {
 	allow all;
 	log_not_found off;
 	access_log off;
 }
 
-location ~* ^.*/(sitemap|crossdomain|/wlwmanifest)\.xml(\.gz)?$ {
+location ~* ^/(sitemap|crossdomain)\.xml(\.gz)?$ {
 	allow all;
 	log_not_found off;
 	access_log off;
@@ -56,13 +40,21 @@ location ~* ^/apple-touch-icon.*\.png$ {
 	access_log off;
 }
 
+location ^~ /.well-known/acme-challenge {
+	alias "{{ acme_challenge_dir }}";
+	default_type "text/plain";
+	try_files $uri =404;
+}
+
 add_header X-Clacks-Overhead "GNU Terry Pratchett";
 
 add_header X-Frame-Options "SAMEORIGIN" always;
 add_header X-Xss-Protection "1; mode=block" always;
 add_header X-Content-Type-Options "nosniff" always;
-add_header Referrer-Policy "no-referrer-when-downgrade" always;
-add_header Feature-Policy "autoplay 'none'" always;
+add_header Referrer-Policy "same-origin" always;
 
-add_header Link "<https://fonts.gstatic.com/>; rel=dns-prefetch" always;
-add_header Link "<https://fonts.gstatic.com/>; rel=preconnect; crossorigin" always;
+add_header Link "<https://cdnjs.cloudflare.com/>; rel=dns-prefetch" always;
+add_header Link "<https://cdnjs.cloudflare.com/>; rel=preconnect; crossorigin" always;
+
+gzip on;
+gzip_types text/plain application/atom+xml text/css application/javascript;

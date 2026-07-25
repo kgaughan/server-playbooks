@@ -2,13 +2,13 @@
 - name: install packages
   pkgng:
     name:
-      - php80
-      - php80-opcache  # recommended
+      - php83
+      - php83-opcache  # recommended
     cached: true
   notify:
-    - reload php-fpm
+    - reload php_fpm
 
-- name: copy up upstream php-fpm socket config
+- name: copy up upstream php_fpm socket config
   copy:
     src: php_socket
     dest: "{{ webserver_config }}/extra/"
@@ -27,10 +27,10 @@
     src: php-fpm.conf
     dest: "/usr/local/etc/"
   notify:
-    - reload php-fpm
+    - reload php_fpm
 
-- name: start php-fpm
+- name: start php_fpm
   service:
-    name: php-fpm
+    name: php_fpm
     enabled: true
     state: started

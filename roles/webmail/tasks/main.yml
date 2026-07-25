@@ -2,9 +2,9 @@
 - name: install packages
   pkgng:
     name:
-      - roundcube-php89
+      - roundcube-php83
       - php83-pdo_pgsql
-      - py11-psycopg2
+      - py312-psycopg2
     cached: true
 
 - name: deploy vhost
@@ -15,7 +15,7 @@
     - reload nginx
 
 - name: create roundcube database user
-  postgreql_user:
+  postgresql_user:
     name: roundcube
     password: "{{ webmail_db_password }}"
   no_log: true
